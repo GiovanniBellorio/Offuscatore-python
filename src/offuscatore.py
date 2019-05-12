@@ -1,84 +1,93 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-import couchdb
-import math
-from operator import itemgetter
-from datetime import *
+import tokenize
+import  sys
+from io import StringIO
 
-__server    = "127.0.0.1"
-__dbName    = 'db_airlines'
-__db4Log    = 'admin'
-__user      = 'admin'
-__pw        = 'Univr_2019'
-__db4LogCon = None
 
-def __cursor():
-    """ Ritorna un cursore per scrivere nel database cls.__db4Log. """
-    if __dbName in __db4LogCon:
-        __db = __db4LogCon[__dbName]
-        return __db
 
-def tempo():
-    return datetime.utcnow()
+# Function taken from pyminifier project: https://github.com/liftoff/pyminifier
 
-def Q5_airline():
-    """ """
-    cur = __cursor()
-    doc = {} # "scode:dcode":count
+def remove_comments_and_docstrings(source):
+    """
+    Returns 'source' minus comments and docstrings.
+    """
 
-    for item in cur.view('_design/documenti-view/_view/view_Q5', limit=3000000):
-        scode = item.value[0]
-        dcode = item.value[1]
-        code  = scode + ":" + dcode
+    print("-> removing comments and docstrings")
 
-        if code in doc:
-            count = doc[code]
-            count += 1
-            doc[code] = count
+    io_obj = StringIO(source)
+    out = ""
+    prev_toktype = tokenize.INDENT
+    last_lineno = -1
+    last_col = 0
+    for tok in tokenize.generate_tokens(io_obj.readline):
+        token_type = tok[0]
+        token_string = tok[1]
+        start_line, start_col = tok[2]
+        end_line, end_col = tok[3]
+        ltext = tok[4]
+        # The following two conditionals preserve indentation.
+        # This is necessary because we're not using tokenize.untokenize()
+        # (because it spits out code with copious amounts of oddly-placed
+        # whitespace).
+        if start_line > last_lineno:
+            last_col = 0
+        if start_col > last_col:
+            out += (" " * (start_col - last_col))
+        # Remove comments:
+        if token_type == tokenize.COMMENT:
+            pass
+        # This series of conditionals removes docstrings:
+        elif token_type == tokenize.STRING:
+            if prev_toktype != tokenize.INDENT:
+        # This is likely a docstring; double-check we're not inside an operator:
+                if prev_toktype != tokenize.NEWLINE:
+                    # Note regarding NEWLINE vs NL: The tokenize module
+                    # differentiates between newlines that start a new statement
+                    # and newlines inside of operators such as parens, brackes,
+                    # and curly braces.  Newlines inside of operators are
+                    # NEWLINE and newlines that start new code are NL.
+                    # Catch whole-module docstrings:
+                    if start_col > 0:
+                        # Unlabelled indentation means we're inside an operator
+                        out += token_string
+                    # Note regarding the INDENT token: The tokenize module does
+                    # not label indentation inside of an operator (parens,
+                    # brackets, and curly braces) as actual indentation.
+                    # For example:
+                    # def foo():
+                    #     "The spaces before this docstring are tokenize.INDENT"
+                    #     test = [
+                    #         "The spaces before this string do not get a token"
+                    #     ]
         else:
-            doc[code] = 1
-
-    for item in cur.view('_design/documenti-view/_view/view_Q5', skip=3000000):
-        scode = item.value[0]
-        dcode = item.value[1]
-        code  = scode + ":" + dcode
-
-        if code in doc:
-            count = doc[code]
-            count += 1
-            doc[code] = count
-        else:
-            doc[code] = 1
-    
-    doc_list = sorted(doc.items(), key=itemgetter(0))
-
-    for c in doc_list:
-        tmp = c[0].split(":")
-        c1 = tmp[0]
-        c2 = tmp[1]
-        print((c1,c2), c[1])
-
-    return 0
+            out += token_string
+        prev_toktype = token_type
+        last_col = end_col
+        last_lineno = end_line
+    return out
 
 
 def main():
-    print("INIZIO ESECUZIONE")
+
     print("--------------------------------------------------------------------------------")
-    inizio = tempo()
+    print("OBFUSCATION STARTED\n")
 
-    global __db4LogCon
-    __db4LogCon = couchdb.Server("http://%s:%s@%s:5984/" % (__user, __pw, __server))
+    name_src = sys.argv[1]  # name of the source file, passed as argument
+    name_dest = name_src+"_OBFUSCATE.py"  # name of the destination file
 
-    Q5_airline()
+    file_SRC = open(name_src, "r")
 
-    __db4LogCon = None
+    file_DEST = open(name_dest, "w")
 
-    fine = tempo()
-    tempoImpiegato = fine - inizio
-    print(tempoImpiegato)
-    print("FINE ESECUZIONE")
+    # Call 'remove_comments_and_docstrings()' function on the source file object
+    # which it is first convert to a string through the read() method.
+    file_DEST.write(remove_comments_and_docstrings(file_SRC.read()))
+
+    print("\nOBFUSCATION ENDED")
     print("--------------------------------------------------------------------------------")
+
 
 
 if __name__ == '__main__':
