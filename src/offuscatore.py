@@ -82,7 +82,7 @@ def main():
     file_DEST = open(name_dest, "w")
 
     # Call 'remove_comments_and_docstrings()' function on the source file object
-    # which it is first convert to a string through the read() method.
+    # which it is first converted to a string through the read() method.
     file_DEST.write(remove_comments_and_docstrings(file_SRC.read()))
 
     print("\nOBFUSCATION ENDED")
