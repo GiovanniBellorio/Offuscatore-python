@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import sys
+import random
 
 def main():
 
@@ -34,23 +35,29 @@ def main():
         iIdx+=1
 
     # create transitions
+    new_string_input = ''
     iIdx = 0
     transitions = {}
     for q in states:
-        if (iIdx+1) == len_string_input:
-            transitions.update({q:{'0' : ('q0', ord(string_input[iIdx]))}})
+        stato1 = random.randint(0,1)
+        if stato1 == 0:
+            stato2 = 1
         else:
-            transitions.update({q:{'0' : ('q'+str(iIdx+1), ord(string_input[iIdx]))}})
+            stato2 = 0
+        new_string_input += str(stato1)
+        char_random = random.randint(97,122)
+        if (iIdx+1) == len_string_input:
+            transitions.update({q:{str(stato1) : ('q0', ord(string_input[iIdx])), str(stato2) : ('q'+str(iIdx-1), char_random)}})
+        elif (iIdx == 0):
+            transitions.update({q:{str(stato1) : ('q'+str(iIdx+1), ord(string_input[iIdx])), str(stato2) : ('q'+str(len_string_input-1), char_random)}})
+        else:
+            transitions.update({q:{str(stato1) : ('q'+str(iIdx+1), ord(string_input[iIdx])), str(stato2) : ('q'+str(iIdx-1), char_random)}})
         iIdx+=1
-
-    new_string_input = ''
-    for c in string_input:
-        new_string_input+='0'
 
     # WRITE MEALY
     file_DEST.write("\n\n")
-    file_DEST.write(("mealy = Mealy({},['0', '1'],['0', '1'],{},'q0')").format(states,transitions) + \
-                   "\nprint(mealy.get_output_from_string('{}'))".format(new_string_input))
+    file_DEST.write(("string_input = Mealy({},['0', '1'],['0', '1'],{},'q0')").format(states,transitions) + \
+                   "\nprint(string_input.get_output_from_string('{}'))".format(new_string_input))
 
 
     print("\nOBFUSCATION ENDED")
