@@ -66,6 +66,12 @@ def remove_comments_and_docstrings(source):
                     #     test = [
                     #         "The spaces before this string do not get a token"
                     #     ]
+                    else:
+                        is_junk = True
+                else:
+                    is_junk = True
+            else:
+                is_junk = True
 
         else:
             myline += token_string
