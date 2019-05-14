@@ -12,7 +12,7 @@ def main():
     print("OBFUSCATION STARTED\n")
 
     name_src  = sys.argv[1]  # name of the source file, passed as argument
-    name_dest = name_src+"_OBFUSCATE.py"  # name of the destination file
+    name_dest = name_src+"_OBFUSCATED.py"  # name of the destination file
 
     file_SRC  = open(name_src, "r")
     file_DEST = open(name_dest, "w")

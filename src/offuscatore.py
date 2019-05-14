@@ -2,8 +2,9 @@
 # -*- coding: utf-8 -*-
 
 import tokenize
-import  sys
+import sys
 from io import StringIO
+import re
 
 
 
@@ -21,6 +22,9 @@ def remove_comments_and_docstrings(source):
     prev_toktype = tokenize.INDENT
     last_lineno = -1
     last_col = 0
+    myline = ""
+    is_junk = False
+
     for tok in tokenize.generate_tokens(io_obj.readline):
         token_type = tok[0]
         token_string = tok[1]
@@ -34,9 +38,10 @@ def remove_comments_and_docstrings(source):
         if start_line > last_lineno:
             last_col = 0
         if start_col > last_col:
-            out += (" " * (start_col - last_col))
+            myline += (" " * (start_col - last_col))
         # Remove comments:
         if token_type == tokenize.COMMENT:
+            is_junk = True
             pass
         # This series of conditionals removes docstrings:
         elif token_type == tokenize.STRING:
@@ -51,7 +56,7 @@ def remove_comments_and_docstrings(source):
                     # Catch whole-module docstrings:
                     if start_col > 0:
                         # Unlabelled indentation means we're inside an operator
-                        out += token_string
+                        myline += token_string
                     # Note regarding the INDENT token: The tokenize module does
                     # not label indentation inside of an operator (parens,
                     # brackets, and curly braces) as actual indentation.
@@ -61,8 +66,16 @@ def remove_comments_and_docstrings(source):
                     #     test = [
                     #         "The spaces before this string do not get a token"
                     #     ]
+
         else:
-            out += token_string
+            myline += token_string
+
+        if token_type == tokenize.NEWLINE or token_type == tokenize.NL:
+            if not (is_junk and re.match(r'^\s*$', myline)):
+                out += myline
+            myline = ""
+            is_junk = False
+
         prev_toktype = token_type
         last_col = end_col
         last_lineno = end_line
@@ -75,7 +88,7 @@ def main():
     print("OBFUSCATION STARTED\n")
 
     name_src = sys.argv[1]  # name of the source file, passed as argument
-    name_dest = name_src+"_OBFUSCATE.py"  # name of the destination file
+    name_dest = name_src+"_OBFUSCATED.py"  # name of the destination file
 
     file_SRC = open(name_src, "r")
 
