@@ -93,16 +93,16 @@ def remove_comments_and_docstrings(source):
 def get_variables(tree):
     """
     :param tree:
-    :return: a list contains all variables in the code (passed as AST 'tree')
+    :return: a dictionary contains each variable (key) and its type (value) contains in the code (passed as AST 'tree')
     """
 
-    variables = []
+    variables = {}
 
     for node in ast.walk(tree):
         # Saved variables declared
         if isinstance(node, ast.Assign) and isinstance(node.targets[0], ast.Name):
                 if node.targets[0].id not in variables:
-                    variables.append(node.targets[0].id)
+                    variables[node.targets[0].id] = type(node.value).__name__
 
     return variables
 
@@ -131,7 +131,7 @@ def obfuscate_variables(out):
         Returns 'source' with variables offuscated.
     """
 
-    print("-> obfuscate variables")
+    print("-> obfuscating variables")
 
     # Tree object contains the AST of the code
     tree = ast.parse(out)
