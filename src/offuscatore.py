@@ -4,16 +4,18 @@
 import tokenize
 import sys
 from io import StringIO
+import ast
 import re
+import random
+import astor
 
 
-
-# Function taken from pyminifier project: https://github.com/liftoff/pyminifier
 
 def remove_comments_and_docstrings(source):
     """
     Returns 'source' minus comments and docstrings.
     """
+    # Function taken from pyminifier project: https://github.com/liftoff/pyminifier
 
     print("-> removing comments and docstrings")
 
@@ -88,6 +90,69 @@ def remove_comments_and_docstrings(source):
     return out
 
 
+def get_variables(tree):
+    """
+    :param tree:
+    :return: a list contains all variables in the code (passed as AST 'tree')
+    """
+
+    variables = []
+
+    for node in ast.walk(tree):
+        # Saved variables declared
+        if isinstance(node, ast.Assign) and isinstance(node.targets[0], ast.Name):
+                if node.targets[0].id not in variables:
+                    variables.append(node.targets[0].id)
+
+    return variables
+
+def rename_variables(tree, variables):
+    # Rename names of variables used (general usage)
+    for node in ast.walk(tree):
+        if isinstance(node, ast.Name) and node.id in variables:
+            node.id = variables[node.id]
+
+    return tree
+
+
+def rand_sequence():
+    sequence = "O"
+    coin = ('0', 'O')
+
+    for i in range(17):
+        flip = random.choice(coin)
+        sequence += flip
+
+    return sequence
+
+
+def obfuscate_variables(out):
+    """
+        Returns 'source' with variables offuscated.
+    """
+
+    print("-> obfuscate variables")
+
+    # Tree object contains the AST of the code
+    tree = ast.parse(out)
+
+    # Extraction of all variables defined
+    variables = get_variables(tree)
+
+    # Define a new dict in order to bind variables-names with new-variables-names
+    new_variables = {}
+    # Choose new names
+    for variable in variables:
+        new_variables[variable] = rand_sequence()
+
+    # Renomination of all variable occurrences
+    tree = rename_variables(tree, new_variables)
+
+    # Convert the new AST to a valid code
+    return astor.to_source(tree)
+
+
+
 def main():
 
     print("--------------------------------------------------------------------------------")
@@ -97,12 +162,18 @@ def main():
     name_dest = name_src+"_OBFUSCATED.py"  # name of the destination file
 
     file_SRC = open(name_src, "r")
-
     file_DEST = open(name_dest, "w")
 
     # Call 'remove_comments_and_docstrings()' function on the source file object
     # which it is first converted to a string through the read() method.
-    file_DEST.write(remove_comments_and_docstrings(file_SRC.read()))
+    out = remove_comments_and_docstrings(file_SRC.read())   # 'out' contains a string with the entire code
+
+    # Call 'obfuscate_variables()' function
+    out = obfuscate_variables(out)
+
+    # Write the result into file_DEST
+    file_DEST.write(out)
+
 
     print("\nOBFUSCATION ENDED")
     print("--------------------------------------------------------------------------------")
