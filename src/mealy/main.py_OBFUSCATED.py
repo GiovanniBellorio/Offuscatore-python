@@ -2,44 +2,22 @@
 # -*- coding: utf-8 -*-
 
 class Mealy(object):
-    #Mealy Machine : Finite Automata with Output
-
     def __init__(self, states, input_alphabet, output_alphabet, transitions, initial_state):
-        '''
-        6 tuple (Q, ∑, O, δ, X, q0) where −
-        states is a finite set of states.
-        alphabet is a finite set of symbols called the input alphabet.
-        output_alphabet is a finite set of symbols called the output alphabet.
-        transitions is the resultant data dictionary of input and output transition functions
-        initial_state is the initial state from where any input is processed (q0 ∈ Q).
-        '''
         self.states = states
         self.input_alphabet = input_alphabet
         self.output_alphabet = output_alphabet
         self.transitions = transitions
         self.initial_state = initial_state
-
     def get_output_from_string(self, string):
-        #Return Mealy Machine's output when a given string is given as input
-
         temp_list = list(string)
         current_state = self.initial_state
         output = ''
         for x in temp_list:
             output += chr(self.transitions[current_state][x][1])
             current_state = self.transitions[current_state][x][0]
-
         return output
 
-    def __str__(self):
-        output = "\nMealy Machine" + \
-                 "\nStates " + str(self.states) + \
-                 "\nTransitions " + str(self.transitions) + \
-                 "\nInital State " + str(self.initial_state) + \
-                 "\nInital Alphabet " + str(self.input_alphabet) + \
-                 "\nOutput Alphabet" + str(self.output_alphabet)
-
-        return output
-
-pippo = <__main__.Mealy object at 0x104c670f0>
-print(pippo)
+pippo = (
+    "Mealy(['q0', 'q1', 'q2', 'q3', 'q4', 'q5', 'q6', 'q7'],['0', '1'],['0', '1'],{'q0': {'0': ('q1', 103), '1': ('q7', 104)}, 'q1': {'1': ('q2', 105), '0': ('q0', 102)}, 'q2': {'0': ('q3', 111), '1': ('q1', 97)}, 'q3': {'1': ('q4', 118), '0': ('q2', 102)}, 'q4': {'1': ('q5', 97), '0': ('q3', 115)}, 'q5': {'1': ('q6', 110), '0': ('q4', 99)}, 'q6': {'0': ('q7', 110), '1': ('q5', 116)}, 'q7': {'1': ('q0', 105), '0': ('q6', 119)}},'q0')"
+    )
+print(eval(pippo).get_output_from_string('01011101'))
