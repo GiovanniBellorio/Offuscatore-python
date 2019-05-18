@@ -162,11 +162,11 @@ def opaque_predicate(out):
     flag = False
 
     # check a position where to insert the opaque predicate
-    # the position is choiced randomly and it can't be after
-    # a row that finish with ':'
+    # the position is choiced randomly and it can't be insert
+    # after a row that finish with ':'
     while (flag == False):
         try:
-            pos = randint(0, len(out)/2*3)
+            pos = randint(0, len(out))
             if(out[pos] == '\n' and out[pos-1] != ':'):
                 flag = True
         except IndexError as error:
