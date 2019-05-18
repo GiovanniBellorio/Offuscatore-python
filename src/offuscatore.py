@@ -7,6 +7,7 @@ from io import StringIO
 import ast
 import re
 import random
+from random import randint
 import astor
 
 
@@ -152,6 +153,33 @@ def obfuscate_variables(out):
     return astor.to_source(tree)
 
 
+def opaque_predicate(out):
+
+    # first opaque predicate
+    pred1 = "x = 3\nif(x + x^2) % 2 == 0:\n\tindex = 0"
+
+    # set a flag to False
+    flag = False
+
+    # check a position where to insert the opaque predicate
+    # the position is choiced randomly and it can't be after
+    # a row that finish with ':'
+    while (flag == False):
+        try:
+            pos = randint(0, len(out)/2*3)
+            if(out[pos] == '\n' and out[pos-1] != ':'):
+                flag = True
+        except IndexError as error:
+            # Output expected IndexErrors.
+            print("string index out of range")
+
+    
+    # insert the opaque predicate
+    out = out[:pos] + '\n' + pred1 + out[pos:]
+    pos+= len(pred1) + 3
+
+    return out
+
 
 def main():
 
@@ -167,6 +195,8 @@ def main():
     # Call 'remove_comments_and_docstrings()' function on the source file object
     # which it is first converted to a string through the read() method.
     out = remove_comments_and_docstrings(file_SRC.read())   # 'out' contains a string with the entire code
+
+    out = opaque_predicate(out)
 
     # Call 'obfuscate_variables()' function
     out = obfuscate_variables(out)
