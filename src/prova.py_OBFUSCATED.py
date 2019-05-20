@@ -1,44 +1,56 @@
 class Mealy(object):
 
-    def __init__(self, states, input_alphabet, output_alphabet, transitions,
-        initial_state):
-        self.states = states
-        self.input_alphabet = input_alphabet
-        self.output_alphabet = output_alphabet
-        self.transitions = transitions
-        self.initial_state = initial_state
+    def __init__(O0O000OO0O00OO00OO0OOO0, OO0O0O00000000O00O0O0OO,
+        O00O00000000O000OO0OO00, O0O0O0O0000O0O0O0O00OO0,
+        OOO0OO0OOO0OOOOO00O0OO0, O0O0O00O0O0OOOOOO00O0OO):
+        O0O000OO0O00OO00OO0OOO0.states = OO0O0O00000000O00O0O0OO
+        O0O000OO0O00OO00OO0OOO0.input_alphabet = O00O00000000O000OO0OO00
+        O0O000OO0O00OO00OO0OOO0.output_alphabet = O0O0O0O0000O0O0O0O00OO0
+        O0O000OO0O00OO00OO0OOO0.transitions = OOO0OO0OOO0OOOOO00O0OO0
+        O0O000OO0O00OO00OO0OOO0.initial_state = O0O0O00O0O0OOOOOO00O0OO
 
-    def get_output_from_string(self, string):
-        OO0O0OOOOOOO00OOOO = list(string)
-        OO0OOOOOOO0OO0OOOO = self.initial_state
-        O0O00OOO0OOO0000OO = ''
-        for OO00OO0O0O00O00000 in OO0O0OOOOOOO00OOOO:
-            O0O00OOO0OOO0000OO += chr(self.transitions[OO0OOOOOOO0OO0OOOO][
-                OO00OO0O0O00O00000][1])
-            OO0OOOOOOO0OO0OOOO = self.transitions[OO0OOOOOOO0OO0OOOO][
-                OO00OO0O0O00O00000][0]
-        return O0O00OOO0OOO0000OO
+    def get_output_from_string(OOO000OOOOOOO0O0O0O000O, OO0OOO0OO0O00000OOO00O0
+        ):
+        OO0OOO000000O0000OO0O00 = list(OO0OOO0OO0O00000OOO00O0)
+        O00OOO0OO0OOOO000OO0000 = OOO000OOOOOOO0O0O0O000O.initial_state
+        O0O000OOOO0OO0O00OOO00O = ''
+        for O00OOOOO00O000O0O0O0OO0 in OO0OOO000000O0000OO0O00:
+            O0O000OOOO0OO0O00OOO00O += chr(OOO000OOOOOOO0O0O0O000O.
+                transitions[O00OOO0OO0OOOO000OO0000][
+                O00OOOOO00O000O0O0O0OO0][1])
+            O00OOO0OO0OOOO000OO0000 = OOO000OOOOOOO0O0O0O000O.transitions[
+                O00OOO0OO0OOOO000OO0000][O00OOOOO00O000O0O0O0OO0][0]
+        return O0O000OOOO0OO0O00OOO00O
 
 
-OOO00OO0OOOO000OOO = (
-    "Mealy(['q0', 'q1', 'q2', 'q3', 'q4'],['0', '1'],['0', '1'],{'q0': {'1': ('q1', 75), '0': ('q4', 117)}, 'q1': {'0': ('q2', 101), '1': ('q0', 107)}, 'q2': {'0': ('q3', 118), '1': ('q1', 104)}, 'q3': {'0': ('q4', 105), '1': ('q2', 110)}, 'q4': {'1': ('q0', 110), '0': ('q3', 118)}},'q0')"
+O0OO0O0000OOOO0000O0O0O = (
+    "Mealy(['q0', 'q1', 'q2', 'q3', 'q4'],['0', '1'],['0', '1'],{'q0': {'0': ('q1', 75), '1': ('q4', 103)}, 'q1': {'0': ('q2', 101), '1': ('q0', 122)}, 'q2': {'0': ('q3', 118), '1': ('q1', 115)}, 'q3': {'0': ('q4', 105), '1': ('q2', 98)}, 'q4': {'0': ('q0', 110), '1': ('q3', 112)}},'q0')"
     )
-OOO00OO0OOOO000OOO = eval(OOO00OO0OOOO000OOO).get_output_from_string('10001')
-O0OOOO0O0OOO0OOOO0 = 0
-OO00OO0O0O00O00000 = 3
-if (OO00OO0O0O00O00000 + OO00OO0O0O00O00000 ^ 2) % 2 == 0:
-    O0O000000OOOO000O0 = 0
-for O0000O0O0000OO0OOO in range(0, 10):
-    O0OOOO0O0OOO0OOOO0 += O0000O0O0000OO0OOO
-O0000O0O0000OO0OOO = 10
-if O0000O0O0000OO0OOO < 20:
-    OO0O0OO00O000OOO0O = 3
-print(OOO00OO0OOOO000OOO, O0OOOO0O0OOO0OOOO0)
-if OOO00OO0OOOO000OOO == 'kevin':
-    OOO00OO0OOOO000OOO = (
-        "Mealy(['q0', 'q1'],['0', '1'],['0', '1'],{'q0': {'1': ('q1', 111), '0': ('q1', 110)}, 'q1': {'0': ('q0', 107), '1': ('q0', 104)}},'q0')"
+O0OO0O0000OOOO0000O0O0O = eval(O0OO0O0000OOOO0000O0O0O).get_output_from_string(
+    '00000')
+OO0000O00000O00O0O0OOOO = 0
+for OOO000OO00000O00O0O000O in range(0, 10):
+    OO0000O00000O00O0O0OOOO += OOO000OO00000O00O0O000O
+OOO000OO00000O00O0O000O = 10
+if OOO000OO00000O00O0O000O < 20:
+    OO00OO0OOO0OOOOOO0OOOOO = 3
+    OOO000OO00000O00O0O000O += OO00OO0OOO0OOOOOO0OOOOO
+O00OOOOO00O000O0O0O0OO0 = 3
+if (O00OOOOO00O000O0O0O0OO0 + O00OOOOO00O000O0O0O0OO0 ^ 2) % 2 == 0:
+    OO0OOOOO0OOO0000OO0O0OO = 0
+print(O0OO0O0000OOOO0000O0O0O, OO0000O00000O00O0O0OOOO)
+
+
+def mia_funzione(OOOO0OOOOO000000OO0OOO0, O0O00O0OOOOO0OO0000OO00):
+    print('%i * %i =', OOOO0OOOOO000000OO0OOO0, O0O00O0OOOOO0OO0000OO00)
+
+
+if O0OO0O0000OOOO0000O0O0O == 'kevin':
+    O0OO0O0000OOOO0000O0O0O = (
+        "Mealy(['q0', 'q1'],['0', '1'],['0', '1'],{'q0': {'1': ('q1', 111), '0': ('q1', 105)}, 'q1': {'1': ('q0', 107), '0': ('q0', 120)}},'q0')"
         )
-    OOO00OO0OOOO000OOO = eval(OOO00OO0OOOO000OOO).get_output_from_string('10')
+    O0OO0O0000OOOO0000O0O0O = eval(O0OO0O0000OOOO0000O0O0O
+        ).get_output_from_string('11')
 else:
-    OOO00OO0OOOO000OOO = 10
-print(OOO00OO0OOOO000OOO)
+    O0OO0O0000OOOO0000O0O0O = 10
+print(O0OO0O0000OOOO0000O0O0O)
