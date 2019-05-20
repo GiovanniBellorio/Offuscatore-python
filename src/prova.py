@@ -24,3 +24,5 @@ else:
     name = 10
 
 print(name)
+
+print(mia_funzione(5, 6))

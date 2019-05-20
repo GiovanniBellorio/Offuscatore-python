@@ -8,6 +8,7 @@ import ast
 import re
 import random
 from random import randint
+from random import SystemRandom
 import astor
 
 
@@ -282,6 +283,7 @@ def get_variables(tree):
 
     return variables
 
+
 def rename_variables(tree, variables):
     # Rename names of variables used (general usage)
     for node in ast.walk(tree):
@@ -316,63 +318,35 @@ def obfuscate_variables(out):
     # Convert the new AST to a valid code
     return astor.to_source(tree)
 
-"""
-def get_functions(tree):
-    
-    :param tree:
-    :return: a list contains all function defined in the code (passed as AST 'tree')
-
-
-    functions = []
-
-    for node in ast.walk(tree):
-        # Saved functions declared
-        if isinstance(node, ast.FunctionDef):  # and isinstance(node.targets[0], ast.Name):
-            # save function name
-            functions.append(node.name)
-            # dict for arguments name
-            arguments = {}
-
-            # Obfuscate arguments into the function def
-
-            # get argument list structure from node
-            arguments_list = node.args.args
-            # get the numbers of arguments
-            num_arguments = len(arguments_list)
-
-            # assign a new rand sequence for arg name and bind it with the old name
-            for i in range(0, num_arguments):
-                arguments[arguments_list[i].arg] = rand_sequence()
-            
-            tree = rename_variables(node, arguments)
-            print(arguments)
-            #print(ast.dump(tree))
-            #print(node.body)
-
-    return functions
-"""
 
 def obfuscate_functions(out):
     """
         Returns 'source' with function def and call obfuscated.
     """
-    print("-> obfuscating function definitions and call")
+    print("-> obfuscating function definitions, body and call")
 
     # Tree object contains the AST of the code
     tree = ast.parse(out)
 
-    functions = []
+    critical_names = ["__ini__", "main"]
+
+    # -->  obfuscate definition and body
+    functions = {}
 
     for node in ast.walk(tree):
         # Saved functions declared
-        if isinstance(node, ast.FunctionDef):  # and isinstance(node.targets[0], ast.Name):
+        if isinstance(node, ast.FunctionDef):
             # save function name
-            functions.append(node.name)
-            # dict for function arguments name
-            arguments = {}
+            if node.name not in critical_names:
+                # assign random name
+                functions[node.name] = rand_sequence()
+                # change the name of def function (later also the occurrences in the code)
+                node.name = functions[node.name]
 
             # Obfuscate arguments into the function def
 
+            # dict for function arguments name
+            arguments = {}
             # get argument list structure from node
             arguments_list = node.args.args
             # get the numbers of arguments
@@ -387,22 +361,30 @@ def obfuscate_functions(out):
             # rename arguments into body function
             rename_variables(node, arguments)
 
+    # -->  obfuscate occurrences of various functions name
+    
     # Convert the new AST to a valid code
     return astor.to_source(tree)
 
 
-
 def rand_sequence():
-    sequence = "O"
+
+    cryptorand = SystemRandom()
+
+    sequence = []
 
     for i in range(22):
         flip = random.randint(1, 2)
         if flip == 1:
-            sequence += "0"
+            sequence.append("0")
         else:
-            sequence += "O"
+            sequence.append("O")
 
-    return sequence
+    random.seed()
+    cryptorand.shuffle(sequence)
+
+    return "O"+"".join(sequence)
+
 
 
 def opaque_predicate(out):
