@@ -12,6 +12,181 @@ import astor
 
 
 
+class MyVisitor(ast.NodeVisitor):
+
+    def __init__(self, values, variable):
+        self.values   = values
+        self.variable = variable
+
+    def visit_Str(self, node):
+        self.values[self.variable] = "%s" % node.s
+
+    def get_values(self, node):
+        return self.values
+
+
+class MyModifyValue(ast.NodeVisitor):
+
+    def __init__(self, value):
+        self.value = value
+    
+    def visit_Str(self, node):
+        node.s = self.value
+
+
+def get_variables_values_string_Literal(tree):
+    """
+    :param tree:
+    :return: a dictionary contains each variable (key) and its type (value) contains in the code (passed as AST 'tree')
+    """
+    variables = {}
+    values = {}
+
+    for node in ast.walk(tree):
+        # Saved variables declared
+        if isinstance(node, ast.Assign) and isinstance(node.targets[0], ast.Name):
+            if type(node.value).__name__ == "Str":
+                variables[node.targets[0].id] = type(node.value).__name__
+                values[node.targets[0].id] = ""
+                
+                MyVisitor(values, node.targets[0].id).visit(node)
+                values = MyVisitor(values, node.targets[0].id).get_values(node)
+            else:
+                variables[node.targets[0].id] = type(node.value).__name__
+
+    return variables, values
+
+
+def isAssignStr_Literal(tree):
+    values = {}
+
+    for node in ast.walk(tree):
+        # Saved variables declared
+        if isinstance(node, ast.Assign) and isinstance(node.targets[0], ast.Name):
+            if type(node.value).__name__ == "Str":
+                return True
+
+    return False
+
+
+def rename_values_Literal(tree, values):
+    # Rename values of variables used (general usage)
+    for value in values:
+        for node in ast.walk(tree):
+            if isinstance(node, ast.Assign) and isinstance(node.targets[0], ast.Name):
+                MyModifyValue(values[value]).visit(node)
+
+    return tree
+
+
+def mealy_machine_Literal(string_input):
+    len_string_input = len(string_input)
+
+    # create states
+    iIdx = 0
+    states = []
+    for c in string_input:
+        states.append('q'+str(iIdx))
+        iIdx+=1
+
+    # create transitions
+    new_string_input = ''
+    iIdx = 0
+    transitions = {}
+    for q in states:
+        stato1 = random.randint(0,1)
+        if stato1 == 0:
+            stato2 = 1
+        else:
+            stato2 = 0
+        new_string_input += str(stato1)
+        char_random = random.randint(97,122)
+        if (iIdx+1) == len_string_input:
+            transitions.update({q:{str(stato1) : ('q0', ord(string_input[iIdx])), str(stato2) : ('q'+str(iIdx-1), char_random)}})
+        elif (iIdx == 0):
+            transitions.update({q:{str(stato1) : ('q'+str(iIdx+1), ord(string_input[iIdx])), str(stato2) : ('q'+str(len_string_input-1), char_random)}})
+        else:
+            transitions.update({q:{str(stato1) : ('q'+str(iIdx+1), ord(string_input[iIdx])), str(stato2) : ('q'+str(iIdx-1), char_random)}})
+        iIdx+=1
+
+    return "Mealy({},['0', '1'],['0', '1'],{},'q0')".format(states,transitions), new_string_input
+
+
+def encoding_literal_data(out):
+    class_mealy =   "#!/usr/bin/python\n\
+# -*- coding: utf-8 -*-\n\n\
+class Mealy(object):\n\
+    def __init__(self, states, input_alphabet, output_alphabet, transitions, initial_state):\n\
+        self.states = states\n\
+        self.input_alphabet = input_alphabet\n\
+        self.output_alphabet = output_alphabet\n\
+        self.transitions = transitions\n\
+        self.initial_state = initial_state\n\
+    def get_output_from_string(self, string):\n\
+        temp_list = list(string)\n\
+        current_state = self.initial_state\n\
+        output = ''\n\
+        for x in temp_list:\n\
+            output += chr(self.transitions[current_state][x][1])\n\
+            current_state = self.transitions[current_state][x][0]\n\
+        return output\n\n"
+
+    print("-> obfuscating variables with mealy")
+
+    # Tree object contains the AST of the code
+    tree = ast.parse(out)
+    tree_split = astor.to_source(tree).split("\n")
+    tree = ""
+
+    # Define a new dict in order to bind variables-names with new-variables-names
+    variables     = {}
+    values        = {}
+    new_values    = {}
+
+    indent = ""
+    tab = "    "
+
+    for subtree in tree_split:
+        case = ""
+        indent = ""
+
+        try:
+            while True:
+                if "    " in subtree[0:4]:
+                    subtree = subtree[4:len(subtree)]
+                    indent += tab
+                    case = "    "
+                else:
+                    break
+            subtree = ast.parse(subtree)
+
+        except:
+            tree += subtree + "\n"
+            continue
+
+        # Extraction of all variables defined
+        variables, values = get_variables_values_string_Literal(subtree)
+
+        # mealy_machine
+        if isAssignStr_Literal(subtree):
+            for value in values:
+                new_values[value], codice = mealy_machine_Literal(values[value])
+
+            # Renomination of all variable occurrences
+            subtree = rename_values_Literal(subtree, new_values)
+
+            for variable in variables:
+                variable = variable
+
+            tree += indent + astor.to_source(subtree) + indent + variable + " = eval(" + variable + ").get_output_from_string('%s')" % codice + "\n"
+
+        else:
+
+            tree += indent + astor.to_source(subtree)
+
+    return class_mealy + tree
+
+
 def remove_comments_and_docstrings(source):
     """
     Returns 'source' minus comments and docstrings.
@@ -155,8 +330,14 @@ def obfuscate_variables(out):
 
 def opaque_predicate(out):
 
+    print("-> opaque_predicate")
+
     # first opaque predicate
-    pred1 = "x = 3\nif(x + x^2) % 2 == 0:\n\tindex = 0"
+    pred1 = """
+x = 3
+if(x + x^2) % 2 == 0:
+    index = 0
+"""
 
     # set a flag to False
     flag = False
@@ -196,13 +377,19 @@ def main():
     # which it is first converted to a string through the read() method.
     out = remove_comments_and_docstrings(file_SRC.read())   # 'out' contains a string with the entire code
 
+    #
     out = opaque_predicate(out)
+
+    #
+    out = encoding_literal_data(out)
 
     # Call 'obfuscate_variables()' function
     out = obfuscate_variables(out)
 
     # Write the result into file_DEST
     file_DEST.write(out)
+    file_DEST.close()
+    file_SRC.close()
 
 
     print("\nOBFUSCATION ENDED")
