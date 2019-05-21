@@ -328,7 +328,7 @@ def obfuscate_functions(out):
     # Tree object contains the AST of the code
     tree = ast.parse(out)
 
-    critical_names = ["__ini__", "main"]
+    critical_names = ["__init__", "main",]
 
     # -->  obfuscate definition and body
     functions = {}
@@ -362,7 +362,17 @@ def obfuscate_functions(out):
             rename_variables(node, arguments)
 
     # -->  obfuscate occurrences of various functions name
-    
+
+    for node in ast.walk(tree):
+        # Saved functions declared
+        if isinstance(node, ast.Call):
+            # if "func" is instance of ast.Name and it has been previously defined, then change name
+            if isinstance(node.func, ast.Name) and node.func.id in functions:
+                node.func.id = functions[node.func.id]
+            # --> da sistemare quando "func" è un Attribute
+            if isinstance(node.func, ast.Attribute) and node.func.attr in functions:
+                node.func.attr = functions[node.func.attr]
+
     # Convert the new AST to a valid code
     return astor.to_source(tree)
 

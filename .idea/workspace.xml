@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="7201ef21-d657-4e8e-a512-0c305a4fbf49" name="Default" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/offuscatore.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/offuscatore.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/prova.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/prova.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/prova.py_OBFUSCATED.py" beforeDir="false" />
@@ -14,12 +15,12 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="FileEditorManager">
-    <leaf>
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file leaf-file-name="offuscatore.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/offuscatore.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="302">
-              <caret line="364" column="4" selection-start-line="364" selection-start-column="4" selection-end-line="364" selection-end-column="4" />
+            <state relative-caret-position="240">
+              <caret line="371" column="59" selection-start-line="371" selection-start-column="59" selection-end-line="371" selection-end-column="59" />
               <folding>
                 <element signature="e#43#58#0" expanded="true" />
               </folding>
@@ -27,11 +28,20 @@
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="prova.py_OBFUSCATED.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/prova.py_OBFUSCATED.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="379">
+              <caret line="54" column="14" selection-start-line="54" selection-start-column="14" selection-end-line="54" selection-end-column="14" />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="prova.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/prova.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="486">
-              <caret line="27" column="25" selection-start-line="27" selection-start-column="25" selection-end-line="27" selection-end-column="25" />
+            <state relative-caret-position="306">
+              <caret line="17" column="23" selection-start-line="17" selection-start-column="23" selection-end-line="17" selection-end-column="23" />
             </state>
           </provider>
         </entry>
@@ -42,6 +52,9 @@
     <findStrings>
       <find>get_ou</find>
       <find>encoding_literal_data</find>
+      <find>get_</find>
+      <find>get_o</find>
+      <find>O0O000O0OO0O0000OO00O0O</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -67,7 +80,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -84,6 +96,7 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="RunDashboard">
@@ -193,23 +206,26 @@
       <window_info anchor="bottom" id="Terminal" order="1" />
       <window_info id="Favorites" order="0" side_tool="true" />
       <window_info anchor="bottom" id="Debug" order="7" weight="0.4" />
-      <window_info anchor="bottom" id="Find" order="5" />
-      <window_info anchor="right" id="Commander" order="0" weight="0.4" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
-      <window_info anchor="bottom" id="Inspection" order="9" weight="0.4" />
+      <window_info anchor="right" id="Commander" order="0" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="bottom" id="Message" order="4" />
+      <window_info anchor="bottom" id="Inspection" order="9" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="8" weight="0.25" />
+      <window_info anchor="bottom" id="Find" order="5" />
     </layout>
   </component>
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/prova.py_OBFUSCATED.py">
+    <entry file="file://$PROJECT_DIR$/src/offuscatore.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="216">
-          <caret line="12" column="14" selection-start-line="12" selection-start-column="14" selection-end-line="12" selection-end-column="14" />
+        <state relative-caret-position="6552">
+          <caret line="364" column="4" selection-start-line="364" selection-start-column="4" selection-end-line="368" selection-end-column="40" />
+          <folding>
+            <element signature="e#43#58#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -220,10 +236,24 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/prova.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="306">
+          <caret line="17" column="23" selection-start-line="17" selection-start-column="23" selection-end-line="17" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/prova.py_OBFUSCATED.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="379">
+          <caret line="54" column="14" selection-start-line="54" selection-start-column="14" selection-end-line="54" selection-end-column="14" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/offuscatore.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="302">
-          <caret line="364" column="4" selection-start-line="364" selection-start-column="4" selection-end-line="364" selection-end-column="4" />
+        <state relative-caret-position="240">
+          <caret line="371" column="59" selection-start-line="371" selection-start-column="59" selection-end-line="371" selection-end-column="59" />
           <folding>
             <element signature="e#43#58#0" expanded="true" />
           </folding>

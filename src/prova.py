@@ -15,7 +15,7 @@ print(name, somma)
 
 
 def mia_funzione(a, b):
-    print("%i * %i =", a, b)
+    print("{} * {} = {}".format(a,b,a*b))
 
 
 if name == "kevin":
