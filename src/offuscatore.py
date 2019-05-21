@@ -12,6 +12,10 @@ from random import SystemRandom
 import astor
 
 
+# global set for random sequences generated
+RANDOM_SEQUENCES_SET = set()
+
+
 
 class MyVisitor(ast.NodeVisitor):
 
@@ -310,7 +314,7 @@ def obfuscate_variables(out):
     new_variables = {}
     # Choose new names
     for variable in variables:
-        new_variables[variable] = rand_sequence()
+        new_variables[variable] = random_sequence()
 
     # Renomination of all variable occurrences
     tree = rename_variables(tree, new_variables)
@@ -328,7 +332,8 @@ def obfuscate_functions(out):
     # Tree object contains the AST of the code
     tree = ast.parse(out)
 
-    critical_names = ["__init__", "main",]
+    critical_func_names = ["__init__", "__str__" , "__repr__", "main"]
+    #critical_arg_names = ["self"]
 
     # -->  obfuscate definition and body
     functions = {}
@@ -337,9 +342,9 @@ def obfuscate_functions(out):
         # Saved functions declared
         if isinstance(node, ast.FunctionDef):
             # save function name
-            if node.name not in critical_names:
+            if node.name not in critical_func_names:
                 # assign random name
-                functions[node.name] = rand_sequence()
+                functions[node.name] = random_sequence()
                 # change the name of def function (later also the occurrences in the code)
                 node.name = functions[node.name]
 
@@ -354,7 +359,9 @@ def obfuscate_functions(out):
 
             # assign a new rand sequence for arg name and bind it with the old name
             for i in range(0, num_arguments):
-                arguments[arguments_list[i].arg] = rand_sequence()
+                # --> NON SERVE FARE QUESTO CONTROLLO, FUNZIONA LO STESSO
+                # if arguments_list[i].arg not in critical_arg_names:
+                arguments[arguments_list[i].arg] = random_sequence()
                 # assign the new random name at each argument between two parenthesis
                 arguments_list[i].arg = arguments[arguments_list[i].arg]
 
@@ -369,7 +376,7 @@ def obfuscate_functions(out):
             # if "func" is instance of ast.Name and it has been previously defined, then change name
             if isinstance(node.func, ast.Name) and node.func.id in functions:
                 node.func.id = functions[node.func.id]
-            # --> da sistemare quando "func" è un Attribute
+            # if "func" is instance of ast.Attribute and it has been previously defined, then change name
             if isinstance(node.func, ast.Attribute) and node.func.attr in functions:
                 node.func.attr = functions[node.func.attr]
 
@@ -377,7 +384,19 @@ def obfuscate_functions(out):
     return astor.to_source(tree)
 
 
-def rand_sequence():
+def random_sequence():
+
+    seq = generate_sequence()
+
+    if seq not in RANDOM_SEQUENCES_SET:
+        RANDOM_SEQUENCES_SET.add(seq)
+        return seq
+
+    else:
+        random_sequence()
+
+
+def generate_sequence():
 
     cryptorand = SystemRandom()
 
@@ -461,7 +480,6 @@ def main():
     file_DEST.write(out)
     file_DEST.close()
     file_SRC.close()
-
 
     print("\nOBFUSCATION ENDED")
     print("--------------------------------------------------------------------------------")
