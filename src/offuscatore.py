@@ -280,7 +280,7 @@ class Mealy(object):\n\
             subtree = ast.parse(subtree)
 
         except:
-            tree += subtree + "\n"
+            tree += indent + subtree + "\n"
             continue
 
         # Extraction of all variables defined
