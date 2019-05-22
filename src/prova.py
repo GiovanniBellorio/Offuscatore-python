@@ -6,23 +6,29 @@ somma = 0
 for i in range(0,10):
     somma += i
 
-i = 10
-if(i < 20):
+i = 111
+if(i < 30):
     c = 3
-    i += c
+    #i += c
 
 print(name, somma)
 
 
-def mia_funzione(a, b):
-    print("{} * {} = {}".format(a,b,a*b))
-
-
-if name == "kevin":
+if name == "Kevin":
     name = "ok"
+    b = ["c","i","","","a","o"]
 else:
     name = 10
 
 print(name)
+print(b)
 
-print(mia_funzione(5, 6))
+b = [11,2,3,4,56,1,2,3,4]
+print(b)
+
+b = ["c","i","","","a","o"]
+print(b)
+
+b = [{"key":"value"},{"key1":"value1"}]
+print(b)
+

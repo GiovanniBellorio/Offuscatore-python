@@ -16,7 +16,6 @@ import astor
 RANDOM_SEQUENCES_SET = set()
 
 
-
 class MyVisitor(ast.NodeVisitor):
 
     def __init__(self, values, variable):
@@ -26,8 +25,32 @@ class MyVisitor(ast.NodeVisitor):
     def visit_Str(self, node):
         self.values[self.variable] = "%s" % node.s
 
+    def visit_Num(self, node):
+        self.values[self.variable] = node.n
+
+    def visit_List(self, node):
+        tmp = []
+        for idx, item in enumerate(node.elts):
+            if idx:
+                pass
+            self.visit(item)
+            tmp.append(self.values[self.variable])
+        self.values[self.variable] = tmp
+
+    def visit_Dict(self, node):
+        tmp = {}
+        for idx, (key, value) in enumerate(zip(node.keys, node.values)):
+            if idx:
+                pass
+            self.visit(key)
+            key_tmp = self.values[self.variable]
+            self.visit(value)
+            value_tmp = self.values[self.variable]
+            tmp.update({key_tmp:value_tmp})
+        self.values[self.variable] = tmp 
+
     def get_values(self, node):
-        return self.values
+        return self.values           
 
 
 class MyModifyValue(ast.NodeVisitor):
@@ -38,8 +61,12 @@ class MyModifyValue(ast.NodeVisitor):
     def visit_Str(self, node):
         node.s = self.value
 
+    def visit_Num(self, node):
+        print(self.value)
+        node.n = self.value
 
-def get_variables_values_string_Literal(tree):
+
+def get_variables_values_Literal(tree):
     """
     :param tree:
     :return: a dictionary contains each variable (key) and its type (value) contains in the code (passed as AST 'tree')
@@ -50,25 +77,65 @@ def get_variables_values_string_Literal(tree):
     for node in ast.walk(tree):
         # Saved variables declared
         if isinstance(node, ast.Assign) and isinstance(node.targets[0], ast.Name):
+
             if type(node.value).__name__ == "Str":
                 variables[node.targets[0].id] = type(node.value).__name__
                 values[node.targets[0].id] = ""
                 
                 MyVisitor(values, node.targets[0].id).visit(node)
                 values = MyVisitor(values, node.targets[0].id).get_values(node)
+
+            elif type(node.value).__name__ == "Num":
+                variables[node.targets[0].id] = type(node.value).__name__
+                values[node.targets[0].id] = 0
+                
+                MyVisitor(values, node.targets[0].id).visit(node)
+                values = MyVisitor(values, node.targets[0].id).get_values(node)
+
+            elif type(node.value).__name__ == "List":
+                variables[node.targets[0].id] = type(node.value).__name__
+                values[node.targets[0].id] = []
+                
+                MyVisitor(values, node.targets[0].id).visit(node)
+                values = MyVisitor(values, node.targets[0].id).get_values(node)
+
             else:
                 variables[node.targets[0].id] = type(node.value).__name__
 
     return variables, values
 
 
-def isAssignStr_Literal(tree):
+def isAssignStr(tree):
     values = {}
 
     for node in ast.walk(tree):
         # Saved variables declared
         if isinstance(node, ast.Assign) and isinstance(node.targets[0], ast.Name):
             if type(node.value).__name__ == "Str":
+                return True
+
+    return False
+
+
+def isAssignInt(tree):
+    values = {}
+
+    for node in ast.walk(tree):
+        # Saved variables declared
+        if isinstance(node, ast.Assign) and isinstance(node.targets[0], ast.Name):
+            if type(node.value).__name__ == "Num":
+                return True
+
+    return False
+
+
+def isAssignList(tree):
+    values = {}
+
+    for node in ast.walk(tree):
+        # Saved variables declared
+        if isinstance(node, ast.Assign) and isinstance(node.targets[0], ast.Name):
+            if type(node.value).__name__ == "List":
                 return True
 
     return False
@@ -84,7 +151,7 @@ def rename_values_Literal(tree, values):
     return tree
 
 
-def mealy_machine_Literal(string_input):
+def mealy_machine(string_input):
     len_string_input = len(string_input)
 
     # create states
@@ -117,6 +184,47 @@ def mealy_machine_Literal(string_input):
     return "Mealy({},['0', '1'],['0', '1'],{},'q0')".format(states,transitions), new_string_input
 
 
+def array_permutation(a):
+    i = 1
+    divisori = []
+    while i <= len(a):
+        if len(a) % i == 0:
+            divisori.append(i)
+        i += 1
+
+    n = random.randint(1, 3000)
+    i = 1
+    divisori_n = []
+    while i <= n:
+        if n % i == 0:
+            divisori_n.append(i)
+        i += 1
+
+    x = 0
+    while x < len(divisori):
+        div = divisori[x]
+
+        if div in divisori_n and div != 1:
+            n = random.randint(1, 3000)
+            i = 1
+            divisori_n = []
+            while i <= n:
+                if n % i == 0:
+                    divisori_n.append(i)
+                i += 1
+            x = 0
+        else:
+            x += 1
+            
+    b = [ x*0 for x in range(0, len(a)) ]
+    p = [ ((i-1)*n)%len(a) for i in range(0, len(a)) ]
+
+    for i in range(0, len(a)):
+        b[p[i]] = a[i]
+    
+    return b, p
+
+
 def encoding_literal_data(out):
     class_mealy =   "#!/usr/bin/python\n\
 # -*- coding: utf-8 -*-\n\n\
@@ -136,23 +244,30 @@ class Mealy(object):\n\
             current_state = self.transitions[current_state][x][0]\n\
         return output\n\n"
 
-    print("-> obfuscating variables with mealy")
+    def_encoding_integer = "def encoding_integer(digits):\n\
+    num = 0\n\
+    moltiplicatore = 1\n\
+    for digit in digits:\n\
+        num += digit*moltiplicatore\n\
+        moltiplicatore *= 10\n\
+    return num\n\n"
+
+    print("-> obfuscating variables: str (mealy), int (permutation), array (permutation) ")
 
     # Tree object contains the AST of the code
     tree = ast.parse(out)
     tree_split = astor.to_source(tree).split("\n")
     tree = ""
 
-    # Define a new dict in order to bind variables-names with new-variables-names
-    variables     = {}
-    values        = {}
-    new_values    = {}
-
+    # indent tab
     indent = ""
     tab = "    "
 
     for subtree in tree_split:
-        case = ""
+        variables     = {}
+        values        = {}
+        new_values    = {}
+        
         indent = ""
 
         try:
@@ -160,7 +275,6 @@ class Mealy(object):\n\
                 if "    " in subtree[0:4]:
                     subtree = subtree[4:len(subtree)]
                     indent += tab
-                    case = "    "
                 else:
                     break
             subtree = ast.parse(subtree)
@@ -170,12 +284,12 @@ class Mealy(object):\n\
             continue
 
         # Extraction of all variables defined
-        variables, values = get_variables_values_string_Literal(subtree)
+        variables, values = get_variables_values_Literal(subtree)
 
         # mealy_machine
-        if isAssignStr_Literal(subtree):
+        if isAssignStr(subtree):
             for value in values:
-                new_values[value], codice = mealy_machine_Literal(values[value])
+                new_values[value], codice = mealy_machine(values[value])
 
             # Renomination of all variable occurrences
             subtree = rename_values_Literal(subtree, new_values)
@@ -185,11 +299,51 @@ class Mealy(object):\n\
 
             tree += indent + astor.to_source(subtree) + indent + variable + " = eval(" + variable + ").get_output_from_string('%s')" % codice + "\n"
 
+        # encoding_integer
+        elif isAssignInt(subtree):
+            for value in values:
+                num = values[value]
+                digits = []
+
+                if num == 0:
+                    digits.append(num)
+
+                while num != 0:
+                    digit = num % 10
+                    num = int(num / 10)
+                    digits.append(digit)
+
+                new_values[value] = digits
+
+            for variable in variables:
+                variable = variable
+
+            a = new_values[variable]
+            b, p = array_permutation(a)
+
+            tree += indent + variable + " = " + str(b) + "\n"
+            tree += indent + variable + "_ooo = " + str(p) + "\n"
+            tree += indent + variable + " = " + "encoding_integer([ " + variable + "[" + variable + "_ooo" + "[xxxxxxxxxxxx]] for xxxxxxxxxxxx in range(0, len(" + variable + ")) ])" + "\n"
+
+        # encoding_list
+        elif isAssignList(subtree):
+            for value in values:
+                a = values[value]
+
+            for variable in variables:
+                variable = variable
+
+            b, p = array_permutation(a)
+
+            tree += indent + variable + " = " + str(b) + "\n"
+            tree += indent + variable + "_ooo = " + str(p) + "\n"
+            tree += indent + variable + " = " + "[ " + variable + "[" + variable + "_ooo" + "[xxxxxxxxxxxx]] for xxxxxxxxxxxx in range(0, len(" + variable + ")) ]" + "\n"
+
         else:
 
             tree += indent + astor.to_source(subtree)
 
-    return class_mealy + tree
+    return class_mealy + def_encoding_integer + tree
 
 
 def remove_comments_and_docstrings(source):
@@ -415,7 +569,6 @@ def generate_sequence():
     return "O"+"".join(sequence)
 
 
-
 def opaque_predicate(out):
 
     print("-> opaque_predicate")
@@ -483,7 +636,6 @@ def main():
 
     print("\nOBFUSCATION ENDED")
     print("--------------------------------------------------------------------------------")
-
 
 
 if __name__ == '__main__':
