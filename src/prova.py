@@ -10,3 +10,12 @@ if(i < 20):
 	#i += c
 
 print(name, somma)
+
+'''SetErrorMode(100);
+  if ( SetErrorMode(1024) == 100 )
+    // Valid Path
+  else
+    // Invalid Path
+
+https://reverseengineering.stackexchange.com/questions/1669/what-is-an-opaque-predicate
+    '''
