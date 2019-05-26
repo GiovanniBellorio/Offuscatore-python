@@ -575,10 +575,39 @@ def opaque_predicate(out):
 
     # first opaque predicate
     pred1 = """
-x = 3
-if(x + x^2) % 2 == 0:
-    index = 0
+if(g[1] + g[1]^2) % 2 == 0:
+    g[5] = (g[1] * g[4]) % g[11] + g[6]% g[5]
+    g[14] = randint(0, 100)
+    g[4] = randint(0, 10) * g[11] + g[8]
+else: 
+    g[2] = randint(0, 100)
+    g[5] = randint(0, 10) * g[11] + g[8]
+print(g)
 """
+
+    pred2 = """
+if(x^3 - x) % 3 == 0:
+    index = 0
+else:
+    index = 1 
+"""
+
+    pred3 ="""
+if ((g[3] % g[5]) == g[2]):
+    print("true!")
+
+g[5] = (g[1] * g[4]) % g[11] + g[6]% g[5]
+g[14] = randint(0, 100)
+g[4] = randint(0, 10) * g[11] + g[8]
+
+print(g)
+
+six = (g[4] + g[7] + g[10])%g[11]
+seven = six + g[3] % g[5]
+fortytwo = six * seven
+"""
+
+
 
     # set a flag to False
     flag = False
@@ -620,14 +649,15 @@ def main():
 
     #
     out = opaque_predicate(out)
+    print(out)
 
     #
-    out = encoding_literal_data(out)
+    '''out = encoding_literal_data(out)
 
     # Call 'obfuscate_variables()' function
     out = obfuscate_variables(out)
 
-    out = obfuscate_functions(out)
+    out = obfuscate_functions(out)'''
 
     # Write the result into file_DEST
     file_DEST.write(out)
