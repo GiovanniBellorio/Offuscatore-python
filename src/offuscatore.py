@@ -228,6 +228,8 @@ def array_permutation(a):
 def encoding_literal_data(out):
     class_mealy =   "#!/usr/bin/python\n\
 # -*- coding: utf-8 -*-\n\n\
+from random import randint\n\
+from random import SystemRandom\n\
 class Mealy(object):\n\
     def __init__(self, some_states, a_input_alphabet, a_output_alphabet, some_transitions, a_initial_state):\n\
         self.states = some_states\n\
@@ -244,13 +246,14 @@ class Mealy(object):\n\
             current_state = self.transitions[current_state][x][0]\n\
         return output\n\n"
 
-    def_encoding_integer = "def encoding_integer(digits):\n\
-    num = 0\n\
-    moltiplicatore = 1\n\
-    for digit in digits:\n\
-        num += digit*moltiplicatore\n\
-        moltiplicatore *= 10\n\
-    return num\n\n"
+    def_encoding_integer = "class Encoding():\n\
+    def integer(self,digits):\n\
+        num = 0\n\
+        moltiplicatore = 1\n\
+        for digit in digits:\n\
+            num += digit*moltiplicatore\n\
+            moltiplicatore *= 10\n\
+        return num\n\n"
 
     print("-> obfuscating variables: str (mealy), int (permutation), array (permutation) ")
 
@@ -323,7 +326,7 @@ class Mealy(object):\n\
 
             tree += indent + variable + " = " + str(b) + "\n"
             tree += indent + variable + "_ooo = " + str(p) + "\n"
-            tree += indent + variable + " = " + "encoding_integer([ " + variable + "[" + variable + "_ooo" + "[xxxxxxxxxxxx]] for xxxxxxxxxxxx in range(0, len(" + variable + ")) ])" + "\n"
+            tree += indent + variable + " = " + "Encoding().integer([ " + variable + "[" + variable + "_ooo" + "[xxxxxxxxxxxx]] for xxxxxxxxxxxx in range(0, len(" + variable + ")) ])" + "\n"
 
         # encoding_list
         elif isAssignList(subtree):
@@ -582,6 +585,7 @@ def opaque_predicate(out):
 
     # first opaque predicate
     pred1 = """
+g = [36,58,1,46,23,5,16,65,2,41,2,7,1,37,0,11,16,2,21,16]
 if(g[1] + g[1]^2) % 2 == 0:
     g[5] = (g[1] * g[4]) % g[11] + g[6]% g[5]
     g[14] = randint(0, 100)
@@ -589,7 +593,7 @@ if(g[1] + g[1]^2) % 2 == 0:
 else: 
     g[2] = randint(0, 100)
     g[5] = randint(0, 10) * g[11] + g[8]
-print(g)
+#print(g)
 """
 
     pred2 = """
@@ -600,6 +604,7 @@ else:
 """
 
     pred3 ="""
+g = [36,58,1,46,23,5,16,65,2,41,2,7,1,37,0,11,16,2,21,16]
 if ((g[3] % g[5]) == g[2]):
     print("true!")
 
@@ -607,7 +612,7 @@ g[5] = (g[1] * g[4]) % g[11] + g[6]% g[5]
 g[14] = randint(0, 100)
 g[4] = randint(0, 10) * g[11] + g[8]
 
-print(g)
+#print(g)
 
 six = (g[4] + g[7] + g[10])%g[11]
 seven = six + g[3] % g[5]
