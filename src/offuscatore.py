@@ -229,12 +229,12 @@ def encoding_literal_data(out):
     class_mealy =   "#!/usr/bin/python\n\
 # -*- coding: utf-8 -*-\n\n\
 class Mealy(object):\n\
-    def __init__(self, states, input_alphabet, output_alphabet, transitions, initial_state):\n\
-        self.states = states\n\
-        self.input_alphabet = input_alphabet\n\
-        self.output_alphabet = output_alphabet\n\
-        self.transitions = transitions\n\
-        self.initial_state = initial_state\n\
+    def __init__(self, some_states, a_input_alphabet, a_output_alphabet, some_transitions, a_initial_state):\n\
+        self.states = some_states\n\
+        self.input_alphabet = a_input_alphabet\n\
+        self.output_alphabet = a_output_alphabet\n\
+        self.transitions = some_transitions\n\
+        self.initial_state = a_initial_state\n\
     def get_output_from_string(self, string):\n\
         temp_list = list(string)\n\
         current_state = self.initial_state\n\
@@ -438,18 +438,25 @@ def get_variables(tree):
         if isinstance(node, ast.Assign) and isinstance(node.targets[0], ast.Name):
                 if node.targets[0].id not in variables:
                     variables[node.targets[0].id] = type(node.value).__name__
+        if isinstance(node, ast.Attribute) and (node.value.id == "self"):
+                variables[node.attr] = type(node.attr).__name__
 
     return variables
 
 
 def rename_variables(tree, variables):
     # Rename names of variables used (general usage)
+    #print(variables)
     for node in ast.walk(tree):
         if isinstance(node, ast.Name) and node.id in variables:
             node.id = variables[node.id]
+        if isinstance(node, ast.Attribute) and node.attr in variables:
+             #print(ast.dump(node))
+            node.attr = variables[node.attr]
 
     return tree
-
+#ClassDef(name='Employee', bases=[], keywords=[], body=[Assign(targets=[Name(id='empCount', ctx=Store())], value=Num(n=0)), FunctionDef(name='__init__', args=arguments(args=[arg(arg='self', annotation=None), arg(arg='name', annotation=None), arg(arg='salary', annotation=None)], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[Assign(targets=[Attribute(value=Name(id='self', ctx=Load()), attr='name', ctx=Store())], value=Name(id='name', ctx=Load())), Assign(targets=[Attribute(value=Name(id='self', ctx=Load()), attr='salary', ctx=Store())], value=Name(id='salary', ctx=Load())), AugAssign(target=Attribute(value=Name(id='Employee', ctx=Load()), attr='empCount', ctx=Store()), op=Add(), value=Num(n=1))], decorator_list=[], returns=None), FunctionDef(name='displayCount', args=arguments(args=[arg(arg='self', annotation=None)], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[Expr(value=Call(func=Name(id='print', ctx=Load()), args=[BinOp(left=Str(s='Total Employee %d'), op=Mod(), right=Attribute(value=Name(id='Employee', ctx=Load()), attr='empCount', ctx=Load()))], keywords=[]))], decorator_list=[], returns=None), FunctionDef(name='displayEmployee', args=arguments(args=[arg(arg='self', annotation=None)], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[Expr(value=Call(func=Name(id='print', ctx=Load()), args=[Str(s='Name : '), Attribute(value=Name(id='self', ctx=Load()), attr='name', ctx=Load()), Str(s=', Salary: '), Attribute(value=Name(id='self', ctx=Load()), attr='salary', ctx=Load())], keywords=[]))], decorator_list=[], returns=None)], decorator_list=[])
+#Assign(targets=[Attribute(value=Name(id='self', ctx=Load()), attr='salary', ctx=Store())])
 
 def obfuscate_variables(out):
     """
@@ -649,15 +656,14 @@ def main():
 
     #
     out = opaque_predicate(out)
-    print(out)
 
-    #
-    '''out = encoding_literal_data(out)
+    out = encoding_literal_data(out)
 
     # Call 'obfuscate_variables()' function
-    out = obfuscate_variables(out)
+    #out = obfuscate_variables(out)
+    # Call 'obfuscate_functions()' function
+    #out = obfuscate_functions(out)
 
-    out = obfuscate_functions(out)'''
 
     # Write the result into file_DEST
     file_DEST.write(out)
