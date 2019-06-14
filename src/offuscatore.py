@@ -580,12 +580,10 @@ def generate_sequence():
 
 
 def opaque_predicate(out):
-
     print("-> opaque_predicate")
 
     # first opaque predicate
     pred1 = """
-g = [36,58,1,46,23,5,16,65,2,41,2,7,1,37,0,11,16,2,21,16]
 if(g[1] + g[1]^2) % 2 == 0:
     g[5] = (g[1] * g[4]) % g[11] + g[6]% g[5]
     g[14] = randint(0, 100)
@@ -593,18 +591,40 @@ if(g[1] + g[1]^2) % 2 == 0:
 else: 
     g[2] = randint(0, 100)
     g[5] = randint(0, 10) * g[11] + g[8]
-#print(g)
+print(g)
 """
 
     pred2 = """
-if(x^3 - x) % 3 == 0:
-    index = 0
+if(g[4]^3 - g[4]) % 3 == 0:
+    g[5] = (g[1] * g[4]) % g[11] + g[6]% g[5]
+    g[14] = randint(0, 100)
+    g[4] = randint(0, 10) * g[11] + g[8]
 else:
-    index = 1 
+    g[2] = randint(0, 100)
+    g[5] = randint(0, 10) * g[11] + g[8]
+print(g)
 """
 
-    pred3 ="""
-g = [36,58,1,46,23,5,16,65,2,41,2,7,1,37,0,11,16,2,21,16]
+    pred3 = """
+if(7+g[4]^2 - 1 != g[5]^2):
+    g[5] = (g[1] * g[4]) % g[11] + g[6]% g[5]
+    g[14] = randint(0, 100)
+    g[4] = randint(0, 10) * g[11] + g[8]
+else:
+    g[2] = randint(0, 100)
+    g[5] = randint(0, 10) * g[11] + g[8]
+"""
+    pred4 = """
+if(g[4]^n - g[5]^n % g[4] - g[5]):
+    g[5] = (g[1] * g[4]) % g[11] + g[6]% g[5]
+    g[14] = randint(0, 100)
+    g[4] = randint(0, 10) * g[11] + g[8]
+else:
+    g[2] = randint(0, 100)
+    g[5] = randint(0, 10) * g[11] + g[8]
+"""
+
+    predArray = """
 if ((g[3] % g[5]) == g[2]):
     print("true!")
 
@@ -612,34 +632,56 @@ g[5] = (g[1] * g[4]) % g[11] + g[6]% g[5]
 g[14] = randint(0, 100)
 g[4] = randint(0, 10) * g[11] + g[8]
 
-#print(g)
+print(g)
 
 six = (g[4] + g[7] + g[10])%g[11]
 seven = six + g[3] % g[5]
 fortytwo = six * seven
 """
 
-
-
+    number = randint(1, 4)
+    predicate = 'pred' + str(number)
     # set a flag to False
     flag = False
 
     # check a position where to insert the opaque predicate
     # the position is choiced randomly and it can't be insert
-    # after a row that finish with ':'
+    #  after a row that finish with ':'
     while (flag == False):
         try:
-            pos = randint(0, len(out))
-            if(out[pos] == '\n' and out[pos-1] != ':'):
+            pos = randint(0, int(len(out) / 2))
+            if (out[pos] == '\n' and out[pos - 1] != ':'):
+                # insert the opaque predicate
+                out = out[:pos] + '\n' + eval(predicate) + out[pos:]
+                pos += len(pred1) + 3
                 flag = True
+
         except IndexError as error:
             # Output expected IndexErrors.
             print("string index out of range")
 
-    
-    # insert the opaque predicate
-    out = out[:pos] + '\n' + pred1 + out[pos:]
-    pos+= len(pred1) + 3
+    number = randint(1, 4)
+    predicate = 'pred' + str(number)
+    # set a flag to False
+    flag = False
+
+    while (flag == False):
+        try:
+            pos = randint(int(len(out) / 2), len(out))
+            if (out[pos] == '\n' and out[pos - 1] != ':'):
+                # insert the opaque predicate
+                out = out[:pos] + '\n' + eval(predicate) + out[pos:]
+                pos += len(pred1) + 3
+                flag = True
+
+        except IndexError as error:
+            # Output expected IndexErrors.
+            print("string index out of range")
+
+    out = '''from random import randint
+from random import SystemRandom
+
+g = [36,58,1,46,23,5,16,65,2,41,2,7,1,37,0,11,16,2,21,16]''' + out
 
     return out
 
