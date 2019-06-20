@@ -722,7 +722,7 @@ else:\n\
     out = '''#from random import randint
 #from random import SystemRandom
 n = 10
-g = [36,58,1,46,23,5,16,65,2,41,2,7,1,37,0,11,16,2,21,16]''' + out
+g = [36,58,1,46,23,5,16,65,2,41,2,7,1,37,0,11,16,2,21,16]\n''' + out
 
     return out
 
