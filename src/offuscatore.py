@@ -15,6 +15,8 @@ import astor
 # global set for random sequences generated
 RANDOM_SEQUENCES_SET = set()
 
+VARIABLES_DICT = dict()
+
 
 class MyVisitor(ast.NodeVisitor):
 
@@ -445,19 +447,17 @@ def get_variables(tree):
                 if node.targets[0].id not in variables:
                     variables[node.targets[0].id] = type(node.value).__name__
         if isinstance(node, ast.Attribute) and (node.value == "self"):
+        #if isinstance(node, ast.Attribute) and (node.value.id == "self"):
                 variables[node.attr] = type(node.attr).__name__
-
     return variables
 
 
 def rename_variables(tree, variables):
     # Rename names of variables used (general usage)
-    #print(variables)
     for node in ast.walk(tree):
         if isinstance(node, ast.Name) and node.id in variables:
             node.id = variables[node.id]
         if isinstance(node, ast.Attribute) and node.attr in variables:
-             #print(ast.dump(node))
             node.attr = variables[node.attr]
 
     return tree
@@ -481,10 +481,11 @@ def obfuscate_variables(out):
     new_variables = {}
     # Choose new names
     for variable in variables:
-        new_variables[variable] = random_sequence()
+        VARIABLES_DICT[variable] = random_sequence()
+
 
     # Renomination of all variable occurrences
-    tree = rename_variables(tree, new_variables)
+    tree = rename_variables(tree, VARIABLES_DICT)
 
     # Convert the new AST to a valid code
     return astor.to_source(tree)
@@ -526,9 +527,13 @@ def obfuscate_functions(out):
 
             # assign a new rand sequence for arg name and bind it with the old name
             for i in range(0, num_arguments):
-                # --> NON SERVE FARE QUESTO CONTROLLO, FUNZIONA LO STESSO
-                # if arguments_list[i].arg not in critical_arg_names:
-                arguments[arguments_list[i].arg] = random_sequence()
+                # se il nome è un omonimo di una variabile già scovata in precedenza, allora uso quello
+                if arguments_list[i].arg in VARIABLES_DICT:
+                    arguments[arguments_list[i].arg] = VARIABLES_DICT[arguments_list[i].arg]
+                # altrimenti, assegno un nome a caso
+                else:
+                    arguments[arguments_list[i].arg] = random_sequence()
+
                 # assign the new random name at each argument between two parenthesis
                 arguments_list[i].arg = arguments[arguments_list[i].arg]
 
