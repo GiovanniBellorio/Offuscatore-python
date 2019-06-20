@@ -586,52 +586,52 @@ def opaque_predicate(out):
     print("-> opaque_predicate")
 
     # first opaque predicate
-    pred1 = "if(g[1] + g[1]^2) % 2 == 0:\n\
-    g[5] = (g[1] * g[4]) % g[11] + g[6]% g[5]\n\
-    g[14] = randint(0, 100)\n\
-    g[4] = randint(0, 10) * g[11] + g[8]\n\
+    pred1 = "if(xxgxx[1] + xxgxx[1]^2) % 2 == 0:\n\
+    xxgxx[5] = (xxgxx[1] * xxgxx[4]) % xxgxx[11] + xxgxx[6]% xxgxx[5]\n\
+    xxgxx[14] = randint(0, 100)\n\
+    xxgxx[4] = randint(0, 10) * xxgxx[11] + xxgxx[8]\n\
 else: \n\
-    g[2] = randint(0, 100)\n\
-    g[5] = randint(0, 10) * g[11] + g[8]\n\
-#print(g)\n\
+    xxgxx[2] = randint(0, 100)\n\
+    xxgxx[5] = randint(0, 10) * xxgxx[11] + xxgxx[8]\n\
+#print(xxgxx)\n\
 "
 
-    pred2 = "if(g[4]^3 - g[4]) % 3 == 0:\n\
-    g[5] = (g[1] * g[4]) % g[11] + g[6]% g[5]\n\
-    g[14] = randint(0, 100)\n\
-    g[4] = randint(0, 10) * g[11] + g[8]\n\
+    pred2 = "if(xxgxx[4]^3 - xxgxx[4]) % 3 == 0:\n\
+    xxgxx[5] = (xxgxx[1] * xxgxx[4]) % xxgxx[11] + xxgxx[6]% xxgxx[5]\n\
+    xxgxx[14] = randint(0, 100)\n\
+    xxgxx[4] = randint(0, 10) * xxgxx[11] + xxgxx[8]\n\
 else:\n\
-    g[2] = randint(0, 100)\n\
-    g[5] = randint(0, 10) * g[11] + g[8]\n\
-#print(g)\n\
+    xxgxx[2] = randint(0, 100)\n\
+    xxgxx[5] = randint(0, 10) * xxgxx[11] + xxgxx[8]\n\
+#print(xxgxx)\n\
 "
 
-    pred3 = "if(7+g[4]^2 - 1 != g[5]^2):\n\
-    g[5] = (g[1] * g[4]) % g[11] + g[6]% g[5]\n\
-    g[14] = randint(0, 100)\n\
-    g[4] = randint(0, 10) * g[11] + g[8]\n\
+    pred3 = "if(7+xxgxx[4]^2 - 1 != xxgxx[5]^2):\n\
+    xxgxx[5] = (xxgxx[1] * xxgxx[4]) % xxgxx[11] + xxgxx[6]% xxgxx[5]\n\
+    xxgxx[14] = randint(0, 100)\n\
+    xxgxx[4] = randint(0, 10) * xxgxx[11] + xxgxx[8]\n\
 else:\n\
-    g[2] = randint(0, 100)\n\
-    g[5] = randint(0, 10) * g[11] + g[8]\n\
+    xxgxx[2] = randint(0, 100)\n\
+    xxgxx[5] = randint(0, 10) * xxgxx[11] + xxgxx[8]\n\
 "
     
-    pred4 = "if(g[4]^n - g[5]^n % g[4] - g[5]):\n\
-    g[5] = (g[1] * g[4]) % g[11] + g[6]% g[5]\n\
-    g[14] = randint(0, 100)\n\
-    g[4] = randint(0, 10) * g[11] + g[8]\n\
+    pred4 = "if(xxgxx[4]^xxnxx - xxgxx[5]^xxnxx % xxgxx[4] - xxgxx[5]):\n\
+    xxgxx[5] = (xxgxx[1] * xxgxx[4]) % xxgxx[11] + xxgxx[6]% xxgxx[5]\n\
+    xxgxx[14] = randint(0, 100)\n\
+    xxgxx[4] = randint(0, 10) * xxgxx[11] + xxgxx[8]\n\
 else:\n\
-    g[2] = randint(0, 100)\n\
-    g[5] = randint(0, 10) * g[11] + g[8]\n\
+    xxgxx[2] = randint(0, 100)\n\
+    xxgxx[5] = randint(0, 10) * xxgxx[11] + g[8]\n\
 "
 
-    pred5 = "if ((g[3] % g[5]) == g[2]):\n\
+    pred5 = "if ((xxgxx[3] % xxgxx[5]) == xxgxx[2]):\n\
     #print('true!')\n\
-    g[5] = (g[1] * g[4]) % g[11] + g[6]% g[5]\n\
-    g[14] = randint(0, 100)\n\
-    g[4] = randint(0, 10) * g[11] + g[8]\n\
-    #print(g)\n\
-    six = (g[4] + g[7] + g[10])%g[11]\n\
-    seven = six + g[3] % g[5]\n\
+    xxgxx[5] = (xxgxx[1] * xxgxx[4]) % xxgxx[11] + xxgxx[6]% xxgxx[5]\n\
+    xxgxx[14] = randint(0, 100)\n\
+    xxgxx[4] = randint(0, 10) * xxgxx[11] + xxgxx[8]\n\
+    #print(xxgxx)\n\
+    six = (xxgxx[4] + xxgxx[7] + xxgxx[10])%xxgxx[11]\n\
+    seven = six + xxgxx[3] % xxgxx[5]\n\
     fortytwo = six * seven\n\
 "
 
@@ -721,8 +721,8 @@ else:\n\
 
     out = '''#from random import randint
 #from random import SystemRandom
-n = 10
-g = [36,58,1,46,23,5,16,65,2,41,2,7,1,37,0,11,16,2,21,16]\n''' + out
+xxnxx = 10
+xxgxx = [36,58,1,46,23,5,16,65,2,41,2,7,1,37,0,11,16,2,21,16]\n''' + out
 
     return out
 
@@ -742,10 +742,10 @@ def main():
     # which it is first converted to a string through the read() method.
     out = remove_comments_and_docstrings(file_SRC.read())   # 'out' contains a string with the entire code
 
-    #
+    # Call 'opaque_predicate()' function
     out = opaque_predicate(out)
 
-    #
+    # Call 'encoding_literal_data()' function
     out = encoding_literal_data(out)
 
     # Call 'obfuscate_variables()' function
