@@ -1,57 +1,167 @@
-#!/usr/bin/python
-# -*- coding: utf-8 -*-
-
 from random import randint
 from random import SystemRandom
-class Mealy(object):
-    def __init__(self, some_states, a_input_alphabet, a_output_alphabet, some_transitions, a_initial_state):
-        self.states = some_states
-        self.input_alphabet = a_input_alphabet
-        self.output_alphabet = a_output_alphabet
-        self.transitions = some_transitions
-        self.initial_state = a_initial_state
-    def get_output_from_string(self, string):
-        temp_list = list(string)
-        current_state = self.initial_state
-        output = ''
-        for x in temp_list:
-            output += chr(self.transitions[current_state][x][1])
-            current_state = self.transitions[current_state][x][0]
-        return output
 
-class Encoding():
-    def integer(self,digits):
-        num = 0
-        moltiplicatore = 1
-        for digit in digits:
-            num += digit*moltiplicatore
-            moltiplicatore *= 10
-        return num
 
-i = [1, 0]
-i_ooo = [1, 0]
-i = Encoding().integer([ i[i_ooo[xxxxxxxxxxxx]] for xxxxxxxxxxxx in range(0, len(i)) ])
-print(i)
-class Employee:
-    def __init__(self, a_name, a_salary):
-        self.name = a_name
-        self.salary = a_salary
-    def displayCount(self):
-        empCount = [0]
-        empCount_ooo = [0]
-        empCount = Encoding().integer([ empCount[empCount_ooo[xxxxxxxxxxxx]] for xxxxxxxxxxxx in range(0, len(empCount)) ])
-        print('Total Employee %d' % Employee.empCount)
-    def displayEmployee(self):
-        print('Name : ', self.name, ', Salary: ', self.salary)
-g = [58, 0, 65, 36, 37, 16, 16, 1, 5, 21, 7, 23, 2, 2, 46, 16, 41, 1, 11, 2]
-g_ooo = [3, 0, 17, 14, 11, 8, 5, 2, 19, 16, 13, 10, 7, 4, 1, 18, 15, 12, 9, 6]
-g = [ g[g_ooo[xxxxxxxxxxxx]] for xxxxxxxxxxxx in range(0, len(g)) ]
-if (g[1] + g[1] ^ 2) % 2 == 0:
-    g[5] = g[1] * g[4] % g[11] + g[6] % g[5]
-    g[14] = randint(0, 100)
-    g[4] = randint(0, 10) * g[11] + g[8]
-else:
-    g[2] = randint(0, 100)
-    g[5] = randint(0, 10) * g[11] + g[8]
-emp1 = Employee('Zara', 2000)
-emp1.displayEmployee()
+class xxxxxMxxxxx(object):
+
+    def __init__(O0OO00OOOO00000OO0000O0, O0O0O000OOO0O000O0OO000,
+        O0OOO00O0O0O00OOO0000OO, O00O0O0OOOO0OO00O0OOOO0,
+        OO000O00OOO0OO0O0OO00OO, OOO0O0OOO0O0000OOOOOO00):
+        O0OO00OOOO00000OO0000O0.xxsxxtxxaxxtxxexxsxx = O0O0O000OOO0O000O0OO000
+        (O0OO00OOOO00000OO0000O0.xxixxnxxpxxuxxtxx_xxaxxlxxpxxhxxaxxbxxexxtxx
+            ) = O0OOO00O0O0O00OOO0000OO
+        (O0OO00OOOO00000OO0000O0.
+            xxoxxuxxtxxpxxuxxtxx_xxaxxlxxpxxhxxaxxbxxexxtxx
+            ) = O00O0O0OOOO0OO00O0OOOO0
+        O0OO00OOOO00000OO0000O0.xxtxxrxxaxxnxxsxxixxtxxixxoxxnxxsxx = (
+            OO000O00OOO0OO0O0OO00OO)
+        (O0OO00OOOO00000OO0000O0.xxixxnxxixxtxxixxaxxlxx_xxsxxtxxaxxtxxexx
+            ) = OOO0O0OOO0O0000OOOOOO00
+
+    def O0OOOO00O0O0O0O0O00OO0O(OO0O0O0000OO0O0OO0OO0O0,
+        OOO0OO0O00O00OOO0O0000O):
+        O0O0000O00O00O0O0OOO0OO = list(OOO0OO0O00O00OOO0O0000O)
+        OOO0OO0OO0O0O0O0000O000 = (OO0O0O0000OO0O0OO0OO0O0.
+            xxixxnxxixxtxxixxaxxlxx_xxsxxtxxaxxtxxexx)
+        OO0O0OOO0O0O0000OO0O0O0 = ''
+        for x in O0O0000O00O00O0O0OOO0OO:
+            OO0O0OOO0O0O0000OO0O0O0 += chr(OO0O0O0000OO0O0OO0OO0O0.
+                xxtxxrxxaxxnxxsxxixxtxxixxoxxnxxsxx[OOO0OO0OO0O0O0O0000O000
+                ][x][1])
+            OOO0OO0OO0O0O0O0000O000 = (OO0O0O0000OO0O0OO0OO0O0.
+                xxtxxrxxaxxnxxsxxixxtxxixxoxxnxxsxx[OOO0OO0OO0O0O0O0000O000
+                ][x][0])
+        return OO0O0OOO0O0O0000OO0O0O0
+
+
+class xxxxxExxxxx:
+
+    def OO0O0000O0O00O0OOO00O0O(O0OOOO0OO0OO0O00OO0O0O0,
+        O000O0000O00O000O0OO0OO):
+        O00OOOO0O00000OO0O00O00 = 0
+        O00OOO00OO0O0OOO0OOOO00 = 1
+        for xxxxxDxxxxx in O000O0000O00O000O0OO0OO:
+            O00OOOO0O00000OO0O00O00 += xxxxxDxxxxx * O00OOO00OO0O0OOO0OOOO00
+            O00OOO00OO0O0OOO0OOOO00 *= 10
+        return O00OOOO0O00000OO0O00O00
+
+
+O0OOOO0OO000O000O0O00OO = [1, 0]
+O0O0000O00OOO0OO00OOO0O = [1, 0]
+O0OOOO0OO000O000O0O00OO = xxxxxExxxxx().OO0O0000O0O00O0OOO00O0O([
+    O0OOOO0OO000O000O0O00OO[O0O0000O00OOO0OO00OOO0O[xxxxxxxxxxxx]] for
+    xxxxxxxxxxxx in range(0, len(O0OOOO0OO000O000O0O00OO))])
+O0OOO0OOO000OOO00O0OOOO = [58, 1, 46, 0, 5, 16, 65, 21, 41, 36, 7, 1, 37, 
+    23, 11, 16, 2, 2, 16, 2]
+O000O0O0OOOO0O0OOOO00OO = [9, 0, 11, 2, 13, 4, 15, 6, 17, 8, 19, 10, 1, 12,
+    3, 14, 5, 16, 7, 18]
+O0OOO0OOO000OOO00O0OOOO = [O0OOO0OOO000OOO00O0OOOO[O000O0O0OOOO0O0OOOO00OO[
+    xxxxxxxxxxxx]] for xxxxxxxxxxxx in range(0, len(O0OOO0OOO000OOO00O0OOOO))]
+if True:
+    O00000O0OOOOO000O0OO0OO = (
+        "xxxxxMxxxxx(['q0', 'q1', 'q2', 'q3', 'q4'],['0', '1'],['0', '1'],{'q0': {'0': ('q1', 112), '1': ('q4', 118)}, 'q1': {'1': ('q2', 105), '0': ('q0', 108)}, 'q2': {'0': ('q3', 112), '1': ('q1', 116)}, 'q3': {'0': ('q4', 112), '1': ('q2', 108)}, 'q4': {'0': ('q0', 111), '1': ('q3', 109)}},'q0')"
+        )
+    O00000O0OOOOO000O0OO0OO = eval(O00000O0OOOOO000O0OO0OO
+        ).O0OOOO00O0O0O0O0O00OO0O('01000')
+    print(O00000O0OOOOO000O0OO0OO[2])
+    O0OO0000OO0OO00OO0OOO0O = O00000O0OOOOO000O0OO0OO[2
+        ] + O00000O0OOOOO000O0OO0OO[3]
+    print(O0OO0000OO0OO00OO0OOO0O)
+    if O0OOO0OOO000OOO00O0OOOO[3] % O0OOO0OOO000OOO00O0OOOO[5
+        ] == O0OOO0OOO000OOO00O0OOOO[2]:
+        O0OOO0OOO000OOO00O0OOOO[5] = O0OOO0OOO000OOO00O0OOOO[1
+            ] * O0OOO0OOO000OOO00O0OOOO[4] % O0OOO0OOO000OOO00O0OOOO[11
+            ] + O0OOO0OOO000OOO00O0OOOO[6] % O0OOO0OOO000OOO00O0OOOO[5]
+        O0OOO0OOO000OOO00O0OOOO[14] = randint(0, 100)
+        O0OOO0OOO000OOO00O0OOOO[4] = randint(0, 10) * O0OOO0OOO000OOO00O0OOOO[
+            11] + O0OOO0OOO000OOO00O0OOOO[8]
+        OOO0O0OO0O00O0O0O00OO00 = (O0OOO0OOO000OOO00O0OOOO[4] +
+            O0OOO0OOO000OOO00O0OOOO[7] + O0OOO0OOO000OOO00O0OOOO[10]
+            ) % O0OOO0OOO000OOO00O0OOOO[11]
+        O000OOO00000000000000OO = (OOO0O0OO0O00O0O0O00OO00 + 
+            O0OOO0OOO000OOO00O0OOOO[3] % O0OOO0OOO000OOO00O0OOOO[5])
+        OOOOO00O0OO00O0OO00O0OO = (OOO0O0OO0O00O0O0O00OO00 *
+            O000OOO00000000000000OO)
+    O0OOO00000000O00OOOO0OO = O00000O0OOOOO000O0OO0OO.replace('p', 'a')
+    print(O0OOO00000000O00OOOO0OO)
+    O0OO0000OO0OO00OO0OOO0O = O00000O0OOOOO000O0OO0OO
+    OO0OOOOO00O0OOO0O0O0OO0 = ['pippo', 'pippo']
+    O00O0OO0OOOOO0OO0OOO00O = [1, 0]
+    OO0OOOOO00O0OOO0O0O0OO0 = [OO0OOOOO00O0OOO0O0O0OO0[
+        O00O0OO0OOOOO0OO0OOO00O[xxxxxxxxxxxx]] for xxxxxxxxxxxx in range(0,
+        len(OO0OOOOO00O0OOO0O0O0OO0))]
+    print(OO0OOOOO00O0OOO0O0O0OO0)
+    O00OO0OOO00O0O00OO000OO = ['b', 'a']
+    OOOOOO000OO0OOO00OOOOO0 = [1, 0]
+    O00OO0OOO00O0O00OO000OO = [O00OO0OOO00O0O00OO000OO[
+        OOOOOO000OO0OOO00OOOOO0[xxxxxxxxxxxx]] for xxxxxxxxxxxx in range(0,
+        len(O00OO0OOO00O0O00OO000OO))]
+    if 7 + O0OOO0OOO000OOO00O0OOOO[4] ^ 2 - 1 != O0OOO0OOO000OOO00O0OOOO[5
+        ] ^ 2:
+        O0OOO0OOO000OOO00O0OOOO[5] = O0OOO0OOO000OOO00O0OOOO[1
+            ] * O0OOO0OOO000OOO00O0OOOO[4] % O0OOO0OOO000OOO00O0OOOO[11
+            ] + O0OOO0OOO000OOO00O0OOOO[6] % O0OOO0OOO000OOO00O0OOOO[5]
+        O0OOO0OOO000OOO00O0OOOO[14] = randint(0, 100)
+        O0OOO0OOO000OOO00O0OOOO[4] = randint(0, 10) * O0OOO0OOO000OOO00O0OOOO[
+            11] + O0OOO0OOO000OOO00O0OOOO[8]
+    else:
+        O0OOO0OOO000OOO00O0OOOO[2] = randint(0, 100)
+        O0OOO0OOO000OOO00O0OOOO[5] = randint(0, 10) * O0OOO0OOO000OOO00O0OOOO[
+            11] + O0OOO0OOO000OOO00O0OOOO[8]
+    print(O00OO0OOO00O0O00OO000OO)
+    O0OO0O000OOO00O0O0OO00O = {'ciao': 'ciao'}
+    print(O0OO0O000OOO00O0O0OO00O)
+    O0OO0O000OOO00O0O0OO00O = {O00000O0OOOOO000O0OO0OO: O00000O0OOOOO000O0OO0OO
+        }
+    print(O0OO0O000OOO00O0O0OO00O)
+    O0OO0000OO0OO00OO0OOO0O = (
+        "xxxxxMxxxxx(['q0', 'q1', 'q2', 'q3', 'q4'],['0', '1'],['0', '1'],{'q0': {'1': ('q1', 109), '0': ('q4', 120)}, 'q1': {'0': ('q2', 97), '1': ('q0', 114)}, 'q2': {'0': ('q3', 109), '1': ('q1', 110)}, 'q3': {'0': ('q4', 109), '1': ('q2', 108)}, 'q4': {'1': ('q0', 97), '0': ('q3', 116)}},'q0')"
+        )
+    O0OO0000OO0OO00OO0OOO0O = eval(O0OO0000OO0OO00OO0OOO0O
+        ).O0OOOO00O0O0O0O0O00OO0O('10001')
+    if O0OO0000OO0OO00OO0OOO0O == 'mammaa':
+        print('caso 1')
+    else:
+        O0OO0000OO0OO00OO0OOO0O = [1, 0]
+        O0O00OOO0O00OOOO0O0OO00 = [1, 0]
+        O0OO0000OO0OO00OO0OOO0O = xxxxxExxxxx().OO0O0000O0O00O0OOO00O0O([
+            O0OO0000OO0OO00OO0OOO0O[O0O00OOO0O00OOOO0O0OO00[xxxxxxxxxxxx]] for
+            xxxxxxxxxxxx in range(0, len(O0OO0000OO0OO00OO0OOO0O))])
+    print(O0OO0000OO0OO00OO0OOO0O)
+    O00OOOO0O0000O0O000OOO0 = (
+        "xxxxxMxxxxx(['q0', 'q1', 'q2', 'q3', 'q4'],['0', '1'],['0', '1'],{'q0': {'0': ('q1', 109), '1': ('q4', 119)}, 'q1': {'1': ('q2', 97), '0': ('q0', 105)}, 'q2': {'1': ('q3', 109), '0': ('q1', 117)}, 'q3': {'1': ('q4', 109), '0': ('q2', 117)}, 'q4': {'0': ('q0', 97), '1': ('q3', 113)}},'q0')"
+        )
+    O00OOOO0O0000O0O000OOO0 = eval(O00OOOO0O0000O0O000OOO0
+        ).O0OOOO00O0O0O0O0O00OO0O('01110')
+    O00OOOO0O0000O0O000OOO0 = O00OOOO0O0000O0O000OOO0[0
+        ] + O00OOOO0O0000O0O000OOO0[1]
+    print(O00OOOO0O0000O0O000OOO0)
+    OO0OO0O0OOOOOOO00O0O000 = (
+        "xxxxxMxxxxx(['q0', 'q1', 'q2', 'q3', 'q4'],['0', '1'],['0', '1'],{'q0': {'1': ('q1', 75), '0': ('q4', 104)}, 'q1': {'1': ('q2', 101), '0': ('q0', 111)}, 'q2': {'0': ('q3', 118), '1': ('q1', 110)}, 'q3': {'0': ('q4', 105), '1': ('q2', 110)}, 'q4': {'0': ('q0', 110), '1': ('q3', 113)}},'q0')"
+        )
+    OO0OO0O0OOOOOOO00O0O000 = eval(OO0OO0O0OOOOOOO00O0O000
+        ).O0OOOO00O0O0O0O0O00OO0O('11000')
+    OOO00O0O0O00O0OO0O0O000 = [0]
+    O0O0OO0OO0OO00O0OOO0O00 = [0]
+    OOO00O0O0O00O0OO0O0O000 = xxxxxExxxxx().OO0O0000O0O00O0OOO00O0O([
+        OOO00O0O0O00O0OO0O0O000[O0O0OO0OO0OO00O0OOO0O00[xxxxxxxxxxxx]] for
+        xxxxxxxxxxxx in range(0, len(OOO00O0O0O00O0OO0O0O000))])
+    for O0OOO0OOOOOO0O00OO0000O in range(0, 10):
+        O00OOOO0O0000O0O000OOO0 = (
+            "xxxxxMxxxxx(['q0', 'q1', 'q2', 'q3', 'q4'],['0', '1'],['0', '1'],{'q0': {'1': ('q1', 109), '0': ('q4', 100)}, 'q1': {'0': ('q2', 97), '1': ('q0', 109)}, 'q2': {'1': ('q3', 109), '0': ('q1', 97)}, 'q3': {'1': ('q4', 109), '0': ('q2', 122)}, 'q4': {'1': ('q0', 97), '0': ('q3', 120)}},'q0')"
+            )
+        O00OOOO0O0000O0O000OOO0 = eval(O00OOOO0O0000O0O000OOO0
+            ).O0OOOO00O0O0O0O0O00OO0O('10111')
+        OOO00O0O0O00O0OO0O0O000 += O0OOO0OOOOOO0O00OO0000O
+    O0OOO0OOOOOO0O00OO0000O = [1, 0]
+    OO0O0O0O00OOO0OO0O00O0O = [1, 0]
+    O0OOO0OOOOOO0O00OO0000O = xxxxxExxxxx().OO0O0000O0O00O0OOO00O0O([
+        O0OOO0OOOOOO0O00OO0000O[OO0O0O0O00OOO0OO0O00O0O[xxxxxxxxxxxx]] for
+        xxxxxxxxxxxx in range(0, len(O0OOO0OOOOOO0O00OO0000O))])
+    if O0OOO0OOOOOO0O00OO0000O < 20:
+        O0O0O00OOOO0000O0O0O00O = [3]
+        OO0O000OOO00O0000O0000O = [0]
+        O0O0O00OOOO0000O0O0O00O = xxxxxExxxxx().OO0O0000O0O00O0OOO00O0O([
+            O0O0O00OOOO0000O0O0O00O[OO0O000OOO00O0000O0000O[xxxxxxxxxxxx]] for
+            xxxxxxxxxxxx in range(0, len(O0O0O00OOOO0000O0O0O00O))])
+    print(OO0OO0O0OOOOOOO00O0O000, OOO00O0O0O00O0OO0O0O000)

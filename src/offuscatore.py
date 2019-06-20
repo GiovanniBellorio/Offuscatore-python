@@ -22,6 +22,9 @@ class MyVisitor(ast.NodeVisitor):
         self.values   = values
         self.variable = variable
 
+    def visit_Name(self, node):
+        self.values[self.variable] = node.id
+
     def visit_Str(self, node):
         self.values[self.variable] = "%s" % node.s
 
@@ -181,7 +184,7 @@ def mealy_machine(string_input):
             transitions.update({q:{str(stato1) : ('q'+str(iIdx+1), ord(string_input[iIdx])), str(stato2) : ('q'+str(iIdx-1), char_random)}})
         iIdx+=1
 
-    return "Mealy({},['0', '1'],['0', '1'],{},'q0')".format(states,transitions), new_string_input
+    return "xxxxxMxxxxx({},['0', '1'],['0', '1'],{},'q0')".format(states,transitions), new_string_input
 
 
 def array_permutation(a):
@@ -230,28 +233,28 @@ def encoding_literal_data(out):
 # -*- coding: utf-8 -*-\n\n\
 from random import randint\n\
 from random import SystemRandom\n\
-class Mealy(object):\n\
+class xxxxxMxxxxx(object):\n\
     def __init__(self, some_states, a_input_alphabet, a_output_alphabet, some_transitions, a_initial_state):\n\
-        self.states = some_states\n\
-        self.input_alphabet = a_input_alphabet\n\
-        self.output_alphabet = a_output_alphabet\n\
-        self.transitions = some_transitions\n\
-        self.initial_state = a_initial_state\n\
+        self.xxsxxtxxaxxtxxexxsxx = some_states\n\
+        self.xxixxnxxpxxuxxtxx_xxaxxlxxpxxhxxaxxbxxexxtxx = a_input_alphabet\n\
+        self.xxoxxuxxtxxpxxuxxtxx_xxaxxlxxpxxhxxaxxbxxexxtxx = a_output_alphabet\n\
+        self.xxtxxrxxaxxnxxsxxixxtxxixxoxxnxxsxx = some_transitions\n\
+        self.xxixxnxxixxtxxixxaxxlxx_xxsxxtxxaxxtxxexx = a_initial_state\n\
     def get_output_from_string(self, string):\n\
         temp_list = list(string)\n\
-        current_state = self.initial_state\n\
+        current_state = self.xxixxnxxixxtxxixxaxxlxx_xxsxxtxxaxxtxxexx\n\
         output = ''\n\
         for x in temp_list:\n\
-            output += chr(self.transitions[current_state][x][1])\n\
-            current_state = self.transitions[current_state][x][0]\n\
+            output += chr(self.xxtxxrxxaxxnxxsxxixxtxxixxoxxnxxsxx[current_state][x][1])\n\
+            current_state = self.xxtxxrxxaxxnxxsxxixxtxxixxoxxnxxsxx[current_state][x][0]\n\
         return output\n\n"
 
-    def_encoding_integer = "class Encoding():\n\
+    def_encoding_integer = "class xxxxxExxxxx():\n\
     def integer(self,digits):\n\
         num = 0\n\
         moltiplicatore = 1\n\
-        for digit in digits:\n\
-            num += digit*moltiplicatore\n\
+        for xxxxxDxxxxx in digits:\n\
+            num += xxxxxDxxxxx*moltiplicatore\n\
             moltiplicatore *= 10\n\
         return num\n\n"
 
@@ -326,7 +329,7 @@ class Mealy(object):\n\
 
             tree += indent + variable + " = " + str(b) + "\n"
             tree += indent + variable + "_ooo = " + str(p) + "\n"
-            tree += indent + variable + " = " + "Encoding().integer([ " + variable + "[" + variable + "_ooo" + "[xxxxxxxxxxxx]] for xxxxxxxxxxxx in range(0, len(" + variable + ")) ])" + "\n"
+            tree += indent + variable + " = " + "xxxxxExxxxx().integer([ " + variable + "[" + variable + "_ooo" + "[xxxxxxxxxxxx]] for xxxxxxxxxxxx in range(0, len(" + variable + ")) ])" + "\n"
 
         # encoding_list
         elif isAssignList(subtree):
@@ -441,7 +444,7 @@ def get_variables(tree):
         if isinstance(node, ast.Assign) and isinstance(node.targets[0], ast.Name):
                 if node.targets[0].id not in variables:
                     variables[node.targets[0].id] = type(node.value).__name__
-        if isinstance(node, ast.Attribute) and (node.value.id == "self"):
+        if isinstance(node, ast.Attribute) and (node.value == "self"):
                 variables[node.attr] = type(node.attr).__name__
 
     return variables
@@ -583,63 +586,56 @@ def opaque_predicate(out):
     print("-> opaque_predicate")
 
     # first opaque predicate
-    pred1 = """
-if(g[1] + g[1]^2) % 2 == 0:
-    g[5] = (g[1] * g[4]) % g[11] + g[6]% g[5]
-    g[14] = randint(0, 100)
-    g[4] = randint(0, 10) * g[11] + g[8]
-else: 
-    g[2] = randint(0, 100)
-    g[5] = randint(0, 10) * g[11] + g[8]
-print(g)
-"""
+    pred1 = "if(g[1] + g[1]^2) % 2 == 0:\n\
+    g[5] = (g[1] * g[4]) % g[11] + g[6]% g[5]\n\
+    g[14] = randint(0, 100)\n\
+    g[4] = randint(0, 10) * g[11] + g[8]\n\
+else: \n\
+    g[2] = randint(0, 100)\n\
+    g[5] = randint(0, 10) * g[11] + g[8]\n\
+#print(g)\n\
+"
 
-    pred2 = """
-if(g[4]^3 - g[4]) % 3 == 0:
-    g[5] = (g[1] * g[4]) % g[11] + g[6]% g[5]
-    g[14] = randint(0, 100)
-    g[4] = randint(0, 10) * g[11] + g[8]
-else:
-    g[2] = randint(0, 100)
-    g[5] = randint(0, 10) * g[11] + g[8]
-print(g)
-"""
+    pred2 = "if(g[4]^3 - g[4]) % 3 == 0:\n\
+    g[5] = (g[1] * g[4]) % g[11] + g[6]% g[5]\n\
+    g[14] = randint(0, 100)\n\
+    g[4] = randint(0, 10) * g[11] + g[8]\n\
+else:\n\
+    g[2] = randint(0, 100)\n\
+    g[5] = randint(0, 10) * g[11] + g[8]\n\
+#print(g)\n\
+"
 
-    pred3 = """
-if(7+g[4]^2 - 1 != g[5]^2):
-    g[5] = (g[1] * g[4]) % g[11] + g[6]% g[5]
-    g[14] = randint(0, 100)
-    g[4] = randint(0, 10) * g[11] + g[8]
-else:
-    g[2] = randint(0, 100)
-    g[5] = randint(0, 10) * g[11] + g[8]
-"""
-    pred4 = """
-if(g[4]^n - g[5]^n % g[4] - g[5]):
-    g[5] = (g[1] * g[4]) % g[11] + g[6]% g[5]
-    g[14] = randint(0, 100)
-    g[4] = randint(0, 10) * g[11] + g[8]
-else:
-    g[2] = randint(0, 100)
-    g[5] = randint(0, 10) * g[11] + g[8]
-"""
+    pred3 = "if(7+g[4]^2 - 1 != g[5]^2):\n\
+    g[5] = (g[1] * g[4]) % g[11] + g[6]% g[5]\n\
+    g[14] = randint(0, 100)\n\
+    g[4] = randint(0, 10) * g[11] + g[8]\n\
+else:\n\
+    g[2] = randint(0, 100)\n\
+    g[5] = randint(0, 10) * g[11] + g[8]\n\
+"
+    
+    pred4 = "if(g[4]^n - g[5]^n % g[4] - g[5]):\n\
+    g[5] = (g[1] * g[4]) % g[11] + g[6]% g[5]\n\
+    g[14] = randint(0, 100)\n\
+    g[4] = randint(0, 10) * g[11] + g[8]\n\
+else:\n\
+    g[2] = randint(0, 100)\n\
+    g[5] = randint(0, 10) * g[11] + g[8]\n\
+"
 
-    predArray = """
-if ((g[3] % g[5]) == g[2]):
-    print("true!")
+    pred5 = "if ((g[3] % g[5]) == g[2]):\n\
+    #print('true!')\n\
+    g[5] = (g[1] * g[4]) % g[11] + g[6]% g[5]\n\
+    g[14] = randint(0, 100)\n\
+    g[4] = randint(0, 10) * g[11] + g[8]\n\
+    #print(g)\n\
+    six = (g[4] + g[7] + g[10])%g[11]\n\
+    seven = six + g[3] % g[5]\n\
+    fortytwo = six * seven\n\
+"
 
-g[5] = (g[1] * g[4]) % g[11] + g[6]% g[5]
-g[14] = randint(0, 100)
-g[4] = randint(0, 10) * g[11] + g[8]
-
-print(g)
-
-six = (g[4] + g[7] + g[10])%g[11]
-seven = six + g[3] % g[5]
-fortytwo = six * seven
-"""
-
-    number = randint(1, 4)
+    number = randint(1, 5)
     predicate = 'pred' + str(number)
     # set a flag to False
     flag = False
@@ -650,9 +646,29 @@ fortytwo = six * seven
     while (flag == False):
         try:
             pos = randint(0, int(len(out) / 2))
-            if (out[pos] == '\n' and out[pos - 1] != ':'):
+            if (out[pos] == '\n' and out[pos - 1] != ':' and out[pos - 1] != '\n'):
+
+                out_split = out[:pos].split("\n")
+                for row in out_split:
+
+                    tab = "    "
+                    indent = ""
+
+                    while True:
+                        if "    " in row[0:4]:
+                            row = row[4:len(row)]
+                            indent += tab
+                        else:
+                            break
+
+                predicate_split = eval(predicate).split("\n")
+                predicate = ""
+                for line in predicate_split:
+                    predicate += indent + line + "\n"
+
                 # insert the opaque predicate
-                out = out[:pos] + '\n' + eval(predicate) + out[pos:]
+                out = out[:pos] + '\n' + predicate + out[pos:]
+                
                 pos += len(pred1) + 3
                 flag = True
 
@@ -660,27 +676,52 @@ fortytwo = six * seven
             # Output expected IndexErrors.
             print("string index out of range")
 
-    number = randint(1, 4)
+    
+    number = randint(1, 5)
     predicate = 'pred' + str(number)
     # set a flag to False
     flag = False
 
+    # check a position where to insert the opaque predicate
+    # the position is choiced randomly and it can't be insert
+    #  after a row that finish with ':'
     while (flag == False):
         try:
-            pos = randint(int(len(out) / 2), len(out))
-            if (out[pos] == '\n' and out[pos - 1] != ':'):
+            pos = randint(0, int(len(out) / 2))
+            if (out[pos] == '\n' and out[pos - 1] != ':' and out[pos - 1] != '\n'):
+
+                out_split = out[:pos].split("\n")
+                for row in out_split:
+
+                    tab = "    "
+                    indent = ""
+
+                    while True:
+                        if "    " in row[0:4]:
+                            row = row[4:len(row)]
+                            indent += tab
+                        else:
+                            break
+
+                predicate_split = eval(predicate).split("\n")
+                predicate = ""
+                for line in predicate_split:
+                    predicate += indent + line + "\n"
+
                 # insert the opaque predicate
-                out = out[:pos] + '\n' + eval(predicate) + out[pos:]
+                out = out[:pos] + '\n' + predicate + out[pos:]
+                
                 pos += len(pred1) + 3
                 flag = True
 
         except IndexError as error:
             # Output expected IndexErrors.
             print("string index out of range")
+    
 
-    out = '''from random import randint
-from random import SystemRandom
-
+    out = '''#from random import randint
+#from random import SystemRandom
+n = 10
 g = [36,58,1,46,23,5,16,65,2,41,2,7,1,37,0,11,16,2,21,16]''' + out
 
     return out
@@ -704,13 +745,14 @@ def main():
     #
     out = opaque_predicate(out)
 
+    #
     out = encoding_literal_data(out)
 
     # Call 'obfuscate_variables()' function
-    #out = obfuscate_variables(out)
+    out = obfuscate_variables(out)
+    
     # Call 'obfuscate_functions()' function
-    #out = obfuscate_functions(out)
-
+    out = obfuscate_functions(out)
 
     # Write the result into file_DEST
     file_DEST.write(out)

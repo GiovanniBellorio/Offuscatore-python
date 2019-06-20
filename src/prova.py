@@ -1,36 +1,63 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-'''
-name = "Kevin"
-somma = 0
+if True:
+    pippo = "pippo"
 
-for i in range(0,10):
-    somma += i
+    print(pippo[2])
+    ciao = pippo[2] + pippo[3]
 
-if(i < 20):
-    c = 3
-    #i += c
+    print(ciao)
 
-print(name, somma)'''
+    tmp = pippo.replace("p","a")
 
-i = 10
-print(i)
+    print(tmp)
 
-class Employee:
-    'Common base class for all employees'
+    ciao = pippo
 
-    def __init__(self, a_name, a_salary):
-        self.name = a_name
-        self.salary = a_salary
 
-    def displayCount(self):
-        empCount = 0
-        print("Total Employee %d" % Employee.empCount)
+    prova = [pippo,pippo]
 
-    def displayEmployee(self):
-        print("Name : ", self.name, ", Salary: ", self.salary)
+    print(prova)
 
-emp1 = Employee("Zara", 2000)
-emp1.displayEmployee()
 
+    provs = ["a","b"]
+    print(provs)
+
+
+    dicto = {"ciao":"ciao"}
+    print(dicto)
+
+    dicto = {pippo:pippo}
+    print(dicto)
+
+    ciao = "mamma"
+    if ciao == "mammaa":
+        print("caso 1")
+    else:
+        ciao = 10
+
+    print(ciao)
+
+
+
+    mamma = "mamma"
+    mamma = mamma[0] + mamma[1]
+
+    print(mamma)
+
+
+    name = "Kevin"
+    somma = 0
+
+    for i in range(0,10):
+        mamma = "mamma"
+        somma += i
+
+
+    i = 10
+    if(i < 20):
+        c = 3
+        #i += c
+
+    print(name, somma)                      
