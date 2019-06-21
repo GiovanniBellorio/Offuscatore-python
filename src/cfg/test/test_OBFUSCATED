@@ -1,0 +1,145 @@
+digraph "clustertest.py_OBFUSCATED.py" {
+	graph [label="test.py_OBFUSCATED.py"]
+	1 [label="from random import randint
+from random import SystemRandom
+OO0000OOOO0OOOO0OO00000 = 10
+OOOO0O000OO0O0OO000OOOO = [36, 58, 1, 46, 23, 5, 16, 65, 2, 41, 2, 7, 1, 37,
+    0, 11, 16, 2, 21, 16]
+if True:
+"]
+	2 [label="O00O00O00000OO000O00OOO = 'pippo'
+print(O00O00O00000OO000O00OOO[2])
+OO00O0000000OO0000O0OO0 = O00O00O00000OO000O00OOO[2] + O00O00O00000OO000O00OOO[
+    3]
+print(OO00O0000000OO0000O0OO0)
+O0OO0000O0OO0O00OOO0OOO = O00O00O00000OO000O00OOO.replace('p', 'a')
+if 7 + OOOO0O000OO0O0OO000OOOO[4] ^ 2 - 1 != OOOO0O000OO0O0OO000OOOO[5] ^ 2:
+"]
+	"2_calls" [label="print
+print
+O00O00O00000OO000O00OOO.replace
+" shape=box]
+	2 -> "2_calls" [label=calls style=dashed]
+	4 [label="OOOO0O000OO0O0OO000OOOO[5] = OOOO0O000OO0O0OO000OOOO[1
+    ] * OOOO0O000OO0O0OO000OOOO[4] % OOOO0O000OO0O0OO000OOOO[11
+    ] + OOOO0O000OO0O0OO000OOOO[6] % OOOO0O000OO0O0OO000OOOO[5]
+OOOO0O000OO0O0OO000OOOO[14] = randint(0, 100)
+OOOO0O000OO0O0OO000OOOO[4] = randint(0, 10) * OOOO0O000OO0O0OO000OOOO[11
+    ] + OOOO0O000OO0O0OO000OOOO[8]
+"]
+	"4_calls" [label="randint
+randint
+" shape=box]
+	4 -> "4_calls" [label=calls style=dashed]
+	5 [label="print(O0OO0000O0OO0O00OOO0OOO)
+OO00O0000000OO0000O0OO0 = O00O00O00000OO000O00OOO
+OO0OO0O0O0O00O0O00OO000 = [O00O00O00000OO000O00OOO, O00O00O00000OO000O00OOO]
+print(OO0OO0O0O0O00O0O00OO000)
+OOO00OO0O0OO00O0OO0O00O = ['a', 'b']
+print(OOO00OO0O0OO00O0OO0O00O)
+OOOO0O00OO0OO00000000O0 = {'ciao': 'ciao'}
+print(OOOO0O00OO0OO00000000O0)
+OOOO0O00OO0OO00000000O0 = {O00O00O00000OO000O00OOO: O00O00O00000OO000O00OOO}
+print(OOOO0O00OO0OO00000000O0)
+OO00O0000000OO0000O0OO0 = 'mamma'
+if OO00O0000000OO0000O0OO0 == 'mammaa':
+"]
+	"5_calls" [label="print
+print
+print
+print
+print
+" shape=box]
+	5 -> "5_calls" [label=calls style=dashed]
+	10 [label="print('caso 1')
+"]
+	"10_calls" [label=print
+ shape=box]
+	10 -> "10_calls" [label=calls style=dashed]
+	11 [label="print(OO00O0000000OO0000O0OO0)
+O0O000OO0OOO0OO0O000O0O = 'mamma'
+O0O000OO0OOO0OO0O000O0O = O0O000OO0OOO0OO0O000O0O[0] + O0O000OO0OOO0OO0O000O0O[
+    1]
+print(O0O000OO0OOO0OO0O000O0O)
+O0000O0000OO00O00OOO0OO = 'Kevin'
+O000OO00000OO0OO0OO0O00 = 0
+"]
+	"11_calls" [label="print
+print
+" shape=box]
+	11 -> "11_calls" [label=calls style=dashed]
+	13 [label="for OO0O0O00OOOOO00000O00O0 in range(0, 10):
+"]
+	14 [label="O0O000OO0OOO0OO0O000O0O = 'mamma'
+O000OO00000OO0OO0OO0O00 += OO0O0O00OOOOO00000O00O0
+"]
+	14 -> 13 [label=""]
+	13 -> 14 [label="range(0, 10)
+"]
+	15 [label="OO0O0O00OOOOO00000O00O0 = 10
+if OO0O0O00OOOOO00000O00O0 < 20:
+"]
+	16 [label="OO0O0OOO000000OOOO0OOOO = 3
+"]
+	17 [label="print(O0000O0000OO00O00OOO0OO, O000OO00000OO0OO0OO0O00)
+"]
+	"17_calls" [label=print
+ shape=box]
+	17 -> "17_calls" [label=calls style=dashed]
+	16 -> 17 [label=""]
+	15 -> 16 [label="OO0O0O00OOOOO00000O00O0 < 20
+"]
+	15 -> 17 [label="(OO0O0O00OOOOO00000O00O0 >= 20)
+"]
+	13 -> 15 [label=""]
+	11 -> 13 [label=""]
+	10 -> 11 [label=""]
+	5 -> 10 [label="OO00O0000000OO0000O0OO0 == 'mammaa'
+"]
+	12 [label="OO00O0000000OO0000O0OO0 = 10
+"]
+	12 -> 11 [label=""]
+	5 -> 12 [label="(OO00O0000000OO0000O0OO0 != 'mammaa')
+"]
+	4 -> 5 [label=""]
+	2 -> 4 [label="7 + OOOO0O000OO0O0OO000OOOO[4] ^ 2 - 1 != OOOO0O000OO0O0OO000OOOO[5] ^ 2
+"]
+	6 [label="OOOO0O000OO0O0OO000OOOO[2] = randint(0, 100)
+OOOO0O000OO0O0OO000OOOO[5] = randint(0, 10) * OOOO0O000OO0O0OO000OOOO[11
+    ] + OOOO0O000OO0O0OO000OOOO[8]
+if (OOOO0O000OO0O0OO000OOOO[4] ^ 3 - OOOO0O000OO0O0OO000OOOO[4]) % 3 == 0:
+"]
+	"6_calls" [label="randint
+randint
+" shape=box]
+	6 -> "6_calls" [label=calls style=dashed]
+	7 [label="OOOO0O000OO0O0OO000OOOO[5] = OOOO0O000OO0O0OO000OOOO[1
+    ] * OOOO0O000OO0O0OO000OOOO[4] % OOOO0O000OO0O0OO000OOOO[11
+    ] + OOOO0O000OO0O0OO000OOOO[6] % OOOO0O000OO0O0OO000OOOO[5]
+OOOO0O000OO0O0OO000OOOO[14] = randint(0, 100)
+OOOO0O000OO0O0OO000OOOO[4] = randint(0, 10) * OOOO0O000OO0O0OO000OOOO[11
+    ] + OOOO0O000OO0O0OO000OOOO[8]
+"]
+	"7_calls" [label="randint
+randint
+" shape=box]
+	7 -> "7_calls" [label=calls style=dashed]
+	7 -> 5 [label=""]
+	6 -> 7 [label="(OOOO0O000OO0O0OO000OOOO[4] ^ 3 - OOOO0O000OO0O0OO000OOOO[4]) % 3 == 0
+"]
+	9 [label="OOOO0O000OO0O0OO000OOOO[2] = randint(0, 100)
+OOOO0O000OO0O0OO000OOOO[5] = randint(0, 10) * OOOO0O000OO0O0OO000OOOO[11
+    ] + OOOO0O000OO0O0OO000OOOO[8]
+"]
+	"9_calls" [label="randint
+randint
+" shape=box]
+	9 -> "9_calls" [label=calls style=dashed]
+	9 -> 5 [label=""]
+	6 -> 9 [label="((OOOO0O000OO0O0OO000OOOO[4] ^ 3 - OOOO0O000OO0O0OO000OOOO[4]) % 3 != 0)
+"]
+	2 -> 6 [label="(7 + OOOO0O000OO0O0OO000OOOO[4] ^ 2 - 1 == OOOO0O000OO0O0OO000OOOO[5] ^ 2)
+"]
+	1 -> 2 [label=True
+]
+}

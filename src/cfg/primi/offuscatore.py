@@ -788,7 +788,7 @@ def main():
     out = opaque_predicate(out)
 
     # Call 'encoding_literal_data()' function
-    out = encoding_literal_data(out)
+    #out = encoding_literal_data(out)
 
     # Call 'obfuscate_variables()' function
     out = obfuscate_variables(out)

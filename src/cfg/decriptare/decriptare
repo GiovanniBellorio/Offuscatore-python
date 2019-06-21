@@ -1,0 +1,52 @@
+digraph "clusterdecriptare.py" {
+	graph [label="decriptare.py"]
+	1 [label="\"\"\"
+Nome file: 20111011_01_Decriptare.py
+Descrizione: Algoritmo per decriptare un messaggio criptato
+\"\"\"
+nome_programma = 'Decriptare.py'
+print('Inizio esecuzione ' + nome_programma)
+s = 1
+messOut = input('Inserire un messaggio criptato: ')
+messIn = ''
+i = 0
+lenMessOut = len(messOut)
+"]
+	"1_calls" [label="print
+input
+len
+" shape=box]
+	1 -> "1_calls" [label=calls style=dashed]
+	2 [label="while s < 256:
+"]
+	3 [label="while i < lenMessOut:
+"]
+	5 [label="messIn = messIn + chr((ord(messOut[i]) - s) % 256)
+i = i + 1
+"]
+	"5_calls" [label=chr
+ shape=box]
+	5 -> "5_calls" [label=calls style=dashed]
+	5 -> 3 [label=""]
+	3 -> 5 [label="i < lenMessOut
+"]
+	6 [label="messIn += '\n'
+i = 0
+s = s + 1
+"]
+	6 -> 2 [label=""]
+	3 -> 6 [label="(i >= lenMessOut)
+"]
+	2 -> 3 [label="s < 256
+"]
+	4 [label="print(\"Il messaggio decriptato e': \" + messIn)
+print('Fine esecuzione')
+"]
+	"4_calls" [label="print
+print
+" shape=box]
+	4 -> "4_calls" [label=calls style=dashed]
+	2 -> 4 [label="(s >= 256)
+"]
+	1 -> 2 [label=""]
+}

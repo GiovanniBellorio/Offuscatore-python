@@ -1,0 +1,116 @@
+digraph "clusterprimi.py_OBFUSCATED.py" {
+	graph [label="primi.py_OBFUSCATED.py"]
+	1 [label="from random import randint
+from random import SystemRandom
+O00OOO000O0000OO0OOOOO0 = 10
+OO0O00O000O00OOOOO0O00O = [36, 58, 1, 46, 23, 5, 16, 65, 2, 41, 2, 7, 1, 37,
+    0, 11, 16, 2, 21, 16]
+OO00O000O00000O00O0O000 = 'Il crivello di eratostele.py'
+print('Inizio esecuzione ' + OO00O000O00000O00O0O000)
+if OO0O00O000O00OOOOO0O00O[3] % OO0O00O000O00OOOOO0O00O[5
+"]
+	"1_calls" [label=print
+ shape=box]
+	1 -> "1_calls" [label=calls style=dashed]
+	2 [label="OO0O00O000O00OOOOO0O00O[5] = OO0O00O000O00OOOOO0O00O[1
+    ] * OO0O00O000O00OOOOO0O00O[4] % OO0O00O000O00OOOOO0O00O[11
+    ] + OO0O00O000O00OOOOO0O00O[6] % OO0O00O000O00OOOOO0O00O[5]
+OO0O00O000O00OOOOO0O00O[14] = randint(0, 100)
+OO0O00O000O00OOOOO0O00O[4] = randint(0, 10) * OO0O00O000O00OOOOO0O00O[11
+    ] + OO0O00O000O00OOOOO0O00O[8]
+OO0O0O0O00O0OO00OO0O00O = (OO0O00O000O00OOOOO0O00O[4] +
+    OO0O00O000O00OOOOO0O00O[7] + OO0O00O000O00OOOOO0O00O[10]
+    ) % OO0O00O000O00OOOOO0O00O[11]
+O0OOOOOOO0OO0O00O000OO0 = OO0O0O0O00O0OO00OO0O00O + OO0O00O000O00OOOOO0O00O[3
+    ] % OO0O00O000O00OOOOO0O00O[5]
+OO0OO0O00000O0O00O00O0O = OO0O0O0O00O0OO00OO0O00O * O0OOOOOOO0OO0O00O000OO0
+"]
+	"2_calls" [label="randint
+randint
+" shape=box]
+	2 -> "2_calls" [label=calls style=dashed]
+	3 [label="O00000O0O0000O0000O00O0 = int(input(
+    'Numeri primi inferiori ad n (n maggiore di 2): '))
+if OO0O00O000O00OOOOO0O00O[3] % OO0O00O000O00OOOOO0O00O[5
+"]
+	"3_calls" [label=int
+ shape=box]
+	3 -> "3_calls" [label=calls style=dashed]
+	4 [label="OO0O00O000O00OOOOO0O00O[5] = OO0O00O000O00OOOOO0O00O[1
+    ] * OO0O00O000O00OOOOO0O00O[4] % OO0O00O000O00OOOOO0O00O[11
+    ] + OO0O00O000O00OOOOO0O00O[6] % OO0O00O000O00OOOOO0O00O[5]
+OO0O00O000O00OOOOO0O00O[14] = randint(0, 100)
+OO0O00O000O00OOOOO0O00O[4] = randint(0, 10) * OO0O00O000O00OOOOO0O00O[11
+    ] + OO0O00O000O00OOOOO0O00O[8]
+OO0O0O0O00O0OO00OO0O00O = (OO0O00O000O00OOOOO0O00O[4] +
+    OO0O00O000O00OOOOO0O00O[7] + OO0O00O000O00OOOOO0O00O[10]
+    ) % OO0O00O000O00OOOOO0O00O[11]
+O0OOOOOOO0OO0O00O000OO0 = OO0O0O0O00O0OO00OO0O00O + OO0O00O000O00OOOOO0O00O[3
+    ] % OO0O00O000O00OOOOO0O00O[5]
+OO0OO0O00000O0O00O00O0O = OO0O0O0O00O0OO00OO0O00O * O0OOOOOOO0OO0O00O000OO0
+"]
+	"4_calls" [label="randint
+randint
+" shape=box]
+	4 -> "4_calls" [label=calls style=dashed]
+	5 [label="OOO000O0O0OO0O0OO00O000 = []
+"]
+	6 [label="for i in range(2, O00000O0O0000O0000O00O0):
+"]
+	7 [label="O0OO0OOOOOOOO00OOOO0OOO = True
+"]
+	9 [label="for j in range(2, i):
+"]
+	10 [label="if i % j == 0:
+"]
+	12 [label="O0OO0OOOOOOOO00OOOO0OOO = False
+"]
+	12 -> 9 [label=""]
+	10 -> 12 [label="i % j == 0
+"]
+	10 -> 9 [label="(i % j != 0)
+"]
+	9 -> 10 [label="range(2, i)
+"]
+	11 [label="if O0OO0OOOOOOOO00OOOO0OOO:
+"]
+	14 [label="OOO000O0O0OO0O0OO00O000.append(i)
+"]
+	"14_calls" [label="OOO000O0O0OO0O0OO00O000.append
+" shape=box]
+	14 -> "14_calls" [label=calls style=dashed]
+	14 -> 6 [label=""]
+	11 -> 14 [label=O0OO0OOOOOOOO00OOOO0OOO
+]
+	11 -> 6 [label="(not O0OO0OOOOOOOO00OOOO0OOO)
+"]
+	9 -> 11 [label=""]
+	7 -> 9 [label=""]
+	6 -> 7 [label="range(2, O00000O0O0000O0000O00O0)
+"]
+	8 [label="print('I numeri primi inferiori a ' + str(O00000O0O0000O0000O00O0) + ' sono:')
+print(OOO000O0O0OO0O0OO00O000)
+print('Fine esecuzione')
+"]
+	"8_calls" [label="print
+print
+print
+" shape=box]
+	8 -> "8_calls" [label=calls style=dashed]
+	6 -> 8 [label=""]
+	5 -> 6 [label=""]
+	4 -> 5 [label=""]
+	3 -> 4 [label="OO0O00O000O00OOOOO0O00O[3] % OO0O00O000O00OOOOO0O00O[5
+    ] == OO0O00O000O00OOOOO0O00O[2]
+"]
+	3 -> 5 [label="(OO0O00O000O00OOOOO0O00O[3] % OO0O00O000O00OOOOO0O00O[5] !=
+    OO0O00O000O00OOOOO0O00O[2])
+"]
+	2 -> 3 [label=""]
+	1 -> 2 [label="OO0O00O000O00OOOOO0O00O[3] % OO0O00O000O00OOOOO0O00O[5
+    ] == OO0O00O000O00OOOOO0O00O[2]
+"]
+	1 -> 3 [label="(OO0O00O000O00OOOOO0O00O[3] % OO0O00O000O00OOOOO0O00O[5] !=
+    OO0O00O000O00OOOOO0O00O[2])
+"]
+}
