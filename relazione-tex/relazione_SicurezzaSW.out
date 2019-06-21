@@ -9,5 +9,6 @@
 \BOOKMARK [0][-]{chapter.3}{Offuscatore per Python}{}% 9
 \BOOKMARK [1][-]{section.3.1}{Scelte progettuali}{chapter.3}% 10
 \BOOKMARK [1][-]{section.3.2}{Algoritmo e codice}{chapter.3}% 11
-\BOOKMARK [0][-]{chapter.4}{Esempio di funzionamento}{}% 12
-\BOOKMARK [0][-]{chapter.4}{Bibliografia}{}% 13
+\BOOKMARK [2][-]{subsection.3.2.1}{Codice di Layout Obfuscation}{section.3.2}% 12
+\BOOKMARK [0][-]{chapter.4}{Esempio di funzionamento}{}% 13
+\BOOKMARK [0][-]{chapter.4}{Bibliografia}{}% 14

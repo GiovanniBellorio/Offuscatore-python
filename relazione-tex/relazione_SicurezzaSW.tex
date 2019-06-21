@@ -7,9 +7,37 @@
 \usepackage[swapnames]{frontespizio}
 \usepackage[italian]{babel}
 \usepackage{amsfonts,amsmath,amssymb,graphicx,amsthm}
+\usepackage{listings}
+\usepackage[framemethod=TikZ]{mdframed}
+\usepackage{color}
 
+\definecolor{light-gray}{gray}{0.95}
 
+%% Generic use box with grey background
+\newmdenv[%
+	backgroundcolor=light-gray,
+	roundcorner=5pt,
+	leftmargin=1,
+	rightmargin=1,
+	innerleftmargin=15, 
+	innertopmargin=5,
+	innerbottommargin=5,
+	outerlinewidth=1,
+	linecolor=light-gray,
+]{graybox}
 
+\lstset
+{	language=Python,
+	basicstyle=\small\ttfamily,
+	keywordstyle=\color{red},
+	commentstyle=\color{blue}, 
+	tabsize=2, 
+	frame=none,
+	showstringspaces=false,
+	basicstyle=\fontsize{9}{9}\selectfont,
+	columns=fullflexible,
+	captionpos=b,
+}
 \begin{document}
 
 \begin{frontespizio}
@@ -226,6 +254,80 @@ Vulnerabile all'analisi dinamica
 \section{Scelte progettuali}\label{offuscatore_scelte}
 
 \section{Algoritmo e codice}\label{offuscatore_algo}
+Viene ora presentato il codice che implementa l'offuscatore.\medskip
+
+Il codice sorgente è composto da  un metodo \texttt{main()} che rappresenta l'entry point del nostro programma e da una serie di funzioni e metodi che vengono invocate all'interno di tale metodo per svolgere le funzioni di offuscamento.
+\begin{graybox}[innerleftmargin=2,]
+\begin{lstlisting}
+def main():
+
+    print("-----------------------------------")
+    print("OBFUSCATION STARTED\n")
+
+    name_src = sys.argv[1]  # name of the source file, passed as argument
+    name_dest = name_src+"_OBFUSCATED.py"  # name of the destination file
+
+    file_SRC = open(name_src, "r")
+    file_DEST = open(name_dest, "w")
+
+    # Call 'remove_comments_and_docstrings()' function on the source file object
+    # which it is first converted to a string through the read() method.
+    # 'out' contains a string with the entire code
+    out = remove_comments_and_docstrings(file_SRC.read())   
+
+    # Call 'opaque_predicate()' function
+    out = opaque_predicate(out)
+
+    # Call 'encoding_literal_data()' function
+    out = encoding_literal_data(out)
+
+    # Call 'obfuscate_variables()' function
+    out = obfuscate_variables(out)
+    
+    # Call 'obfuscate_functions()' function
+    out = obfuscate_functions(out)
+
+    # Write the result into file_DEST
+    file_DEST.write(out)
+    file_DEST.close()
+    file_SRC.close()
+
+    print("\nOBFUSCATION ENDED")
+    print("-----------------------------------")
+
+
+if __name__ == '__main__':
+    main()
+\end{lstlisting}
+\end{graybox}
+
+All'inizio dell'esecuzione del programma, viene letto il nome del file contenente il software Python da offuscare e salvato nella variabile \texttt{name\_src}: questa informazione deve essere passata come argomento di input all'offuscatore, con una sintassi del tipo:
+\begin{graybox}
+\begin{lstlisting}[language=bash,basicstyle=\fontsize{10}{9}\selectfont,]
+python3  		offuscatore.py 	<nome_file_da_offuscare>.py
+\end{lstlisting}
+\end{graybox}
+\noindent dove \texttt{offuscatore.py} è il nome dell' offuscatore e \texttt{<nome\_file\_da\_offuscare>} è il nome del file di input.
+
+Successivamente viene aperto in sola lettura il file sorgente (variabile \texttt{file\_SRC}) e viene creato un nuovo file, chiamato come il precedente file di input ma con l'aggiunta della suffisso ``OBFUSCATED''  e salvato nella variabile \texttt{file\_DEST}: esso rappresenta l'output del nostro programma cioè il software offuscato.\smallskip
+
+\noindent In seguito vengono chiamate in sequenza le seguenti funzioni:
+\begin{itemize}
+\item
+\textbf{remove\_comments\_and\_docstrings()}: esegue un \emph{layout obfuscation} rimuovendo i commenti e la documentazione;
+\item
+\textbf{opaque\_predicate()}: esegue un \emph{control flow obfuscation}, inserendo predicati opachi; 
+\item
+\textbf{encoding\_literal\_data()}: esegue un \emph{data obfuscation}, codificando stringhe, array e interi;
+\item
+\textbf{obfuscate\_variables()}: esegue un \emph{layout obfuscation}, rinominando i nomi di variabili;
+  \item
+\textbf{obfuscate\_functions()}: esegue un \emph{layout obfuscation}, rinominando i nomi di funzione e il relativo ``corpo''.
+\end{itemize}
+Ognuna di queste funzioni riceve in input il programma (variabile \texttt{out}) trasformato dalla funzione di offuscamento precedente, vi applica un certo insieme di trasformazioni offuscanti e successivamente restituisce un output trasformato, che viene poi dato in input alla funzione di offuscamento successiva.\smallskip
+
+Alla fine del metodo \texttt{main()}, viene scritto nel file di output il programma offuscato  e vengono chiusi i file di input e output precedentemente aperti.
+\subsection{Codice di Layout Obfuscation}
 
 
 %% ESEMPIO

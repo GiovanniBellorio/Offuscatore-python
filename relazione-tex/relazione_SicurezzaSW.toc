@@ -16,5 +16,6 @@
 \contentsline {chapter}{\numberline {3}{Offuscatore per Python}}{8}{chapter.3}
 \contentsline {section}{\numberline {3.1}{Scelte progettuali}}{8}{section.3.1}
 \contentsline {section}{\numberline {3.2}{Algoritmo e codice}}{8}{section.3.2}
-\contentsline {chapter}{\numberline {4}{Esempio di funzionamento}}{9}{chapter.4}
-\contentsline {chapter}{Bibliografia}{9}{chapter.4}
+\contentsline {subsection}{\numberline {3.2.1}{Codice di Layout Obfuscation}}{9}{subsection.3.2.1}
+\contentsline {chapter}{\numberline {4}{Esempio di funzionamento}}{10}{chapter.4}
+\contentsline {chapter}{Bibliografia}{10}{chapter.4}
