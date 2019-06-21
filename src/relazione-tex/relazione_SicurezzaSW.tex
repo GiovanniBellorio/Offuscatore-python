@@ -1,0 +1,242 @@
+% !TEX encoding = UTF-8
+\documentclass[a4paper,oneside,openright,titlepage,10pt,footinclude,headinclude]{scrbook}
+\usepackage[T1]{fontenc}
+\usepackage[parts]{classicthesis}
+\usepackage{hyperref}
+\usepackage[utf8]{inputenc}
+\usepackage[swapnames]{frontespizio}
+\usepackage[italian]{babel}
+\usepackage{amsfonts,amsmath,amssymb,graphicx,amsthm}
+
+
+
+\begin{document}
+
+\begin{frontespizio}
+\Universita{Verona}
+\Facolta{Scienze Matematiche, Fisiche e Naturali}
+\Corso[Laurea Magistrale]{Ingegneria e Scienze Informatiche}
+\Titoletto {Progetto corso Sicurezza del Software}
+\Titolo {Offuscatore per il linguaggio Python}
+\Candidato[VR419955]{Giovanni Bellorio}
+\Candidato[VR424301]{Kevin Costa}
+\Candidato[VR420117]{Alessandro Cosma}
+\Annoaccademico{2018-2019}
+\end{frontespizio}
+
+\tableofcontents
+
+%% INTRODUZIONE
+\chapter{Introduzione}\label{introduzione}
+
+Lo scopo di questo progetto è realizzare un offuscatore per il linguaggio Python. Il programma che implementa l'offuscatore sarà realizzato anch'esso in Python e prenderà in considerazione le seguenti tipologie di offuscamento del codice:
+\begin{itemize}
+\item
+\textbf{Layout obfuscation}
+\item
+\textbf{Data obfuscation}
+\item
+\textbf{Control Flow obfuscation}
+\end{itemize}
+Nel capitolo \ref{background} daremo una panoramica generale sui concetti legati all'offuscamento del codice, spiegando cos'è formalmente un offuscatore, quali sono le sue carateristiche, i suoi pregi e i suoi difetti, infine spiegheremo nel dettaglio le varie tecniche di offuscamento che andremo ad utilizzare.
+
+Nel capitolo \ref{offuscatore} verrà presentato il nostro programma per l'offuscamento del codice. Elencheremo le varie scelte progettuali effettuate in fase di progettazione (\ref{offuscatore_scelte}) e successivamente presenteremo passo passo il codice che implementa l'algoritmo (\ref{offuscatore_algo}). 
+
+Infine, nel capitolo \ref{esempio}	mostreremo un semplice esempio del suo fuzionamento accompagnato da alcuni test.
+
+%% BACKGROUND
+\chapter{Background}\label{background}
+
+Quando si considera un software sviluppato e distribuito, la maggior parte del suo ``know-how'' risiede nel prodotto stesso. Risulta quindi essenziale la protezione del suo codice e della sua proprietà intellettuale. \medskip
+
+
+Attacchi di \emph{reverse-engineering} hanno l'obiettivo di attuare analisi statiche e dinamiche del codice, al fine di capire il funzionamento interno di un programma proprietario di interesse. La protezione è necessaria ad ogni livello di funzionamento del programma, a partire dal codice sorgente, fino ad arrivare al codice macchina, passando anche per le informazioni di interesse che il programma da proteggere scambia con l'ambiente di esecuzione.\medskip
+
+\noindent Esistono varie tecniche di protezione del codice con differenti obiettivi:
+\begin{itemize}
+\item
+\emph{Misure legali}: leggi, copiright, patenti, brevetti e licenze ideate per proteggere la ``forma'' e l'idea di un programma.
+\item
+\emph{Offuscamento}: rendere difficile il reverse-engineering del programma.
+\item
+\emph{Watermarking del software}: inserire una firma o un riconoscimento contro il furto del programma.
+\item
+\emph{Tamper-proofing}: rilevare violazioni contro l'integrità del codice o modifiche illegali.
+\end{itemize}
+
+Essendo il nostro progetto mirato alla realizzazione di un offuscatore per codice Python, descriveremo ora in dettaglio il concetto di offuscatore e presenteremo alcune delle principali tecniche utilizzate. 
+
+\section{Offuscatore}
+
+Sia:  
+\begin{center}
+$P \xrightarrow{T} P^{'}$
+\end{center}
+una trasformazione di un programma sorgente $P$ in un programma $P^{'}$
+con $P, P^{'} \in Programs$, cioè l'insieme dei programmi.\medskip
+
+
+\noindent $P \xrightarrow{T} P^{'}$ è una trasformazione di offuscamento se $P$ e  $P^{'}$ hanno lo stesso \emph{comportamento osservabile}.
+
+Più precisamente, affinchè $P \xrightarrow{T} P^{'}$ sia una trasformazione di offuscamento legale, devono valere le seguenti condizioni:
+\begin{enumerate}
+\item
+Se $P$ non riesce a terminare o termina in una condizione di errore, allora $P^{'}$ può o non può terminare.
+\item
+Altrimenti, $P^{'}$ deve terminare e produrre lo stesso output di $P$.
+\end{enumerate}
+
+Il \emph{livello di sicurezza} rispetto al reverse-engineering che un offuscatore aggiunge  ad un dato programma dipende da vari fattori: raffinatezza della trasformazione di offuscamento, potenza del deoffuscatore, quantità di risorse  (tempo e memoria) disponibili al deoffuscatore.\\
+
+\subsection{Impossibilità di offuscare un programma}
+
+Una trasformazione di offuscamento non potrà mai proteggere completamente un programma.
+Fred Cohen, il primo ad introdurre la diversità dei programmi come difesa contro gli attacchi automatici ai sistemi operativi, affermava che: \smallskip
+
+\textit{“Any protection scheme other than a physical one depends on the operation of a finite state machine, and ultimately, any finite state machine can be examined and modified at will, given enough time and effort. The best we can ever do is delay the attack by increasing the complexity of making desired alterations (security through obscurity)”}\smallskip
+
+[inserire risultati paper ``On the impossibility of code obfuscation'']
+
+
+\subsection{Valutare le trasformazioni offuscanti}
+Una trasformazione offuscante è valutate in base alle seguenti proprietà:
+\begin{itemize}
+\item
+\textbf{Potenza}: quanto più difficile è comprendere il codice offuscato rispetto a quello originale.
+\item
+\textbf{Resilienza}: misura quanto una trasformazione regge l'attacco di un deoffuscatore automatico.
+\item
+\textbf{Costo}: misura quanto overhead computazionale (tempo e spazio) viene aggiunge all'applicazione offuscata.
+\item
+\textbf{Furtività}: misura quanto bene il codice nuovo introdotto con la trasformazione si integra con il codice originale.
+\end{itemize}
+
+\paragraph{Potenza} 
+Sia $T$ una trasformazione che preserva il comportamento, tale che $P \xrightarrow{T} P^{'}$ trasfroma un programma $P$ in un programma $P^{'}$. Sia $E(P)$ la complessità di $P$.\smallskip
+
+
+$T_{pot}(P)$, la potenza di $T$ rispetto ad un programma $P$, è una  misura del grado con cui $T$ cambia la complessità di $P$.
+
+\begin{center}
+$T_{pot}(P) = E(P^{'}) / E(P) - 1$
+\end{center}
+ 
+ $T$ è una \emph{trasformazione di offuscamento potente} se $T_{pot}(P) > 0$.
+ 
+ \paragraph{Resilienza} 
+Sia $T$ una trasformazione che preserva il comportamento, tale che $P \xrightarrow{T} P^{'}$ trasfroma un programma $P$ in un programma $P^{'}$.  $T_{res}(P)$ è la \emph{resilienza} di $T$ rispetto ad un programma $P$. \smallskip
+
+ $T_{res}(P) = one-way$ se l'informazione è rimossa da $P$ tale che $P$ non può essere ricostruito da $P^{'}$. \smallskip
+
+\begin{center}
+$T_{res} = Resilience(T_{Deobfuscator\_effort}, T_{Programmer\_effort})$ 
+\end{center}
+
+
+\paragraph{Costo}
+Il costo di una trasformazione offuscante è il tempo di esecuzione (o la quantità di spazio occupato) del programma offuscato rispetto a quello originale.\smallskip
+
+\noindent $T_{cost}(P)$, cioè il costo di un programma P, può essere classificato su una scala di quattro punti come segue:
+\begin{itemize}
+\item
+\textbf{caro}: se l'esecuzione di $P^{'}$ richiede esponenzialmente più risorse di $P$.
+ \item
+\textbf{costoso}: se l'esecuzione di $P^{'}$ richiede $O(n^{p}), p>1$ risorse più di $P$.
+ \item
+\textbf{economico}: se l'esecuzione di $P^{'}$ richiede $O(n)$ risorse più di $P$.
+ \item
+\textbf{gratuito}: se l'esecuzione di $P^{'}$ richiede $O(1)$ risorse più di $P$.
+\end{itemize}
+
+
+ \paragraph{Furtivita}
+ Mentre una trasformazione resiliente potrebbe non essere suscettibile agli attacchi di deoffuscatori automatici, potrebbe comunque essere suscettibile agli attacchi degli umani.
+ 
+In particolare, se una trasformazione introduce un nuovo codice che differisce ampiamente da ciò che è presente nel programma originale, sarà facile individuare per un reverse engineer. Tali trasformazioni non sono furtive (a.k.a. \emph{unstealthy}).
+
+La furtività è una nozione sensibile al contesto. Il codice può essere nascosto in un programma ma estremamente visibile in un altro.\\
+
+\section{Tecniche di offuscamento del codice}
+In questa sezione andremo a descrivere a livello teorico le tecniche di offuscamento che saranno utilizzate successivamente all'interno del nostro offuscatore.
+
+\subsection{Layout Obfuscation}
+L'obiettivo del \emph{Layout Obfuscation} è cambiare o rimuove le informazioni utili dal codice senza influire sulle istruzioni reali.\medskip
+
+
+\noindent Tecniche principali utilizzate per questo tipo di offuscamento:
+\begin{itemize}
+\item
+\textbf{Rimozione commenti}: vengono rimossi i commenti e i docstring presenti nel codice.
+\item
+\textbf{Rinominazione degli identificatori }: i nuovi nomi possono utilizzare diversi schemi, numeri, caratteri non stampabili o caratteri invisibili. Inoltre i nomi possono essere riutilizzati, purchè usati in ambiti diversi.
+\end{itemize}
+
+\noindent Queste sono trasformazioni \emph{one-way} in quanto la formattazione originale non può essere ripristinata.\medskip
+
+Vantaggi: 
+\begin{itemize}
+\item[-]
+potente contro l'attacco umano
+\item[-]
+per quanto riguarda i costi è gratuito.
+\item[-]
+è molto utile per offuscare \emph{authorship} del codice.
+\end{itemize}
+
+Svantaggi:
+\begin{itemize}
+\item[-]
+Ha una bassa potenza, in quanto nella formattazione c'è poco contenuto semantico. 
+\end{itemize}
+
+
+\subsection{Control Flow Obfuscation}
+Il \emph{Control Flow Obfuscation} trasforma un control-flow ben strutturato di un programma eseguibile in una struttura difficile da analizzare da un programma che rileva le trasformazioni del control-flow. Tale offuscamento può ostruire e fermare gli attacchi statici al control-flow del codice eseguibile sotto attacchi di tipo white-box. Questa tecnica costringe l'attaccante ad eseguire attacchi dinamici per ottenere il control-flow, in questo modo diventa molto più difficile da ottenere e aumenta significativamente lo sforzo dell'attacco.
+
+\noindent Tecniche principali utilizzate per questo tipo di offuscamento:
+\begin{itemize}
+\item
+\textbf{Predicati opachi}: sono espressioni di valore booleano per le quali il difensore sa se restituiranno true, false o talvolta true e talvolta false
+\item
+\textbf{CFG Riducibili}: sono grafi che possono essere ridotti a un singolo nodo mediante una sequenza di applicazioni di due regole
+\item
+\textbf{Predicati opachi dinamici}: una famiglia di predicati opachi correlati, che valutano tutti lo stesso risultato ad ogni esecuzione, ma in diverse esecuzioni possono valutare risultati diversi
+\end{itemize}
+
+Vantaggi: 
+\begin{itemize}
+\item[-]
+potente contro l'analisi statica
+\item[-]
+difficili da valutare dall'attaccante per la complessità esponenziale
+\item[-]
+è molto utile per offuscare \emph{authorship} del codice.
+\end{itemize}
+
+Svantaggi:
+\begin{itemize}
+\item[-]
+Vulnerabile all'analisi dinamica 
+\end{itemize}
+ 
+
+%% OFFUSCATORE
+\chapter{Offuscatore per Python}\label{offuscatore}
+
+\section{Scelte progettuali}\label{offuscatore_scelte}
+
+\section{Algoritmo e codice}\label{offuscatore_algo}
+
+
+%% ESEMPIO
+\chapter{Esempio di funzionamento}\label{esempio}
+
+
+% BIBLIOGRAFIA
+\addcontentsline{toc}{chapter}{\bibname}
+\begin{thebibliography}{9}
+
+\end{thebibliography}
+
+
+\end{document}

@@ -1,0 +1,13 @@
+\BOOKMARK [0][-]{chapter.1}{Introduzione}{}% 1
+\BOOKMARK [0][-]{chapter.2}{Background}{}% 2
+\BOOKMARK [1][-]{section.2.1}{Offuscatore}{chapter.2}% 3
+\BOOKMARK [2][-]{subsection.2.1.1}{Impossibilit\340 di offuscare un programma}{section.2.1}% 4
+\BOOKMARK [2][-]{subsection.2.1.2}{Valutare le trasformazioni offuscanti}{section.2.1}% 5
+\BOOKMARK [1][-]{section.2.2}{Tecniche di offuscamento del codice}{chapter.2}% 6
+\BOOKMARK [2][-]{subsection.2.2.1}{Layout Obfuscation}{section.2.2}% 7
+\BOOKMARK [2][-]{subsection.2.2.2}{Control Flow Obfuscation}{section.2.2}% 8
+\BOOKMARK [0][-]{chapter.3}{Offuscatore per Python}{}% 9
+\BOOKMARK [1][-]{section.3.1}{Scelte progettuali}{chapter.3}% 10
+\BOOKMARK [1][-]{section.3.2}{Algoritmo e codice}{chapter.3}% 11
+\BOOKMARK [0][-]{chapter.4}{Esempio di funzionamento}{}% 12
+\BOOKMARK [0][-]{chapter.4}{Bibliografia}{}% 13

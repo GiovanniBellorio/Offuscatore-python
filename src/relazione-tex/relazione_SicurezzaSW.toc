@@ -1,0 +1,20 @@
+\vspace {-\cftbeforepartskip }
+\babel@toc {italian}{}
+\babel@toc {italian}{}
+\contentsline {chapter}{\numberline {1}{Introduzione}}{3}{chapter.1}
+\contentsline {chapter}{\numberline {2}{Background}}{4}{chapter.2}
+\contentsline {section}{\numberline {2.1}{Offuscatore}}{4}{section.2.1}
+\contentsline {subsection}{\numberline {2.1.1}{Impossibilit\IeC {\`a} di offuscare un programma}}{5}{subsection.2.1.1}
+\contentsline {subsection}{\numberline {2.1.2}{Valutare le trasformazioni offuscanti}}{5}{subsection.2.1.2}
+\contentsline {paragraph}{{Potenza}}{5}{subsection.2.1.2}
+\contentsline {paragraph}{{Resilienza}}{5}{subsection.2.1.2}
+\contentsline {paragraph}{{Costo}}{5}{subsection.2.1.2}
+\contentsline {paragraph}{{Furtivita}}{6}{subsection.2.1.2}
+\contentsline {section}{\numberline {2.2}{Tecniche di offuscamento del codice}}{6}{section.2.2}
+\contentsline {subsection}{\numberline {2.2.1}{Layout Obfuscation}}{6}{subsection.2.2.1}
+\contentsline {subsection}{\numberline {2.2.2}{Control Flow Obfuscation}}{7}{subsection.2.2.2}
+\contentsline {chapter}{\numberline {3}{Offuscatore per Python}}{8}{chapter.3}
+\contentsline {section}{\numberline {3.1}{Scelte progettuali}}{8}{section.3.1}
+\contentsline {section}{\numberline {3.2}{Algoritmo e codice}}{8}{section.3.2}
+\contentsline {chapter}{\numberline {4}{Esempio di funzionamento}}{9}{chapter.4}
+\contentsline {chapter}{Bibliografia}{9}{chapter.4}
