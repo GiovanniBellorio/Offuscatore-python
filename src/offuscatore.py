@@ -159,14 +159,14 @@ def rename_values_Literal(tree, values):
 def mealy_machine(string_input):
     len_string_input = len(string_input)
 
-    # create states
+    # Create states
     iIdx = 0
     states = []
     for c in string_input:
         states.append('q'+str(iIdx))
         iIdx+=1
 
-    # create transitions
+    # Create transitions
     new_string_input = ''
     iIdx = 0
     transitions = {}
@@ -231,6 +231,8 @@ def array_permutation(a):
 
 
 def encoding_literal_data(out):
+
+    # Code for Mealy decoding
     class_mealy =   "#!/usr/bin/python\n\
 # -*- coding: utf-8 -*-\n\n\
 from random import randint\n\
@@ -251,6 +253,7 @@ class xxxxxMxxxxx(object):\n\
             current_state = self.xxtxxrxxaxxnxxsxxixxtxxixxoxxnxxsxx[current_state][x][0]\n\
         return output\n\n"
 
+    # Code for permutation encoding
     def_encoding_integer = "class xxxxxExxxxx():\n\
     def integer(self,digits):\n\
         num = 0\n\
@@ -260,6 +263,10 @@ class xxxxxMxxxxx(object):\n\
             moltiplicatore *= 10\n\
         return num\n\n"
 
+    """
+        Returns 'source' with obfuscation of array with permutation, string with mealy machine and number with permutation.
+    """
+
     print("-> obfuscating variables: str (mealy), int (permutation), array (permutation) ")
 
     # Tree object contains the AST of the code
@@ -267,15 +274,17 @@ class xxxxxMxxxxx(object):\n\
     tree_split = astor.to_source(tree).split("\n")
     tree = ""
 
-    # indent tab
+    # Indent tab
     indent = ""
     tab = "    "
 
+    # For each row in code
     for subtree in tree_split:
         variables     = {}
         values        = {}
         new_values    = {}
         
+        # Count tab indent position
         indent = ""
 
         try:
@@ -294,8 +303,10 @@ class xxxxxMxxxxx(object):\n\
         # Extraction of all variables defined
         variables, values = get_variables_values_Literal(subtree)
 
-        # mealy_machine
+        # If string:
         if isAssignStr(subtree):
+
+            # start mealy_machine and save new value
             for value in values:
                 new_values[value], codice = mealy_machine(values[value])
 
@@ -305,12 +316,17 @@ class xxxxxMxxxxx(object):\n\
             for variable in variables:
                 variable = variable
 
+            # Decode function for mealy machine
             tree += indent + astor.to_source(subtree) + indent + variable + " = eval(" + variable + ").get_output_from_string('%s')" % codice + "\n"
 
-        # encoding_integer
+        # If integer:
         elif isAssignInt(subtree):
+
+            # Encoding integer
             for value in values:
                 num = values[value]
+
+                # Extract the digits of number
                 digits = []
 
                 if num == 0:
@@ -326,31 +342,39 @@ class xxxxxMxxxxx(object):\n\
             for variable in variables:
                 variable = variable
 
+            # Create permutation of digits
             a = new_values[variable]
             b, p = array_permutation(a)
 
+            # Decode function for permutation digits
             tree += indent + variable + " = " + str(b) + "\n"
             tree += indent + variable + "_ooo = " + str(p) + "\n"
             tree += indent + variable + " = " + "xxxxxExxxxx().integer([ " + variable + "[" + variable + "_ooo" + "[xxxxxxxxxxxx]] for xxxxxxxxxxxx in range(0, len(" + variable + ")) ])" + "\n"
 
-        # encoding_list
+        # If array:
         elif isAssignList(subtree):
+
+            # Encoding list
             for value in values:
                 a = values[value]
 
             for variable in variables:
                 variable = variable
 
+            # Create permutation of position array
             b, p = array_permutation(a)
 
+            # Decode funcyion for permutation position
             tree += indent + variable + " = " + str(b) + "\n"
             tree += indent + variable + "_ooo = " + str(p) + "\n"
             tree += indent + variable + " = " + "[ " + variable + "[" + variable + "_ooo" + "[xxxxxxxxxxxx]] for xxxxxxxxxxxx in range(0, len(" + variable + ")) ]" + "\n"
 
+        # Else:
         else:
 
             tree += indent + astor.to_source(subtree)
 
+    # Return definition class Mealy, function encoding for permutation and tree
     return class_mealy + def_encoding_integer + tree
 
 
@@ -495,6 +519,7 @@ def obfuscate_functions(out):
     """
         Returns 'source' with function def and call obfuscated.
     """
+
     print("-> obfuscating function definitions, body and call")
 
     # Tree object contains the AST of the code
@@ -588,9 +613,13 @@ def generate_sequence():
 
 
 def opaque_predicate(out):
+    """
+        Returns 'source' with opaque predicate.
+    """
+
     print("-> opaque_predicate")
 
-    # first opaque predicate
+    # Opaque predicate 1
     pred1 = "if(xxgxx[1] + xxgxx[1]^2) % 2 == 0:\n\
     xxgxx[5] = (xxgxx[1] * xxgxx[4]) % xxgxx[11] + xxgxx[6]% xxgxx[5]\n\
     xxgxx[14] = randint(0, 100)\n\
@@ -600,7 +629,8 @@ else: \n\
     xxgxx[5] = randint(0, 10) * xxgxx[11] + xxgxx[8]\n\
 #print(xxgxx)\n\
 "
-
+    
+    # Opaque predicate 2
     pred2 = "if(xxgxx[4]^3 - xxgxx[4]) % 3 == 0:\n\
     xxgxx[5] = (xxgxx[1] * xxgxx[4]) % xxgxx[11] + xxgxx[6]% xxgxx[5]\n\
     xxgxx[14] = randint(0, 100)\n\
@@ -611,6 +641,7 @@ else:\n\
 #print(xxgxx)\n\
 "
 
+    # Opaque predicate 3
     pred3 = "if(7+xxgxx[4]^2 - 1 != xxgxx[5]^2):\n\
     xxgxx[5] = (xxgxx[1] * xxgxx[4]) % xxgxx[11] + xxgxx[6]% xxgxx[5]\n\
     xxgxx[14] = randint(0, 100)\n\
@@ -620,6 +651,7 @@ else:\n\
     xxgxx[5] = randint(0, 10) * xxgxx[11] + xxgxx[8]\n\
 "
     
+    # Opaque predicate 4
     pred4 = "if(xxgxx[4]^xxnxx - xxgxx[5]^xxnxx % xxgxx[4] - xxgxx[5]):\n\
     xxgxx[5] = (xxgxx[1] * xxgxx[4]) % xxgxx[11] + xxgxx[6]% xxgxx[5]\n\
     xxgxx[14] = randint(0, 100)\n\
@@ -629,6 +661,7 @@ else:\n\
     xxgxx[5] = randint(0, 10) * xxgxx[11] + g[8]\n\
 "
 
+    # Opaque predicate 5
     pred5 = "if ((xxgxx[3] % xxgxx[5]) == xxgxx[2]):\n\
     #print('true!')\n\
     xxgxx[5] = (xxgxx[1] * xxgxx[4]) % xxgxx[11] + xxgxx[6]% xxgxx[5]\n\
@@ -642,17 +675,18 @@ else:\n\
 
     number = randint(1, 5)
     predicate = 'pred' + str(number)
-    # set a flag to False
+    # Set a flag to False
     flag = False
 
     # check a position where to insert the opaque predicate
     # the position is choiced randomly and it can't be insert
-    #  after a row that finish with ':'
+    # after a row that finish with ':'
     while (flag == False):
         try:
             pos = randint(0, int(len(out) / 2))
             if (out[pos] == '\n' and out[pos - 1] != ':' and out[pos - 1] != '\n'):
 
+                # Count tab indent position
                 out_split = out[:pos].split("\n")
                 for row in out_split:
 
@@ -666,12 +700,13 @@ else:\n\
                         else:
                             break
 
+                # Add indent to predicate
                 predicate_split = eval(predicate).split("\n")
                 predicate = ""
                 for line in predicate_split:
                     predicate += indent + line + "\n"
 
-                # insert the opaque predicate
+                # Insert the opaque predicate
                 out = out[:pos] + '\n' + predicate + out[pos:]
                 
                 pos += len(pred1) + 3
@@ -689,12 +724,13 @@ else:\n\
 
     # check a position where to insert the opaque predicate
     # the position is choiced randomly and it can't be insert
-    #  after a row that finish with ':'
+    # after a row that finish with ':'
     while (flag == False):
         try:
             pos = randint(0, int(len(out) / 2))
             if (out[pos] == '\n' and out[pos - 1] != ':' and out[pos - 1] != '\n'):
 
+                # Count tab indent position
                 out_split = out[:pos].split("\n")
                 for row in out_split:
 
@@ -708,12 +744,13 @@ else:\n\
                         else:
                             break
 
+                # Add indent to predicate
                 predicate_split = eval(predicate).split("\n")
                 predicate = ""
                 for line in predicate_split:
                     predicate += indent + line + "\n"
 
-                # insert the opaque predicate
+                # Insert the opaque predicate
                 out = out[:pos] + '\n' + predicate + out[pos:]
                 
                 pos += len(pred1) + 3
@@ -723,7 +760,7 @@ else:\n\
             # Output expected IndexErrors.
             print("string index out of range")
     
-
+    # Return out with library random and array of number for opaque predicate
     out = '''#from random import randint
 #from random import SystemRandom
 xxnxx = 10
