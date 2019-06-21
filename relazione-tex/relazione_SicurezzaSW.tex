@@ -327,7 +327,127 @@ Successivamente viene aperto in sola lettura il file sorgente (variabile \texttt
 Ognuna di queste funzioni riceve in input il programma (variabile \texttt{out}) trasformato dalla funzione di offuscamento precedente, vi applica un certo insieme di trasformazioni offuscanti e successivamente restituisce un output trasformato, che viene poi dato in input alla funzione di offuscamento successiva.\smallskip
 
 Alla fine del metodo \texttt{main()}, viene scritto nel file di output il programma offuscato  e vengono chiusi i file di input e output precedentemente aperti.
+
+
 \subsection{Codice di Layout Obfuscation}
+
+\subsubsection{remove\_comments\_and\_docstrings()}
+
+La prima funzione di layout obfuscation è \emph{remove\_comments\_and\_docstrings}.
+Questa funzione ha l'obiettivo di eliminare dal codice sorgente tutti i commenti  e tutte le stringhe relative alla documentazione del codice presenti al suo interno.
+\begin{graybox}[innerleftmargin=2,]
+\begin{lstlisting}
+def remove_comments_and_docstrings(source):
+    """
+    Returns 'source' minus comments and docstrings.
+    """
+
+    print("-> removing comments and docstrings")
+
+    io_obj = StringIO(source)
+    out = ""
+    prev_toktype = tokenize.INDENT
+    last_lineno = -1
+    last_col = 0
+    myline = ""
+    is_junk = False
+
+    for tok in tokenize.generate_tokens(io_obj.readline):
+        token_type = tok[0]
+        token_string = tok[1]
+        start_line, start_col = tok[2]
+        end_line, end_col = tok[3]
+        ltext = tok[4]
+        # The following two conditionals preserve indentation.
+        # This is necessary because we're not using tokenize.untokenize()
+        # (because it spits out code with copious amounts of oddly-placed
+        # whitespace).
+        if start_line > last_lineno:
+            last_col = 0
+        if start_col > last_col:
+            myline += (" " * (start_col - last_col))
+        # Remove comments:
+        if token_type == tokenize.COMMENT:
+            is_junk = True
+            pass
+        # This series of conditionals removes docstrings:
+        elif token_type == tokenize.STRING:
+            if prev_toktype != tokenize.INDENT:
+        # This is likely a docstring; double-check we're not inside an operator:
+                if prev_toktype != tokenize.NEWLINE:
+                    # Note regarding NEWLINE vs NL: The tokenize module
+                    # differentiates between newlines that start a new statement
+                    # and newlines inside of operators such as parens, brackes,
+                    # and curly braces.  Newlines inside of operators are
+                    # NEWLINE and newlines that start new code are NL.
+                    # Catch whole-module docstrings:
+                    if start_col > 0:
+                        # Unlabelled indentation means we're inside an operator
+                        myline += token_string
+                    # Note regarding the INDENT token: The tokenize module 
+                    # does not label indentation inside of an operator (parens,
+                    # brackets, and curly braces) as actual indentation.
+                    # For example:
+                    # def foo():
+                    #     "The spaces before this docstring are tokenize.INDENT"
+                    #     test = [
+                    #         "The spaces before this string do not get a token"
+                    #     ]
+                    else:
+                        is_junk = True
+                else:
+                    is_junk = True
+            else:
+                is_junk = True
+        else:
+            myline += token_string
+
+        if token_type == tokenize.NEWLINE or token_type == tokenize.NL:
+            if not (is_junk and re.match(r'^\s*$', myline)):
+                out += myline
+            myline = ""
+            is_junk = False
+
+        prev_toktype = token_type
+        last_col = end_col
+        last_lineno = end_line
+    return out
+\end{lstlisting}
+\end{graybox}
+Questa funzione sfrutta il modulo \texttt{tokenize} il quale  fornisce uno scanner lessicale per codice sorgente Python.
+Essa preserva l'indentazione del codice, essenziale per il corretto funzionamento di un programma Python, inoltre, ogni qual volta una  riga viene ``svuotata'' di tutti suoi token perchè non vi è presenta nessuna istruzione, quest'ultima viene eliminata dal codice per non lasciare inutili spazi vuoti.
+
+\subsubsection{obfuscate\_variables()}
+
+La seconda funzione che esegue il layout obfuscation è \emph{obfuscate\_variables}.
+
+\noindent Riportiamo il codice in seguito:
+\begin{graybox}[innerleftmargin=2,]
+\begin{lstlisting}
+def obfuscate_variables(out):
+    """
+        Returns 'source' with variables offuscated.
+    """
+
+    print("-> obfuscating variables")
+
+    # Tree object contains the AST of the code
+    tree = ast.parse(out)
+
+    # Extraction of all variables defined
+    variables = get_variables(tree)
+
+    # Choose new names
+    for variable in variables:
+        VARIABLES_DICT[variable] = random_sequence()
+
+    # Renomination of all variable occurrences
+    tree = rename_variables(tree, VARIABLES_DICT)
+
+    # Convert the new AST to a valid code
+    return astor.to_source(tree)
+\end{lstlisting}
+\end{graybox}
 
 
 %% ESEMPIO

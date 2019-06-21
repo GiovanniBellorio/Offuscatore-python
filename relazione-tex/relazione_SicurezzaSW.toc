@@ -17,5 +17,7 @@
 \contentsline {section}{\numberline {3.1}{Scelte progettuali}}{8}{section.3.1}
 \contentsline {section}{\numberline {3.2}{Algoritmo e codice}}{8}{section.3.2}
 \contentsline {subsection}{\numberline {3.2.1}{Codice di Layout Obfuscation}}{9}{subsection.3.2.1}
-\contentsline {chapter}{\numberline {4}{Esempio di funzionamento}}{10}{chapter.4}
-\contentsline {chapter}{Bibliografia}{10}{chapter.4}
+\contentsline {subsubsection}{{remove\_comments\_and\_docstrings()}}{9}{subsection.3.2.1}
+\contentsline {subsubsection}{{obfuscate\_variables()}}{11}{lstnumber.-3.75}
+\contentsline {chapter}{\numberline {4}{Esempio di funzionamento}}{12}{chapter.4}
+\contentsline {chapter}{Bibliografia}{12}{chapter.4}
