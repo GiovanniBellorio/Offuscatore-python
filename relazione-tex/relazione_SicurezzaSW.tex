@@ -246,6 +246,48 @@ Svantaggi:
 \item[-]
 Vulnerabile all'analisi dinamica 
 \end{itemize}
+
+\subsection{Data Obfuscation}
+Per offuscare una variabile \textit{v} in un programma, la si converte dalla rappresentazione scelta inizialmente dal programmatore ad un rappresentazine più difficile da analizzare per l'attaccante. Qualsiasi valore che una variabile \textit{v} può assumere deve essere
+rappresentato nella nuova variabile offuscata. Si ha bisogno di due funzioni: 
+
+\begin{center}
+encode $ \medskip E: T \xrightarrow{} T'$
+\end{center}
+
+\begin{center}
+dencode $ D: T' \xrightarrow{} T$
+\end{center}
+
+e le operazioni sulle variabili devono essere interpretate nella nuova rappresentazione.
+
+\noindent Tecniche principali utilizzate per questo tipo di offuscamento:
+\begin{itemize}
+\item
+\textbf{Encoding Integers}: gli interi possono essere codificati con "trucchi" della teoria dei numeri o criptandoli.
+\item
+\textbf{Encoding Booleans}: si usa lo stesso approccio per l'\textit{Encoding Integers}, ma è molto più semplice perchè il range dei loro valori è conosciuto
+\item
+\textbf{Encoding Literal Data}: possibili soluzioni possono essere scomporre i dati in parti più piccole e nasconderle nel programma, fare lo \textit{xor} di una stringa con un valore costante conosciuto o usare macchine di Mealy.
+\item
+\textbf{Encoding Arrays}: si possono riordinare o ristrutturare gli elementi dell'array
+\end{itemize}
+
+
+Vantaggi: 
+\begin{itemize}
+\item[-]
+potente contro l'attacco umano
+\item[-]
+per quanto riguarda i costi è gratuito.
+\item[-]
+i \textit{Literal Data} contengono molte informazioni semantiche 
+\end{itemize}
+
+Svantaggi:
+\begin{itemize}
+\item[-]
+\end{itemize}
  
 
 %% OFFUSCATORE
@@ -544,6 +586,187 @@ def rename_variables(tree, variables):
     return tree
 \end{lstlisting}
 \end{graybox}
+
+
+\subsection{Codice di Control Flow Obfuscation}
+
+\subsubsection{opaque\_predicate()}
+La funzione che abbiamo creato per Control Flow Obfuscation è \textit{opaque\_predicate()}. Questa funzione ha l'obiettivo di rendere più complicata l'analisi statica del Control Flow Graph del programma inserendo dei predicati opachi che aumentano la complessità del Control Flow Graph.
+
+\begin{graybox}[innerleftmargin=2,]
+\begin{lstlisting}
+def opaque_predicate(out):
+    """
+        Returns 'source' with opaque predicate.
+    """
+
+    print("-> opaque_predicate")
+
+    # Opaque predicate 1
+    pred1 = "if(xxgxx[1] + xxgxx[1]^2) % 2 == 0:\n\
+    xxgxx[5] = (xxgxx[1] * xxgxx[4]) % xxgxx[11] + xxgxx[6]% xxgxx[5]\n\
+    xxgxx[14] = randint(0, 100)\n\
+    xxgxx[4] = randint(0, 10) * xxgxx[11] + xxgxx[8]\n\
+else: \n\
+    xxgxx[2] = randint(0, 100)\n\
+    xxgxx[5] = randint(0, 10) * xxgxx[11] + xxgxx[8]\n\
+#print(xxgxx)\n\
+"
+    
+    # Opaque predicate 2
+    pred2 = "if(xxgxx[4]^3 - xxgxx[4]) % 3 == 0:\n\
+    xxgxx[5] = (xxgxx[1] * xxgxx[4]) % xxgxx[11] + xxgxx[6]% xxgxx[5]\n\
+    xxgxx[14] = randint(0, 100)\n\
+    xxgxx[4] = randint(0, 10) * xxgxx[11] + xxgxx[8]\n\
+else:\n\
+    xxgxx[2] = randint(0, 100)\n\
+    xxgxx[5] = randint(0, 10) * xxgxx[11] + xxgxx[8]\n\
+#print(xxgxx)\n\
+"
+
+    # Opaque predicate 3
+    pred3 = "if(7+xxgxx[4]^2 - 1 != xxgxx[5]^2):\n\
+    xxgxx[5] = (xxgxx[1] * xxgxx[4]) % xxgxx[11] + xxgxx[6]% xxgxx[5]\n\
+    xxgxx[14] = randint(0, 100)\n\
+    xxgxx[4] = randint(0, 10) * xxgxx[11] + xxgxx[8]\n\
+else:\n\
+    xxgxx[2] = randint(0, 100)\n\
+    xxgxx[5] = randint(0, 10) * xxgxx[11] + xxgxx[8]\n\
+"
+    
+    # Opaque predicate 4
+    pred4 = "if(xxgxx[4]^xxnxx - xxgxx[5]^xxnxx % xxgxx[4] - xxgxx[5]):\n\
+    xxgxx[5] = (xxgxx[1] * xxgxx[4]) % xxgxx[11] + xxgxx[6]% xxgxx[5]\n\
+    xxgxx[14] = randint(0, 100)\n\
+    xxgxx[4] = randint(0, 10) * xxgxx[11] + xxgxx[8]\n\
+else:\n\
+    xxgxx[2] = randint(0, 100)\n\
+    xxgxx[5] = randint(0, 10) * xxgxx[11] + g[8]\n\
+"
+
+    # Opaque predicate 5
+    pred5 = "if ((xxgxx[3] % xxgxx[5]) == xxgxx[2]):\n\
+    #print('true!')\n\
+    xxgxx[5] = (xxgxx[1] * xxgxx[4]) % xxgxx[11] + xxgxx[6]% xxgxx[5]\n\
+    xxgxx[14] = randint(0, 100)\n\
+    xxgxx[4] = randint(0, 10) * xxgxx[11] + xxgxx[8]\n\
+    #print(xxgxx)\n\
+    six = (xxgxx[4] + xxgxx[7] + xxgxx[10])%xxgxx[11]\n\
+    seven = six + xxgxx[3] % xxgxx[5]\n\
+    fortytwo = six * seven\n\
+"
+
+    number = randint(1, 5)
+    predicate = 'pred' + str(number)
+    # Set a flag to False
+    flag = False
+
+    # check a position where to insert the opaque predicate
+    # the position is choiced randomly and it can't be insert
+    # after a row that finish with ':'
+    while (flag == False):
+        try:
+            pos = randint(0, int(len(out) / 2))
+            if (out[pos] == '\n' and out[pos - 1] != ':' and out[pos - 1] != '\n'):
+
+                # Count tab indent position
+                out_split = out[:pos].split("\n")
+                for row in out_split:
+
+                    tab = "    "
+                    indent = ""
+
+                    while True:
+                        if "    " in row[0:4]:
+                            row = row[4:len(row)]
+                            indent += tab
+                        else:
+                            break
+
+                # Add indent to predicate
+                predicate_split = eval(predicate).split("\n")
+                predicate = ""
+                for line in predicate_split:
+                    predicate += indent + line + "\n"
+
+                # Insert the opaque predicate
+                out = out[:pos] + '\n' + predicate + out[pos:]
+                
+                pos += len(pred1) + 3
+                flag = True
+
+        except IndexError as error:
+            # Output expected IndexErrors.
+            print("string index out of range")
+
+    
+    number = randint(1, 5)
+    predicate = 'pred' + str(number)
+    # set a flag to False
+    flag = False
+
+    # check a position where to insert the opaque predicate
+    # the position is choiced randomly and it can't be insert
+    # after a row that finish with ':'
+    while (flag == False):
+        try:
+            pos = randint(0, int(len(out) / 2))
+            if (out[pos] == '\n' and out[pos - 1] != ':' and out[pos - 1] != '\n'):
+
+                # Count tab indent position
+                out_split = out[:pos].split("\n")
+                for row in out_split:
+
+                    tab = "    "
+                    indent = ""
+
+                    while True:
+                        if "    " in row[0:4]:
+                            row = row[4:len(row)]
+                            indent += tab
+                        else:
+                            break
+
+                # Add indent to predicate
+                predicate_split = eval(predicate).split("\n")
+                predicate = ""
+                for line in predicate_split:
+                    predicate += indent + line + "\n"
+
+                # Insert the opaque predicate
+                out = out[:pos] + '\n' + predicate + out[pos:]
+                
+                pos += len(pred1) + 3
+                flag = True
+
+        except IndexError as error:
+            # Output expected IndexErrors.
+            print("string index out of range")
+    
+    # Return out with library random and array of number for opaque predicate
+    out = '''from random import randint
+from random import SystemRandom
+xxnxx = 10
+xxgxx = [36,58,1,46,23,5,16,65,2,41,2,7,1,37,0,11,16,2,21,16]\n''' + out
+
+    return out
+\end{lstlisting}
+\end{graybox}
+
+Questa funzione inizializza al suo interno 4 predicati opachi, presi dalla teoria dei numeri e combinati all'array analisi: i predicati opachi verranno valutati su valori contenuti all'interno di un array, questo array poi sia nel ramo \textit{if} che nel ramo \textit{else} del predicato opaco verrà rimescolato, mantenedo invariate delle proprietà in base alla posizione del numero nell'array, per evitare ad un analizzatore statico di sapere il valore delle variabili. Ovviamente noi sapremo sempre quale ramo (\textit{if} o \textit{else}) verrà preso, per definizione di predicato opaco, però i due blocchi sono semanticamente equivalenti e quindi indistinguibili semanticamente. 
+
+In questa funzione i predicati opachi sono visibili all'attacante e questo non va bene perché potranno essere identificati, anche se prima viene eseguita una \textit{Data Obfuscation}. Però, per lo scopo di questo offuscatore, non si poteva fare altrimenti, perché è un offuscatore che non è stato concepito per un unico programma ad hoc, ma riesce ad offuscare tutti quei programmi che gli vengono passati come parametro, che rispettano le caratteristiche delle nostre assunzioni.
+
+La potenza di questa funzione è che si basa tutta sul fattore random: sia per i predicati opachi scelti sia per dove inserirli.
+
+Viene scelto un numero random da 1 a 4 che corrisponderà al predicato opaco da inserire (sono numerati da 1 a 4). Dopodichè verrà scelta sempre a random la posizione in cui inserire questo predicato opaco nei primi n/2 caratteri del programma e poi verrà scelto di inserire un secondo predicato opaco nei secondi n/2 caratteri del programma. Prima dell'inserimenti vi è un controllo che posizionerà il preidcato opaco all'inizio di una nuova riga e non in mezzo ad una riga già presente, altrimenti il programma offuscato non funzionerà.
+
+Essendo Python un linguaggio posizionale, verrà considerata l'indentazione di dove verrà inserire il predicato contando il numero di "tab" alla riga precedente. 
+
+Quando entrambi i predicati opachi sono stati inseriti correttamente nel programma verrà inserito all'inizio del programma i moduli \textit{randint} e \textit{SystemRandom}, una variabile il cui contenuto è 10 e l'array, altrimenti non sarebbe possibile nel programma offuscato eseguire i predicati opachi.
+
+
+
 %% ESEMPIO
 \chapter{Esempio di funzionamento}\label{esempio}
 
