@@ -256,7 +256,7 @@ Vulnerabile all'analisi dinamica
 \section{Algoritmo e codice}\label{offuscatore_algo}
 Viene ora presentato il codice che implementa l'offuscatore.\medskip
 
-Il codice sorgente è composto da  un metodo \texttt{main()} che rappresenta l'entry point del nostro programma e da una serie di funzioni e metodi che vengono invocate all'interno di tale metodo per svolgere le funzioni di offuscamento.
+Il codice sorgente è composto da  un metodo \texttt{main()} che rappresenta l'entry point del nostro programma e da una serie di funzioni  che vengono invocate all'interno di tale metodo per svolgere le funzioni di offuscamento.
 \begin{graybox}[innerleftmargin=2,]
 \begin{lstlisting}
 def main():
@@ -301,7 +301,7 @@ if __name__ == '__main__':
 \end{lstlisting}
 \end{graybox}
 
-All'inizio dell'esecuzione del programma, viene letto il nome del file contenente il software Python da offuscare e salvato nella variabile \texttt{name\_src}: questa informazione deve essere passata come argomento di input all'offuscatore, con una sintassi del tipo:
+All'inizio dell'esecuzione del programma, viene letto il nome del file sorgente, contenente il software Python da offuscare e salvato nella variabile \texttt{name\_src}: questa informazione deve essere passata come argomento di input all'offuscatore, con una sintassi del tipo:
 \begin{graybox}
 \begin{lstlisting}[language=bash,basicstyle=\fontsize{10}{9}\selectfont,]
 python3  		offuscatore.py 	<nome_file_da_offuscare>.py
@@ -309,7 +309,7 @@ python3  		offuscatore.py 	<nome_file_da_offuscare>.py
 \end{graybox}
 \noindent dove \texttt{offuscatore.py} è il nome dell' offuscatore e \texttt{<nome\_file\_da\_offuscare>} è il nome del file di input.
 
-Successivamente viene aperto in sola lettura il file sorgente (variabile \texttt{file\_SRC}) e viene creato un nuovo file, chiamato come il precedente file di input ma con l'aggiunta della suffisso ``OBFUSCATED''  e salvato nella variabile \texttt{file\_DEST}: esso rappresenta l'output del nostro programma cioè il software offuscato.\smallskip
+Successivamente viene aperto in sola lettura il file sorgente (variabile \texttt{file\_SRC}) e viene creato un nuovo file, chiamato come il precedente ma con l'aggiunta della suffisso ``OBFUSCATED''  e salvato nella variabile \texttt{file\_DEST}: esso rappresenta il file che conterrà l'output del nostro programma cioè il software offuscato.\smallskip
 
 \noindent In seguito vengono chiamate in sequenza le seguenti funzioni:
 \begin{itemize}
@@ -420,13 +420,15 @@ Essa preserva l'indentazione del codice, essenziale per il corretto funzionament
 \subsubsection{obfuscate\_variables()}
 
 La seconda funzione che esegue il layout obfuscation è \emph{obfuscate\_variables}.
+La funzione prende in input il codice del programma da offuscare (variabile \texttt{out}) e ritorna il medesimo codice con i nomi delle variabili offuscate.\medskip
 
-\noindent Riportiamo il codice in seguito:
+
+\noindent Riportiamo il codice:
 \begin{graybox}[innerleftmargin=2,]
 \begin{lstlisting}
 def obfuscate_variables(out):
     """
-        Returns 'source' with variables offuscated.
+        Returns 'source' code with variables offuscated.
     """
 
     print("-> obfuscating variables")
@@ -449,7 +451,99 @@ def obfuscate_variables(out):
 \end{lstlisting}
 \end{graybox}
 
+Attraverso il comando \texttt{ast.parse(out)}, il codice contenuto nella variabile \texttt{out} viene convertito in una struttura ad albero e salvata nella variabile \texttt{tree}. Questo albero rappresenta l'\emph{abstract syntax tree} del codice sorgente del programma dato in input.
 
+Successivamente vengono estratte tutte le variabili presenti nel programma, attraverso la funzione \texttt{get\_variables()} e salvate nella lista \texttt{variables}. Ad ognuna di esse viene poi associato un nuovo nome casuale, utilizzando la funzione \texttt{random\_sequence()}.\\
+L'associazione tra il nome della variabile originale e il nuovo nome viene salvata nel dizionario \texttt{VARIABLES\_DICT}, definito come variabile globale.
+
+Infine, tramite la funzione \texttt{rename\_variables()}, viene applicata la ridenominazione delle variabili sulla base delle associazioni precedentemente stabilite.
+
+Viene quindi ritornato il codice sorgente del programma, invocando la funzione  \texttt{astor.to\_source(tree)}, che prende come input l'abstract syntax tree, su cui sono state apportate le precedenti trasformazioni offuscanti e ritorna come output il relativo codice sorgente. Questo metodo, che trasforma un abstract syntax tree nel corrispettivo codice sorgente, appartiene al modulo \texttt{astor}, esterno alla libreria Python.\bigskip
+
+
+Riportiamo ora il codice delle funzioni \texttt{get\_variables()}, \texttt{random\_sequence()} e \texttt{rename\_variables()}, seguito da una breve descrizione.\smallskip
+
+La funzione \texttt{get\_variables()} prende come input un abstract syntax tree e ritorna come output un dizionario, contenente ogni variabile presente nell albero (\emph{key}) e il relativo tipo (\emph{value}).
+\begin{graybox}[innerleftmargin=2,]
+\begin{lstlisting}
+def get_variables(tree):
+    """
+    :param tree:
+    :return: a dictionary contains each variable (key) and its type (value) 
+    contained in the code (passed as AST 'tree')
+    """
+
+    variables = {}
+
+    for node in ast.walk(tree):
+        # Saved variables declared
+        if isinstance(node, ast.Assign) and isinstance(node.targets[0], ast.Name):
+            if node.targets[0].id not in variables:
+                    variables[node.targets[0].id] = type(node.value).__name__
+        if isinstance(node, ast.Attribute):
+            if isinstance(node.value, ast.Name):
+                if node.value.id == "self":
+                    variables[node.attr] = type(node.attr).__name__
+        
+    return variables
+\end{lstlisting}
+\end{graybox}
+
+La funzione esegue una visita dell'albero, svolta tramite il metodo \texttt{ast.walk()}. In questo caso vengono presi in considerazione i nodi dell'albero che rappresentano un assegnamento (\texttt{ast.Assign}) oppure un attributo (\texttt{ast.Attribute}); quest'ultimo caso è necessario in presenza di una definizione di classe, in cui una variabile viene anteceduta dal prefisso \texttt{self}.
+
+I nomi di variabili e il loro tipo vengono salvati nel dizionario \texttt{variables}, ritornato come output dalla funzione.\bigskip
+
+La funzione \texttt{random\_sequence()} genera una sequenza casuale di 23 caratteri, scelti in un alfabeto di soli due elementi: il numero `\texttt{0}' oppure la lettera `O'. La sequenza creata è sempre diversa dalla precedenti sequenze generate.
+\begin{graybox}[innerleftmargin=2,]
+\begin{lstlisting}
+def random_sequence():
+
+    seq = generate_sequence()
+
+    if seq not in RANDOM_SEQUENCES_SET:
+        RANDOM_SEQUENCES_SET.add(seq)
+        return seq
+    else:
+        random_sequence()
+
+def generate_sequence():
+
+    cryptorand = SystemRandom()
+
+    sequence = []
+
+    for i in range(22):
+        flip = random.randint(1, 2)
+        if flip == 1:
+            sequence.append("0")
+        else:
+            sequence.append("O")
+
+    random.seed()
+    cryptorand.shuffle(sequence)
+
+    return "O"+"".join(sequence)
+\end{lstlisting}
+\end{graybox}
+
+Questa funzione utilizza il metodo \texttt{generate\_sequence()} per generare la sequenza. Quest'ultimo utilizza il modulo \texttt{randint} e \texttt{SystemRandom} della libreria \texttt{random}.  Ogni sequenza generata, prima di essere ritornata alla funzione \texttt{random\_sequence()}, viene mescolata tramite il metodo \texttt{cryptorand.shuffle()}: questo ci permette di avere meno probabilità di generare dupliacati.
+
+Successivamente, se la sequenza generata è una sequenza valida (non è un duplicato), viene salvata nell'insieme \texttt{RANDOM\_SEQUENCES\_SET}, definito come globale e ritornata come output dalla funzione; altrimenti viene scartata e ne viene generata una nuova.\bigskip
+
+La funzione \texttt{rename\_variables()} prende in input un abstract sintax tree (parametro \texttt{tree}) e un dizionario contenente le associazioni tra nomi originali delle variabili  e i nuovi nomi generati (parametro \texttt{variables}). Ritorna in output l' abstract sintax tree con i nomi sostituiti.
+\begin{graybox}[innerleftmargin=2,]
+\begin{lstlisting}
+def rename_variables(tree, variables):
+    # Rename names of variables used (general usage)
+    for node in ast.walk(tree):
+        if isinstance(node, ast.Name) and node.id in variables:
+            node.id = variables[node.id]
+        if isinstance(node, ast.Attribute) and node.attr in variables:
+            node.attr = variables[node.attr]
+
+    return tree
+\end{lstlisting}
+\end{graybox}
 %% ESEMPIO
 \chapter{Esempio di funzionamento}\label{esempio}
 

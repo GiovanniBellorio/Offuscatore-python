@@ -382,7 +382,7 @@ def remove_comments_and_docstrings(source):
     """
     Returns 'source' minus comments and docstrings.
     """
-    # Function taken from pyminifier project: https://github.com/liftoff/pyminifier
+    # Function inspired from pyminifier project: https://github.com/liftoff/pyminifier
 
     print("-> removing comments and docstrings")
 
@@ -460,7 +460,7 @@ def remove_comments_and_docstrings(source):
 def get_variables(tree):
     """
     :param tree:
-    :return: a dictionary contains each variable (key) and its type (value) contains in the code (passed as AST 'tree')
+    :return: a dictionary contains each variable (key) and its type (value) contained in the code (passed as AST 'tree')
     """
 
     variables = {}
@@ -468,13 +468,15 @@ def get_variables(tree):
     for node in ast.walk(tree):
         # Saved variables declared
         if isinstance(node, ast.Assign) and isinstance(node.targets[0], ast.Name):
-                if node.targets[0].id not in variables:
+            if node.targets[0].id not in variables:
                     variables[node.targets[0].id] = type(node.value).__name__
-        if isinstance(node, ast.Attribute) and (node.value == "self"):
+        if isinstance(node, ast.Attribute):
+            if isinstance(node.value, ast.Name):
+                if node.value.id == "self":
+                    variables[node.attr] = type(node.attr).__name__
         #if isinstance(node, ast.Attribute) and (node.value.id == "self"):
-                variables[node.attr] = type(node.attr).__name__
+            #variables[node.attr] = type(node.attr).__name__
     return variables
-
 
 def rename_variables(tree, variables):
     # Rename names of variables used (general usage)
@@ -485,8 +487,6 @@ def rename_variables(tree, variables):
             node.attr = variables[node.attr]
 
     return tree
-#ClassDef(name='Employee', bases=[], keywords=[], body=[Assign(targets=[Name(id='empCount', ctx=Store())], value=Num(n=0)), FunctionDef(name='__init__', args=arguments(args=[arg(arg='self', annotation=None), arg(arg='name', annotation=None), arg(arg='salary', annotation=None)], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[Assign(targets=[Attribute(value=Name(id='self', ctx=Load()), attr='name', ctx=Store())], value=Name(id='name', ctx=Load())), Assign(targets=[Attribute(value=Name(id='self', ctx=Load()), attr='salary', ctx=Store())], value=Name(id='salary', ctx=Load())), AugAssign(target=Attribute(value=Name(id='Employee', ctx=Load()), attr='empCount', ctx=Store()), op=Add(), value=Num(n=1))], decorator_list=[], returns=None), FunctionDef(name='displayCount', args=arguments(args=[arg(arg='self', annotation=None)], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[Expr(value=Call(func=Name(id='print', ctx=Load()), args=[BinOp(left=Str(s='Total Employee %d'), op=Mod(), right=Attribute(value=Name(id='Employee', ctx=Load()), attr='empCount', ctx=Load()))], keywords=[]))], decorator_list=[], returns=None), FunctionDef(name='displayEmployee', args=arguments(args=[arg(arg='self', annotation=None)], vararg=None, kwonlyargs=[], kw_defaults=[], kwarg=None, defaults=[]), body=[Expr(value=Call(func=Name(id='print', ctx=Load()), args=[Str(s='Name : '), Attribute(value=Name(id='self', ctx=Load()), attr='name', ctx=Load()), Str(s=', Salary: '), Attribute(value=Name(id='self', ctx=Load()), attr='salary', ctx=Load())], keywords=[]))], decorator_list=[], returns=None)], decorator_list=[])
-#Assign(targets=[Attribute(value=Name(id='self', ctx=Load()), attr='salary', ctx=Store())])
 
 def obfuscate_variables(out):
     """
@@ -501,12 +501,9 @@ def obfuscate_variables(out):
     # Extraction of all variables defined
     variables = get_variables(tree)
 
-    # Define a new dict in order to bind variables-names with new-variables-names
-    new_variables = {}
     # Choose new names
     for variable in variables:
         VARIABLES_DICT[variable] = random_sequence()
-
 
     # Renomination of all variable occurrences
     tree = rename_variables(tree, VARIABLES_DICT)
@@ -526,7 +523,6 @@ def obfuscate_functions(out):
     tree = ast.parse(out)
 
     critical_func_names = ["__init__", "__str__" , "__repr__", "main"]
-    #critical_arg_names = ["self"]
 
     # -->  obfuscate definition and body
     functions = {}
@@ -552,10 +548,10 @@ def obfuscate_functions(out):
 
             # assign a new rand sequence for arg name and bind it with the old name
             for i in range(0, num_arguments):
-                # se il nome è un omonimo di una variabile già scovata in precedenza, allora uso quello
+                # if the name is a homonym of a variable already found previously, then I use that name
                 if arguments_list[i].arg in VARIABLES_DICT:
                     arguments[arguments_list[i].arg] = VARIABLES_DICT[arguments_list[i].arg]
-                # altrimenti, assegno un nome a caso
+                # otherwise, choose a new random name
                 else:
                     arguments[arguments_list[i].arg] = random_sequence()
 
