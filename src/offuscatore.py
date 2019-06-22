@@ -657,19 +657,7 @@ else:\n\
     xxgxx[5] = randint(0, 10) * xxgxx[11] + g[8]\n\
 "
 
-    # Opaque predicate 5
-    pred5 = "if ((xxgxx[3] % xxgxx[5]) == xxgxx[2]):\n\
-    #print('true!')\n\
-    xxgxx[5] = (xxgxx[1] * xxgxx[4]) % xxgxx[11] + xxgxx[6]% xxgxx[5]\n\
-    xxgxx[14] = randint(0, 100)\n\
-    xxgxx[4] = randint(0, 10) * xxgxx[11] + xxgxx[8]\n\
-    #print(xxgxx)\n\
-    six = (xxgxx[4] + xxgxx[7] + xxgxx[10])%xxgxx[11]\n\
-    seven = six + xxgxx[3] % xxgxx[5]\n\
-    fortytwo = six * seven\n\
-"
-
-    number = randint(1, 5)
+    number = randint(1, 4)
     predicate = 'pred' + str(number)
     # Set a flag to False
     flag = False
@@ -713,7 +701,7 @@ else:\n\
             print("string index out of range")
 
     
-    number = randint(1, 5)
+    number = randint(1, 4)
     predicate = 'pred' + str(number)
     # set a flag to False
     flag = False
