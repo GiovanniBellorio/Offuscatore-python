@@ -754,6 +754,381 @@ Essendo Python un linguaggio posizionale, verrà considerata l'indentazione di d
 
 Quando entrambi i predicati opachi sono stati inseriti correttamente nel programma verrà inserito all'inizio del programma i moduli \textit{randint} e \textit{SystemRandom}, una variabile il cui contenuto è 10 e l'array, altrimenti non sarebbe possibile nel programma offuscato eseguire i predicati opachi.
 
+\subsection{Codice di Data Obfuscation}
+
+\subsubsection{encoding\_literal\_data()}
+
+La funzione che abbiamo creato per Data Obfuscation è \textit{encoding\_literal\_data()}. Questa funzione ha l'obiettivo di codificare il valore delle variabili, sia tramite un'\textit{Array Permutation} sia tramite \textbf{Macchine di Mealy}
+
+\begin{graybox}[innerleftmargin=2,]
+\begin{lstlisting}
+def encoding_literal_data(out):
+
+    # Code for Mealy decoding
+    class_mealy =   "#!/usr/bin/python\n\
+# -*- coding: utf-8 -*-\n\n\
+from random import randint\n\
+from random import SystemRandom\n\
+class xxxxxMxxxxx(object):\n\
+    def __init__(self, some_states, a_input_alphabet, a_output_alphabet,
+     some_transitions, a_initial_state):\n\
+        self.xxsxxtxxaxxtxxexxsxx = some_states\n\
+        self.xxixxnxxpxxuxxtxx_xxaxxlxxpxxhxxaxxbxxexxtxx = 
+            a_input_alphabet\n\
+        self.xxoxxuxxtxxpxxuxxtxx_xxaxxlxxpxxhxxaxxbxxexxtxx = 
+            a_output_alphabet\n\
+        self.xxtxxrxxaxxnxxsxxixxtxxixxoxxnxxsxx = some_transitions\n\
+        self.xxixxnxxixxtxxixxaxxlxx_xxsxxtxxaxxtxxexx = a_initial_state\n\
+    def get_output_from_string(self, string):\n\
+        temp_list = list(string)\n\
+        current_state = self.xxixxnxxixxtxxixxaxxlxx_xxsxxtxxaxxtxxexx\n\
+        output = ''\n\
+        for x in temp_list:\n\
+            output += 
+                chr(self.xxtxxrxxaxxnxxsxxixxtxxixxoxxnxxsxx[current_state][x][1])\n\
+            current_state = 
+                self.xxtxxrxxaxxnxxsxxixxtxxixxoxxnxxsxx[current_state][x][0]\n\
+        return output\n\n"
+
+    # Code for permutation encoding
+    def_encoding_integer = "class xxxxxExxxxx():\n\
+    def integer(self,digits):\n\
+        num = 0\n\
+        moltiplicatore = 1\n\
+        for xxxxxDxxxxx in digits:\n\
+            num += xxxxxDxxxxx*moltiplicatore\n\
+            moltiplicatore *= 10\n\
+        return num\n\n"
+
+    """
+        Returns 'source' with obfuscation of array with permutation, 
+        string with mealy machine and number with permutation.
+    """
+
+    print("-> obfuscating variables: str (mealy), int (permutation), 
+        array (permutation) ")
+
+    # Tree object contains the AST of the code
+    tree = ast.parse(out)
+    tree_split = astor.to_source(tree).split("\n")
+    tree = ""
+
+    # Indent tab
+    indent = ""
+    tab = "    "
+
+    # For each row in code
+    for subtree in tree_split:
+        variables     = {}
+        values        = {}
+        new_values    = {}
+        
+        # Count tab indent position
+        indent = ""
+
+        try:
+            while True:
+                if "    " in subtree[0:4]:
+                    subtree = subtree[4:len(subtree)]
+                    indent += tab
+                else:
+                    break
+            subtree = ast.parse(subtree)
+
+        except:
+            tree += indent + subtree + "\n"
+            continue
+
+        # Extraction of all variables defined
+        variables, values = get_variables_values_Literal(subtree)
+
+        # If string:
+        if isAssignStr(subtree):
+
+            # start mealy_machine and save new value
+            for value in values:
+                new_values[value], codice = mealy_machine(values[value])
+
+            # Renomination of all variable occurrences
+            subtree = rename_values_Literal(subtree, new_values)
+
+            for variable in variables:
+                variable = variable
+
+            # Decode function for mealy machine
+            tree += indent + astor.to_source(subtree) + indent + variable + " = 
+                eval(" + variable + ").get_output_from_string('%s')" % codice + "\n"
+
+        # If integer:
+        elif isAssignInt(subtree):
+
+            # Encoding integer
+            for value in values:
+                num = values[value]
+
+                # Extract the digits of number
+                digits = []
+
+                if num == 0:
+                    digits.append(num)
+
+                while num != 0:
+                    digit = num % 10
+                    num = int(num / 10)
+                    digits.append(digit)
+
+                new_values[value] = digits
+
+            for variable in variables:
+                variable = variable
+
+            # Create permutation of digits
+            a = new_values[variable]
+            b, p = array_permutation(a)
+
+            # Decode function for permutation digits
+            tree += indent + variable + " = " + str(b) + "\n"
+            tree += indent + variable + "_ooo = " + str(p) + "\n"
+            tree += indent + variable + " = 
+                " + "xxxxxExxxxx().integer([ " + variable + "[" + variable + 
+                "_ooo" + "[xxxxxxxxxxxx]] for xxxxxxxxxxxx in range(0, len(" + 
+                variable + ")) ])" + "\n"
+
+        # If array:
+        elif isAssignList(subtree):
+
+            # Encoding list
+            for value in values:
+                a = values[value]
+
+            for variable in variables:
+                variable = variable
+
+            # Create permutation of position array
+            b, p = array_permutation(a)
+
+            # Decode funcyion for permutation position
+            tree += indent + variable + " = " + str(b) + "\n"
+            tree += indent + variable + "_ooo = " + str(p) + "\n"
+            tree += indent + variable + " = 
+                " + "[ " + variable + "[" + variable + "_ooo" + "[xxxxxxxxxxxx]] 
+                for xxxxxxxxxxxx in range(0, len(" + variable + ")) ]" + "\n"
+
+        # Else:
+        else:
+
+            tree += indent + astor.to_source(subtree)
+
+    # Return definition class Mealy, function encoding for permutation and tree
+    return class_mealy + def_encoding_integer + tree
+\end{lstlisting}
+\end{graybox}
+
+La funzione definisce il codice per decodificare la macchina di Mealy: prende via via ogni stato della macchina di Mealy prodotta nell'encoding e ritorna la stringa corrispondete a quello stato. %TODO spiegare meglio cosa fa questo
+Poi viene definito il codice per fare l'encoding per la permutazine degli array: %TODO spiegare
+
+Dopo queste due operazioni viene ritornato il codice 'sorgente' con l'offuscamento dell'array permutation, la stringa con la macchina di Mealy e il numero con la permutazione.
+
+La funzione \texttt{def get\_variables\_values\_Literal()} prende in input un abstract sintax tree e ritorna in output un dizionario che contiene come chiave il nome della variabile e come valore il tipo della variabile contentuti nell'abstract sintax tree passatogli come parametro
+
+\begin{graybox}[innerleftmargin=2,]
+\begin{lstlisting}
+def get_variables_values_Literal():
+    """
+    :param tree:
+    :return: a dictionary contains each variable (key) and its type (value) 
+    contains in the code (passed as AST 'tree')
+    """
+    variables = {}
+    values = {}
+
+    for node in ast.walk(tree):
+        # Saved variables declared
+        if isinstance(node, ast.Assign) and isinstance(node.targets[0], ast.Name):
+
+            if type(node.value).__name__ == "Str":
+                variables[node.targets[0].id] = type(node.value).__name__
+                values[node.targets[0].id] = ""
+                
+                MyVisitor(values, node.targets[0].id).visit(node)
+                values = MyVisitor(values, node.targets[0].id).get_values(node)
+
+            elif type(node.value).__name__ == "Num":
+                variables[node.targets[0].id] = type(node.value).__name__
+                values[node.targets[0].id] = 0
+                
+                MyVisitor(values, node.targets[0].id).visit(node)
+                values = MyVisitor(values, node.targets[0].id).get_values(node)
+
+            elif type(node.value).__name__ == "List":
+                variables[node.targets[0].id] = type(node.value).__name__
+                values[node.targets[0].id] = []
+                
+                MyVisitor(values, node.targets[0].id).visit(node)
+                values = MyVisitor(values, node.targets[0].id).get_values(node)
+
+            else:
+                variables[node.targets[0].id] = type(node.value).__name__
+
+    return variables, values
+\end{lstlisting}
+\end{graybox}
+
+
+La funzione \texttt{isAssignStr()} prende in input un abstract sintax tree e ritorna un valore booleano (\textit{True/False}) se la variabile è di tipo stringa.
+\begin{graybox}[innerleftmargin=2,]
+\begin{lstlisting}
+def isAssignStr(tree):
+    values = {}
+
+    for node in ast.walk(tree):
+        # Saved variables declared
+        if isinstance(node, ast.Assign) and isinstance(node.targets[0], ast.Name):
+            if type(node.value).__name__ == "Str":
+                return True
+
+    return False
+\end{lstlisting}
+\end{graybox}
+
+La funzione \texttt{isAssignInt()} rende in input un abstract sintax tree e ritorna un valore booleano (\textit{True/False}) se la variabile è di tipo intero.
+\begin{graybox}[innerleftmargin=2,]
+\begin{lstlisting}
+def isAssignInt(tree):
+    values = {}
+
+    for node in ast.walk(tree):
+        # Saved variables declared
+        if isinstance(node, ast.Assign) and isinstance(node.targets[0], ast.Name):
+            if type(node.value).__name__ == "Num":
+                return True
+
+    return False
+\end{lstlisting}
+\end{graybox}
+
+
+La funzione \texttt{rename\_values\_Literal} prende in input un abstract sintax tree e un array di valori. Ritorna in output l'abstract sintax tree con i valori contenuti nell'array modificati.
+\begin{graybox}[innerleftmargin=2,]
+\begin{lstlisting}
+def rename_values_Literal(tree, values):
+    # Rename values of variables used (general usage)
+    for value in values:
+        for node in ast.walk(tree):
+            if isinstance(node, ast.Assign) and 
+            isinstance(node.targets[0], ast.Name):
+                MyModifyValue(values[value]).visit(node)
+
+    return tree
+\end{lstlisting}
+\end{graybox}
+
+La funzione \texttt{isAssignList()} prende in input un abstract sintax tree e ritorna un valore booleano (\textit{True/False}) se la variabile è di tipo array.
+\begin{graybox}[innerleftmargin=2,]
+\begin{lstlisting}
+def isAssignList(tree):
+    values = {}
+
+    for node in ast.walk(tree):
+        # Saved variables declared
+        if isinstance(node, ast.Assign) and isinstance(node.targets[0], ast.Name):
+            if type(node.value).__name__ == "List":
+                return True
+
+    return False
+\end{lstlisting}
+\end{graybox}
+
+
+La funzione \texttt{mealy\_machine()} prende in input una astringa e ritorna la macchina di Mealy corrispondente
+\begin{graybox}[innerleftmargin=2,]
+\begin{lstlisting}
+def mealy_machine(string_input):
+    len_string_input = len(string_input)
+
+    # Create states
+    iIdx = 0
+    states = []
+    for c in string_input:
+        states.append('q'+str(iIdx))
+        iIdx+=1
+
+    # Create transitions
+    new_string_input = ''
+    iIdx = 0
+    transitions = {}
+    for q in states:
+        stato1 = random.randint(0,1)
+        if stato1 == 0:
+            stato2 = 1
+        else:
+            stato2 = 0
+        new_string_input += str(stato1)
+        char_random = random.randint(97,122)
+        if (iIdx+1) == len_string_input:
+            transitions.update({q:{str(stato1) : 
+            ('q0', ord(string_input[iIdx])), str(stato2) : 
+            ('q'+str(iIdx-1), char_random)}})
+        elif (iIdx == 0):
+            transitions.update({q:{str(stato1) : 
+            ('q'+str(iIdx+1), ord(string_input[iIdx])), str(stato2) : 
+            ('q'+str(len_string_input-1), char_random)}})
+        else:
+            transitions.update({q:{str(stato1) : 
+            ('q'+str(iIdx+1), ord(string_input[iIdx])), str(stato2) : 
+            ('q'+str(iIdx-1), char_random)}})
+        iIdx+=1
+
+    return "xxxxxMxxxxx({},['0', '1'],['0', '1'],{},'q0')".format(states,transitions), 
+        new_string_input
+\end{lstlisting}
+\end{graybox}
+
+La funzione \texttt{array\_permutation()} prende in input un array e ritorna due array che sono la permutazione di quello passatogli come input
+\begin{graybox}[innerleftmargin=2,]
+\begin{lstlisting}
+def array_permutation(a):
+    i = 1
+    divisori = []
+    while i <= len(a):
+        if len(a) % i == 0:
+            divisori.append(i)
+        i += 1
+
+    n = random.randint(1, 3000)
+    i = 1
+    divisori_n = []
+    while i <= n:
+        if n % i == 0:
+            divisori_n.append(i)
+        i += 1
+
+    x = 0
+    while x < len(divisori):
+        div = divisori[x]
+
+        if div in divisori_n and div != 1:
+            n = random.randint(1, 3000)
+            i = 1
+            divisori_n = []
+            while i <= n:
+                if n % i == 0:
+                    divisori_n.append(i)
+                i += 1
+            x = 0
+        else:
+            x += 1
+            
+    b = [ x*0 for x in range(0, len(a)) ]
+    p = [ ((i-1)*n)%len(a) for i in range(0, len(a)) ]
+
+    for i in range(0, len(a)):
+        b[p[i]] = a[i]
+    
+    return b, p
+\end{lstlisting}
+\end{graybox}
+
 
 
 %% ESEMPIO

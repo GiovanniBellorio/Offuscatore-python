@@ -22,5 +22,7 @@
 \contentsline {subsubsection}{obfuscate\_variables()}{12}{lstnumber.-3.75}
 \contentsline {subsection}{\numberline {3.2.2}Codice di Control Flow Obfuscation}{14}{subsection.3.2.2}
 \contentsline {subsubsection}{opaque\_predicate()}{14}{subsection.3.2.2}
-\contentsline {chapter}{\numberline {4}\spacedlowsmallcaps {Esempio di funzionamento}}{18}{chapter.4}
-\contentsline {chapter}{Bibliografia}{18}{chapter.4}
+\contentsline {subsection}{\numberline {3.2.3}Codice di Data Obfuscation}{17}{subsection.3.2.3}
+\contentsline {subsubsection}{encoding\_literal\_data()}{17}{subsection.3.2.3}
+\contentsline {chapter}{\numberline {4}\spacedlowsmallcaps {Esempio di funzionamento}}{23}{chapter.4}
+\contentsline {chapter}{Bibliografia}{23}{chapter.4}

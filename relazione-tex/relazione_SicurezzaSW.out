@@ -12,5 +12,6 @@
 \BOOKMARK [1][-]{section.3.2}{Algoritmo e codice}{chapter.3}% 12
 \BOOKMARK [2][-]{subsection.3.2.1}{Codice di Layout Obfuscation}{section.3.2}% 13
 \BOOKMARK [2][-]{subsection.3.2.2}{Codice di Control Flow Obfuscation}{section.3.2}% 14
-\BOOKMARK [0][-]{chapter.4}{Esempio di funzionamento}{}% 15
-\BOOKMARK [0][-]{chapter.4}{Bibliografia}{}% 16
+\BOOKMARK [2][-]{subsection.3.2.3}{Codice di Data Obfuscation}{section.3.2}% 15
+\BOOKMARK [0][-]{chapter.4}{Esempio di funzionamento}{}% 16
+\BOOKMARK [0][-]{chapter.4}{Bibliografia}{}% 17
