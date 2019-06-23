@@ -295,6 +295,15 @@ Svantaggi:
 
 \section{Scelte progettuali}\label{offuscatore_scelte}
 
+
+\subsection{Assunzioni}
+Per l'offuscatore che abbiamo crato sono state fatte le seguenti assunzioni:
+\begin{itemize}
+\item[-] Essendo python un linguaggio di programmazine non tipato, quando faccio l'encoding in una macchina di Mealy subito dopo faccio il decoding perché se in una condizione \textit{if} entro nel ramo \textit{else} e viene cambiato tipo di una variabile (da stringa a intero), non riesco più a trattarla come stringa, ma dorò trattarla come array permutation.
+\item[-] Nell'array permutation assumiamo che l'array contenga dei valori e non dei nomi di variabili, altrimenti bisognerebbe andare in profondità.
+\item[-] Nel Control Flow Obfuscation assumiamo di inserire i predicati opachi non prima di una riga che termini con ":", per evitare possibili errori di indentazione nell'inserimento del predicato opaco.
+\end{itemize}   
+
 \section{Algoritmo e codice}\label{offuscatore_algo}
 Viene ora presentato il codice che implementa l'offuscatore.\medskip
 

@@ -16,6 +16,7 @@
 \contentsline {subsection}{\numberline {2.2.3}Data Obfuscation}{7}{subsection.2.2.3}
 \contentsline {chapter}{\numberline {3}\spacedlowsmallcaps {Offuscatore per Python}}{9}{chapter.3}
 \contentsline {section}{\numberline {3.1}Scelte progettuali}{9}{section.3.1}
+\contentsline {subsection}{\numberline {3.1.1}Assunzioni}{9}{subsection.3.1.1}
 \contentsline {section}{\numberline {3.2}Algoritmo e codice}{9}{section.3.2}
 \contentsline {subsection}{\numberline {3.2.1}Codice di Layout Obfuscation}{10}{subsection.3.2.1}
 \contentsline {subsubsection}{remove\_comments\_and\_docstrings()}{10}{subsection.3.2.1}
@@ -24,5 +25,5 @@
 \contentsline {subsubsection}{opaque\_predicate()}{14}{subsection.3.2.2}
 \contentsline {subsection}{\numberline {3.2.3}Codice di Data Obfuscation}{17}{subsection.3.2.3}
 \contentsline {subsubsection}{encoding\_literal\_data()}{17}{subsection.3.2.3}
-\contentsline {chapter}{\numberline {4}\spacedlowsmallcaps {Esempio di funzionamento}}{23}{chapter.4}
-\contentsline {chapter}{Bibliografia}{23}{chapter.4}
+\contentsline {chapter}{\numberline {4}\spacedlowsmallcaps {Esempio di funzionamento}}{24}{chapter.4}
+\contentsline {chapter}{Bibliografia}{24}{chapter.4}
