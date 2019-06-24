@@ -21,8 +21,9 @@
 \contentsline {subsection}{\numberline {3.2.1}{Codice di Layout Obfuscation}}{10}{subsection.3.2.1}
 \contentsline {subsubsection}{{remove\_comments\_and\_docstrings()}}{10}{subsection.3.2.1}
 \contentsline {subsubsection}{{obfuscate\_variables()}}{12}{lstnumber.-3.75}
-\contentsline {subsection}{\numberline {3.2.2}{Codice di Control Flow Obfuscation}}{14}{subsection.3.2.2}
-\contentsline {subsubsection}{{opaque\_predicate()}}{14}{subsection.3.2.2}
-\contentsline {subsection}{\numberline {3.2.3}{Codice di Data Obfuscation}}{17}{subsection.3.2.3}
-\contentsline {subsubsection}{{encoding\_literal\_data()}}{17}{subsection.3.2.3}
-\contentsline {chapter}{\numberline {4}{Esempio di funzionamento}}{24}{chapter.4}
+\contentsline {subsubsection}{{obfuscate\_functions()}}{14}{lstnumber.-7.9}
+\contentsline {subsection}{\numberline {3.2.2}{Codice di Control Flow Obfuscation}}{16}{subsection.3.2.2}
+\contentsline {subsubsection}{{opaque\_predicate()}}{16}{subsection.3.2.2}
+\contentsline {subsection}{\numberline {3.2.3}{Codice di Data Obfuscation}}{19}{subsection.3.2.3}
+\contentsline {subsubsection}{{encoding\_literal\_data()}}{19}{subsection.3.2.3}
+\contentsline {chapter}{\numberline {4}{Esempio di funzionamento}}{26}{chapter.4}

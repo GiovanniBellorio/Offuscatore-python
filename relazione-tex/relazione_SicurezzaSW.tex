@@ -465,7 +465,7 @@ def remove_comments_and_docstrings(source):
 Questa funzione sfrutta il modulo \texttt{tokenize} il quale  fornisce uno scanner lessicale per codice sorgente Python.
 Essa preserva l'indentazione del codice, essenziale per il corretto funzionamento di un programma Python, inoltre, ogni qual volta una  riga viene ``svuotata'' di tutti suoi token perchè non vi è presenta nessuna istruzione, quest'ultima viene eliminata dal codice per non lasciare inutili spazi vuoti.
 
-\subsubsection{obfuscate\_variables()}
+\subsubsection{obfuscate\_variables()}\label{obfuscate_variables}
 
 La seconda funzione che esegue il layout obfuscation è \emph{obfuscate\_variables}.
 La funzione prende in input il codice del programma da offuscare (variabile \texttt{out}) e ritorna il medesimo codice con i nomi delle variabili offuscate.\medskip
@@ -592,6 +592,96 @@ def rename_variables(tree, variables):
     return tree
 \end{lstlisting}
 \end{graybox}
+
+\subsubsection{obfuscate\_functions()}
+La terza e ultima funzione che esegue il layout obuscation è \texttt{obfuscate\_functions.}
+La funzione prende in input il codice del programma da offuscare (variabile \texttt{out}) e ritorna il medesimo codice con il nome della funzione, i nomi dei parametri, e le occorrenze di quest'ultimi nel corpo della funzione offuscati. La funzione sostituisce poi le occorrenze del nuovo nome presenti all'interno del codice.\medskip
+\begin{graybox}[innerleftmargin=2,]
+\begin{lstlisting}
+def obfuscate_functions(out):
+    """
+        Returns 'source' with function def and call obfuscated.
+    """
+
+    print("-> obfuscating function definitions, body and call")
+
+    # Tree object contains the AST of the code
+    tree = ast.parse(out)
+
+    critical_func_names = ["__init__", "__str__" , "__repr__", "main"]
+
+    # -->  obfuscate definition and body
+    functions = {}
+
+    for node in ast.walk(tree):
+        # Saved functions declared
+        if isinstance(node, ast.FunctionDef):
+            # save function name
+            if node.name not in critical_func_names:
+                # assign random name
+                functions[node.name] = random_sequence()
+                # change the name of def function
+                node.name = functions[node.name]
+
+            # Obfuscate arguments into the function def
+
+            # dict for function arguments name
+            arguments = {}
+            # get argument list structure from node
+            arguments_list = node.args.args
+            # get the numbers of arguments
+            num_arguments = len(arguments_list)
+
+            # assign a new rand sequence for arg name and
+            # bind it with the old name
+            for i in range(0, num_arguments):
+                # if the name is a homonym of a variable previously found,
+                # then I use that name
+                if arguments_list[i].arg in VARIABLES_DICT:
+                    arguments[arguments_list[i].arg] = 
+                        VARIABLES_DICT[arguments_list[i].arg]
+                # otherwise, choose a new random name
+                else:
+                    arguments[arguments_list[i].arg] = random_sequence()
+
+                # assign the new random name at each argument 
+                # between two parenthesis
+                arguments_list[i].arg = arguments[arguments_list[i].arg]
+
+            # rename arguments into body function
+            rename_variables(node, arguments)
+
+    # -->  obfuscate occurrences of various functions name
+
+    for node in ast.walk(tree):
+        # Saved functions declared
+        if isinstance(node, ast.Call):
+            # if "func" is instance of ast.Name and it has been previously 
+            # defined, then change name
+            if isinstance(node.func, ast.Name) and node.func.id in functions:
+                node.func.id = functions[node.func.id]
+            # if "func" is instance of ast.Attribute and it has been previously 
+            # defined, then change name
+            if isinstance(node.func, ast.Attribute) and node.func.attr in functions:
+                node.func.attr = functions[node.func.attr]
+
+    # Convert the new AST to a valid code
+    return astor.to_source(tree)
+\end{lstlisting}
+\end{graybox}
+Dal codice ricevuto in input viene creato l'abstract syntax tree e salvato nella variabile \texttt{tree}. Successivamente, si esegue una visita dei nodi dell'albero ( \texttt{ast.walk(tree)} ) andando a selezionare solo quei nodi che rappresentano una definizione di funzione, cioè oggetti di tipo \texttt{ast.FunctionDef}.
+
+Per ogni nodo selezionato, si controlla che non rappresenti un nome di funzione ``critico'' cioè che non sia presente all'interno della lista \texttt{critical\_\\func\_names}: in questa lista sono presenti quei nomi di funzione, che se ridenominati causerebbero errori di esecuzione del programma Python, come ad esempio \texttt{main} oppure \texttt{\_init\_}.
+
+Nel caso di un nodo valido, il nome della funzione viene salvato come chiave nel dizionario \texttt{functions} e gli viene associato  un nome casuale come valore (\texttt{functions[node.name] = random\_sequence()}); viene poi ridenominata la funzione con il nome scelto.
+
+L'offuscamento prosegue andando a ridenominare gli argomenti che la funzione riceve in input e per ognuno di essi scelglie un nuovo nome casuale da associare, utilizzando la funzione \texttt{random\_sequence()}, presentata nella sezione \ref{obfuscate_variables}. Nel caso il nome di un argomento sia lo stesso nome di una variabile già ridenominata in precedenza, non viene generata nessuna nuova sequenza casuale, ma viene riutilizzata la sequenza casuale associata alla variabile omonima. Qui si può osservare l'importanza della dichiarazione a variabile globale del dizionario \texttt{VARIABLES\_DICT}.\\
+Successivamente le occorrenze dei parametri di funzione, ridenominati nella definizione, vengono a loro volta sostitutiti all'interno del corpo della funzione. Questa sostituzione utilizza il metodo \texttt{rename\_variables()}, a cui viene passato il nodo (\texttt{node}), che rappresenta un oggetto \texttt{ast.FunctionDef} e la lista di parametri da ridenominare.\medskip
+
+L'ultima parte di questo offuscamento, ha il compito di ridenominare le occorrenze della funzione offuscata quando viene invocata in altri punti del codice. Viene quindi effettuata una visita dell'albero sintattico astratto alla ricerca di nodi che rappresentino una chiamata a funzione (\texttt{ast.Call}).
+In questo caso, oltre a considerare una semplice invocazione della funzione  offuscata (\texttt{node.func} istanza di tipo ast.Name), viene tenuto conto del fatto che una funzione, definita come metodo all'interno di una classe, potrebbe essere considerata un attributo di una certa istanza di un oggetto (\texttt{node.func} istanza di tipo ast.Attribute).\medskip
+
+Infine, viene ritornato il codice sorgente del programma, invocando la funzione  \texttt{astor.to\_source(tree)}, che prende come input l'abstract syntax tree, su cui sono state apportate le precedenti trasformazioni offuscanti e ritorna come output il relativo codice sorgente.
 
 
 \subsection{Codice di Control Flow Obfuscation}
@@ -764,7 +854,7 @@ Quando entrambi i predicati opachi sono stati inseriti correttamente nel program
 
 \subsubsection{encoding\_literal\_data()}
 
-La funzione che abbiamo creato per Data Obfuscation è \texttt{encoding\_literal\_data()}. Questa funzione ha l'obiettivo di codificare il valore delle variabili, se di tipo intere o liste tramite la tecnica dell'\textit{Array Permutation}, se stringhe tramite la trasformazione verso una \textbf{Macchina di Mealy}.
+La funzione che abbiamo creato per Data Obfuscation è \texttt{encoding\_literal\_\\data()}. Questa funzione ha l'obiettivo di codificare il valore delle variabili, se di tipo intere o liste tramite la tecnica dell'\textit{Array Permutation}, se stringhe tramite la trasformazione verso una \textbf{Macchina di Mealy}.
 
 La funzione definisce subito il codice per decodificare la macchina di Mealy all'interno del programma offuscato. La variabile stringa verrà trasformata in una macchina di mealy defindendo gli stati, tutte le transizioni possibili. La decodifica richiama la funzione passando come parametro gli stati di decodifica corretti.
 Poi viene definito il codice per fare l'encoding della permutazine degli array nel caso di variabili intere in modo tale da trasformare un array di ``cifre'' in un numero mantenendo così corretta la semantica del programma iniziale.
