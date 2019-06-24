@@ -256,7 +256,7 @@ encode $ \medskip E: T \xrightarrow{} T'$
 \end{center}
 
 \begin{center}
-dencode $ D: T' \xrightarrow{} T$
+decode $ D: T' \xrightarrow{} T$
 \end{center}
 
 e le operazioni sulle variabili devono essere interpretate nella nuova rappresentazione.
@@ -276,17 +276,14 @@ e le operazioni sulle variabili devono essere interpretate nella nuova rappresen
 
 Vantaggi: 
 \begin{itemize}
-\item[-]
-potente contro l'attacco umano
-\item[-]
-per quanto riguarda i costi è gratuito.
-\item[-]
-i \textit{Literal Data} contengono molte informazioni semantiche 
+\item[-] potente contro l'attacco umano.
+\item[-] per quanto riguarda i costi è gratuito.
+\item[-] i \textit{Literal Data} contengono molte informazioni semantiche.
 \end{itemize}
 
 Svantaggi:
 \begin{itemize}
-\item[-]
+\item[-] rallentamento delle prestazioni per le continue decodifiche.
 \end{itemize}
  
 
@@ -767,7 +764,12 @@ Quando entrambi i predicati opachi sono stati inseriti correttamente nel program
 
 \subsubsection{encoding\_literal\_data()}
 
-La funzione che abbiamo creato per Data Obfuscation è \textit{encoding\_literal\_data()}. Questa funzione ha l'obiettivo di codificare il valore delle variabili, sia tramite un'\textit{Array Permutation} sia tramite \textbf{Macchine di Mealy}
+La funzione che abbiamo creato per Data Obfuscation è \texttt{encoding\_literal\_data()}. Questa funzione ha l'obiettivo di codificare il valore delle variabili, se di tipo intere o liste tramite la tecnica dell'\textit{Array Permutation}, se stringhe tramite la trasformazione verso una \textbf{Macchina di Mealy}.
+
+La funzione definisce subito il codice per decodificare la macchina di Mealy all'interno del programma offuscato. La variabile stringa verrà trasformata in una macchina di mealy defindendo gli stati, tutte le transizioni possibili. La decodifica richiama la funzione passando come parametro gli stati di decodifica corretti.
+Poi viene definito il codice per fare l'encoding della permutazine degli array nel caso di variabili intere in modo tale da trasformare un array di ``cifre'' in un numero mantenendo così corretta la semantica del programma iniziale.
+
+Dopo queste due operazioni viene ritornato il codice 'sorgente' con l'offuscamento dell'array permutation, la stringa con la macchina di Mealy e il numero con la permutazione. Viene scansionato riga per riga l'albero he contiene la parserizzazione del codice per trovare gli ``oggetti'' che ci interessano. E' implementato anche il calcolo dei ``tab'' per mantenere l'indentazione corretta del codice.
 
 \begin{graybox}[innerleftmargin=2,]
 \begin{lstlisting}
@@ -933,12 +935,7 @@ class xxxxxMxxxxx(object):\n\
 \end{lstlisting}
 \end{graybox}
 
-La funzione definisce il codice per decodificare la macchina di Mealy: prende via via ogni stato della macchina di Mealy prodotta nell'encoding e ritorna la stringa corrispondete a quello stato. %TODO spiegare meglio cosa fa questo
-Poi viene definito il codice per fare l'encoding per la permutazine degli array: %TODO spiegare
-
-Dopo queste due operazioni viene ritornato il codice 'sorgente' con l'offuscamento dell'array permutation, la stringa con la macchina di Mealy e il numero con la permutazione.
-
-La funzione \texttt{def get\_variables\_values\_Literal()} prende in input un abstract sintax tree e ritorna in output un dizionario che contiene come chiave il nome della variabile e come valore il tipo della variabile contentuti nell'abstract sintax tree passatogli come parametro
+La funzione \texttt{def get\_variables\_values\_Literal()} prende in input un abstract sintax tree e ritorna in output due dizionari. Uno che contiene come chiave il nome della variabile e come valore il tipo della variabile, l'altro come chiave il nome della varibile e come valore il valore vero e proprio della variabile. I valori vengono estratti dall'abstract tree se di tipo stringa, intera e se sono variabili o liste. E' stata definita una classe \textit{MyVisitor()} per visitare i nodi ed estratte i valori delle variabili attraverso le funzioni \textit{visit()} implementate tipo per tipo.
 
 \begin{graybox}[innerleftmargin=2,]
 \begin{lstlisting}
@@ -1017,7 +1014,7 @@ def isAssignInt(tree):
 \end{graybox}
 
 
-La funzione \texttt{rename\_values\_Literal} prende in input un abstract sintax tree e un array di valori. Ritorna in output l'abstract sintax tree con i valori contenuti nell'array modificati.
+La funzione \texttt{rename\_values\_Literal} prende in input un abstract sintax tree e un array di valori. L'arrai di valory contiene le nuove definifioni delle variaibli, per esempio la nuova struttura delle stringhe in macchine di mealy. Ritorna in output l'abstract sintax tree con i valori delle variabili stringhe trasformati in macchine di mealy.
 \begin{graybox}[innerleftmargin=2,]
 \begin{lstlisting}
 def rename_values_Literal(tree, values):
@@ -1049,7 +1046,7 @@ def isAssignList(tree):
 \end{graybox}
 
 
-La funzione \texttt{mealy\_machine()} prende in input una astringa e ritorna la macchina di Mealy corrispondente
+La funzione \texttt{mealy\_machine()} prende in input una astringa e ritorna la macchina di mealy corrispondente. L'algoritmo prevede di trattare la stringa carattere per carattere e di inserirli come stati nella macchina. Per creare più confusione e rallentare il reverse engineering ogni carattere viene codificato nel suo corrispondente codice ascii.
 \begin{graybox}[innerleftmargin=2,]
 \begin{lstlisting}
 def mealy_machine(string_input):
@@ -1093,7 +1090,7 @@ def mealy_machine(string_input):
 \end{lstlisting}
 \end{graybox}
 
-La funzione \texttt{array\_permutation()} prende in input un array e ritorna due array che sono la permutazione di quello passatogli come input
+La funzione \texttt{array\_permutation()} prende in input un array e ritorna due array che sono la permutazione di quello passatogli come input. In realtà un array conterrà la permutazione, l'altro le posizioni per ricostruire quello originale.
 \begin{graybox}[innerleftmargin=2,]
 \begin{lstlisting}
 def array_permutation(a):
@@ -1143,12 +1140,121 @@ def array_permutation(a):
 %% ESEMPIO
 \chapter{Esempio di funzionamento}\label{esempio}
 
+Prendiamo come esempio il crivello di eratostele che calcolo i numeri primi.
+
+\begin{graybox}[innerleftmargin=2,]
+\begin{lstlisting}
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
+'''
+Nome file:Il crivello di eratostele.py
+Descrizione: questo programma genera i numeri primi
+inferiori ad un numero dato
+'''
+
+nome_programma="Il crivello di eratostele.py"
+print("Inizio esecuzione " + nome_programma)
+
+n=int(input("Numeri primi inferiori ad n (n maggiore di 2): "))
+listaprimi=[]
+for i in range(2,n):        # analizzo tutti i numeri i tra 2 ed n
+    primo=True              # controllo se i e' primo
+    for j in range(2,i):
+        if i%j==0:
+            primo=False     # i non e' primo
+    if primo:               # i e' primo, quindi lo aggiungo alla lista dei primi
+            listaprimi.append(i)
+
+print("I numeri primi inferiori a " + str(n) + " sono:")
+print(listaprimi)
+    
+print("Fine esecuzione")
+
+\end{lstlisting}
+\end{graybox}
+
+\begin{figure}[!h]
+        \centering
+        \includegraphics[height=18cm, width=9cm, keepaspectratio]{img/primi.png}
+\end{figure}
+
+Lanciamo il nostro offuscatore:
+
+\begin{graybox}
+\begin{lstlisting}[language=bash,basicstyle=\fontsize{10}{9}\selectfont,]
+python3  		offuscatore.py 	primi.py
+\end{lstlisting}
+\end{graybox}
+
+E otteniamo questo risultato:
+
+\begin{graybox}
+\begin{lstlisting}[language=bash,basicstyle=\fontsize{10}{9}\selectfont,]
+from random import randint
+from random import SystemRandom
+O00OOO000O0000OO0OOOOO0 = 10
+OO0O00O000O00OOOOO0O00O = [36, 58, 1, 46, 23, 5, 16, 65, 2, 41, 2, 7, 1, 37,
+    0, 11, 16, 2, 21, 16]
+OO00O000O00000O00O0O000 = 'Il crivello di eratostele.py'
+print('Inizio esecuzione ' + OO00O000O00000O00O0O000)
+if OO0O00O000O00OOOOO0O00O[3] % OO0O00O000O00OOOOO0O00O[5
+    ] == OO0O00O000O00OOOOO0O00O[2]:
+    OO0O00O000O00OOOOO0O00O[5] = OO0O00O000O00OOOOO0O00O[1
+        ] * OO0O00O000O00OOOOO0O00O[4] % OO0O00O000O00OOOOO0O00O[11
+        ] + OO0O00O000O00OOOOO0O00O[6] % OO0O00O000O00OOOOO0O00O[5]
+    OO0O00O000O00OOOOO0O00O[14] = randint(0, 100)
+    OO0O00O000O00OOOOO0O00O[4] = randint(0, 10) * OO0O00O000O00OOOOO0O00O[11
+        ] + OO0O00O000O00OOOOO0O00O[8]
+    OO0O0O0O00O0OO00OO0O00O = (OO0O00O000O00OOOOO0O00O[4] +
+        OO0O00O000O00OOOOO0O00O[7] + OO0O00O000O00OOOOO0O00O[10]
+        ) % OO0O00O000O00OOOOO0O00O[11]
+    O0OOOOOOO0OO0O00O000OO0 = (OO0O0O0O00O0OO00OO0O00O + 
+        OO0O00O000O00OOOOO0O00O[3] % OO0O00O000O00OOOOO0O00O[5])
+    OO0OO0O00000O0O00O00O0O = OO0O0O0O00O0OO00OO0O00O * O0OOOOOOO0OO0O00O000OO0
+O00000O0O0000O0000O00O0 = int(input(
+    'Numeri primi inferiori ad n (n maggiore di 2): '))
+if OO0O00O000O00OOOOO0O00O[3] % OO0O00O000O00OOOOO0O00O[5
+    ] == OO0O00O000O00OOOOO0O00O[2]:
+    OO0O00O000O00OOOOO0O00O[5] = OO0O00O000O00OOOOO0O00O[1
+        ] * OO0O00O000O00OOOOO0O00O[4] % OO0O00O000O00OOOOO0O00O[11
+        ] + OO0O00O000O00OOOOO0O00O[6] % OO0O00O000O00OOOOO0O00O[5]
+    OO0O00O000O00OOOOO0O00O[14] = randint(0, 100)
+    OO0O00O000O00OOOOO0O00O[4] = randint(0, 10) * OO0O00O000O00OOOOO0O00O[11
+        ] + OO0O00O000O00OOOOO0O00O[8]
+    OO0O0O0O00O0OO00OO0O00O = (OO0O00O000O00OOOOO0O00O[4] +
+        OO0O00O000O00OOOOO0O00O[7] + OO0O00O000O00OOOOO0O00O[10]
+        ) % OO0O00O000O00OOOOO0O00O[11]
+    O0OOOOOOO0OO0O00O000OO0 = (OO0O0O0O00O0OO00OO0O00O + 
+        OO0O00O000O00OOOOO0O00O[3] % OO0O00O000O00OOOOO0O00O[5])
+    OO0OO0O00000O0O00O00O0O = OO0O0O0O00O0OO00OO0O00O * O0OOOOOOO0OO0O00O000OO0
+OOO000O0O0OO0O0OO00O000 = []
+for i in range(2, O00000O0O0000O0000O00O0):
+    O0OO0OOOOOOOO00OOOO0OOO = True
+    for j in range(2, i):
+        if i % j == 0:
+            O0OO0OOOOOOOO00OOOO0OOO = False
+    if O0OO0OOOOOOOO00OOOO0OOO:
+        OOO000O0O0OO0O0OO00O000.append(i)
+print('I numeri primi inferiori a ' + str(O00000O0O0000O0000O00O0) + ' sono:')
+print(OOO000O0O0OO0O0OO00O000)
+print('Fine esecuzione')
+\end{lstlisting}
+\end{graybox}
+
+Se eseguiamo i due codici la semantica viene mantenuta. La struttura del control flow graph esplode.
+
+\begin{figure}[!h]
+        \centering
+        \includegraphics[height=24cm, width=15cm, keepaspectratio]{img/primi_OBFUSCATED.png}
+\end{figure}
+
 
 % BIBLIOGRAFIA
-\addcontentsline{toc}{chapter}{\bibname}
-\begin{thebibliography}{9}
+%\addcontentsline{toc}{chapter}{\bibname}
+%\begin{thebibliography}{9}
 
-\end{thebibliography}
+%\end{thebibliography}
 
 
 \end{document}

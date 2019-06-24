@@ -1,29 +1,28 @@
 \vspace {-\cftbeforepartskip }
-\select@language {italian}
-\select@language {italian}
-\contentsline {chapter}{\numberline {1}\spacedlowsmallcaps {Introduzione}}{3}{chapter.1}
-\contentsline {chapter}{\numberline {2}\spacedlowsmallcaps {Background}}{4}{chapter.2}
-\contentsline {section}{\numberline {2.1}Offuscatore}{4}{section.2.1}
-\contentsline {subsection}{\numberline {2.1.1}Impossibilit\IeC {\`a} di offuscare un programma}{5}{subsection.2.1.1}
-\contentsline {subsection}{\numberline {2.1.2}Valutare le trasformazioni offuscanti}{5}{subsection.2.1.2}
-\contentsline {paragraph}{Potenza}{5}{subsection.2.1.2}
-\contentsline {paragraph}{Resilienza}{5}{subsection.2.1.2}
-\contentsline {paragraph}{Costo}{5}{subsection.2.1.2}
-\contentsline {paragraph}{Furtivita}{6}{subsection.2.1.2}
-\contentsline {section}{\numberline {2.2}Tecniche di offuscamento del codice}{6}{section.2.2}
-\contentsline {subsection}{\numberline {2.2.1}Layout Obfuscation}{6}{subsection.2.2.1}
-\contentsline {subsection}{\numberline {2.2.2}Control Flow Obfuscation}{6}{subsection.2.2.2}
-\contentsline {subsection}{\numberline {2.2.3}Data Obfuscation}{7}{subsection.2.2.3}
-\contentsline {chapter}{\numberline {3}\spacedlowsmallcaps {Offuscatore per Python}}{9}{chapter.3}
-\contentsline {section}{\numberline {3.1}Scelte progettuali}{9}{section.3.1}
-\contentsline {subsection}{\numberline {3.1.1}Assunzioni}{9}{subsection.3.1.1}
-\contentsline {section}{\numberline {3.2}Algoritmo e codice}{9}{section.3.2}
-\contentsline {subsection}{\numberline {3.2.1}Codice di Layout Obfuscation}{10}{subsection.3.2.1}
-\contentsline {subsubsection}{remove\_comments\_and\_docstrings()}{10}{subsection.3.2.1}
-\contentsline {subsubsection}{obfuscate\_variables()}{12}{lstnumber.-3.75}
-\contentsline {subsection}{\numberline {3.2.2}Codice di Control Flow Obfuscation}{14}{subsection.3.2.2}
-\contentsline {subsubsection}{opaque\_predicate()}{14}{subsection.3.2.2}
-\contentsline {subsection}{\numberline {3.2.3}Codice di Data Obfuscation}{17}{subsection.3.2.3}
-\contentsline {subsubsection}{encoding\_literal\_data()}{17}{subsection.3.2.3}
-\contentsline {chapter}{\numberline {4}\spacedlowsmallcaps {Esempio di funzionamento}}{24}{chapter.4}
-\contentsline {chapter}{Bibliografia}{24}{chapter.4}
+\babel@toc {italian}{}
+\babel@toc {italian}{}
+\contentsline {chapter}{\numberline {1}{Introduzione}}{3}{chapter.1}
+\contentsline {chapter}{\numberline {2}{Background}}{4}{chapter.2}
+\contentsline {section}{\numberline {2.1}{Offuscatore}}{4}{section.2.1}
+\contentsline {subsection}{\numberline {2.1.1}{Impossibilit\IeC {\`a} di offuscare un programma}}{5}{subsection.2.1.1}
+\contentsline {subsection}{\numberline {2.1.2}{Valutare le trasformazioni offuscanti}}{5}{subsection.2.1.2}
+\contentsline {paragraph}{{Potenza}}{5}{subsection.2.1.2}
+\contentsline {paragraph}{{Resilienza}}{5}{subsection.2.1.2}
+\contentsline {paragraph}{{Costo}}{5}{subsection.2.1.2}
+\contentsline {paragraph}{{Furtivita}}{6}{subsection.2.1.2}
+\contentsline {section}{\numberline {2.2}{Tecniche di offuscamento del codice}}{6}{section.2.2}
+\contentsline {subsection}{\numberline {2.2.1}{Layout Obfuscation}}{6}{subsection.2.2.1}
+\contentsline {subsection}{\numberline {2.2.2}{Control Flow Obfuscation}}{7}{subsection.2.2.2}
+\contentsline {subsection}{\numberline {2.2.3}{Data Obfuscation}}{7}{subsection.2.2.3}
+\contentsline {chapter}{\numberline {3}{Offuscatore per Python}}{9}{chapter.3}
+\contentsline {section}{\numberline {3.1}{Scelte progettuali}}{9}{section.3.1}
+\contentsline {subsection}{\numberline {3.1.1}{Assunzioni}}{9}{subsection.3.1.1}
+\contentsline {section}{\numberline {3.2}{Algoritmo e codice}}{9}{section.3.2}
+\contentsline {subsection}{\numberline {3.2.1}{Codice di Layout Obfuscation}}{10}{subsection.3.2.1}
+\contentsline {subsubsection}{{remove\_comments\_and\_docstrings()}}{10}{subsection.3.2.1}
+\contentsline {subsubsection}{{obfuscate\_variables()}}{12}{lstnumber.-3.75}
+\contentsline {subsection}{\numberline {3.2.2}{Codice di Control Flow Obfuscation}}{14}{subsection.3.2.2}
+\contentsline {subsubsection}{{opaque\_predicate()}}{14}{subsection.3.2.2}
+\contentsline {subsection}{\numberline {3.2.3}{Codice di Data Obfuscation}}{17}{subsection.3.2.3}
+\contentsline {subsubsection}{{encoding\_literal\_data()}}{17}{subsection.3.2.3}
+\contentsline {chapter}{\numberline {4}{Esempio di funzionamento}}{24}{chapter.4}
