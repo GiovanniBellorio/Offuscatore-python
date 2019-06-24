@@ -509,7 +509,7 @@ Infine, tramite la funzione \texttt{rename\_variables()}, viene applicata la rid
 Viene quindi ritornato il codice sorgente del programma, invocando la funzione  \texttt{astor.to\_source(tree)}, che prende come input l'abstract syntax tree, su cui sono state apportate le precedenti trasformazioni offuscanti e ritorna come output il relativo codice sorgente. Questo metodo, che trasforma un abstract syntax tree nel corrispettivo codice sorgente, appartiene al modulo \texttt{astor}, esterno alla libreria Python.\bigskip
 
 
-Riportiamo ora il codice delle funzioni \texttt{get\_variables()}, \texttt{random\_sequence()} e \texttt{rename\_variables()}, seguito da una breve descrizione.\smallskip
+Riportiamo ora il codice delle funzioni \texttt{get\_variables()},\\ \texttt{random\_sequence()} e \texttt{rename\_variables()}, seguito da una breve descrizione.\smallskip
 
 La funzione \texttt{get\_variables()} prende come input un abstract syntax tree e ritorna come output un dizionario, contenente ogni variabile presente nell albero (\emph{key}) e il relativo tipo (\emph{value}).
 \begin{graybox}[innerleftmargin=2,]
@@ -537,7 +537,7 @@ def get_variables(tree):
 \end{lstlisting}
 \end{graybox}
 
-La funzione esegue una visita dell'albero, svolta tramite il metodo \texttt{ast.walk()}. In questo caso vengono presi in considerazione i nodi dell'albero che rappresentano un assegnamento (\texttt{ast.Assign}) oppure un attributo (\texttt{ast.Attribute}); quest'ultimo caso è necessario in presenza di una definizione di classe, in cui una variabile viene anteceduta dal prefisso \texttt{self}.
+La funzione esegue una visita dell'albero, svolta tramite il metodo \\ \texttt{ast.walk()}. In questo caso vengono presi in considerazione i nodi dell'albero che rappresentano un assegnamento (\texttt{ast.Assign}) oppure un attributo (\texttt{ast.Attribute}); quest'ultimo caso è necessario in presenza di una definizione di classe, in cui una variabile viene anteceduta dal prefisso \texttt{self}.
 
 I nomi di variabili e il loro tipo vengono salvati nel dizionario \texttt{variables}, ritornato come output dalla funzione.\bigskip
 
@@ -574,7 +574,7 @@ def generate_sequence():
 \end{lstlisting}
 \end{graybox}
 
-Questa funzione utilizza il metodo \texttt{generate\_sequence()} per generare la sequenza. Quest'ultimo utilizza il modulo \texttt{randint} e \texttt{SystemRandom} della libreria \texttt{random}.  Ogni sequenza generata, prima di essere ritornata alla funzione \texttt{random\_sequence()}, viene mescolata tramite il metodo \texttt{cryptorand.shuffle()}: questo ci permette di avere meno probabilità di generare dupliacati.
+Questa funzione utilizza il metodo \texttt{generate\_sequence()} per generare la sequenza. Quest'ultimo utilizza il modulo \texttt{randint} e \texttt{SystemRandom} della libreria \texttt{random}.  Ogni sequenza generata, prima di essere ritornata alla funzione \texttt{random\_sequence()}, viene mescolata tramite il metodo \\ \texttt{cryptorand.shuffle()}: questo ci permette di avere meno probabilità di generare dupliacati.
 
 Successivamente, se la sequenza generata è una sequenza valida (non è un duplicato), viene salvata nell'insieme \texttt{RANDOM\_SEQUENCES\_SET}, definito come globale e ritornata come output dalla funzione; altrimenti viene scartata e ne viene generata una nuova.\bigskip
 
@@ -594,7 +594,7 @@ def rename_variables(tree, variables):
 \end{graybox}
 
 \subsubsection{obfuscate\_functions()}
-La terza e ultima funzione che esegue il layout obuscation è \texttt{obfuscate\_functions.}
+La terza e ultima funzione che esegue il layout obuscation è \\ \texttt{obfuscate\_functions.}
 La funzione prende in input il codice del programma da offuscare (variabile \texttt{out}) e ritorna il medesimo codice con il nome della funzione, i nomi dei parametri, e le occorrenze di quest'ultimi nel corpo della funzione offuscati. La funzione sostituisce poi le occorrenze del nuovo nome presenti all'interno del codice.\medskip
 \begin{graybox}[innerleftmargin=2,]
 \begin{lstlisting}
@@ -687,7 +687,7 @@ Infine, viene ritornato il codice sorgente del programma, invocando la funzione 
 \subsection{Codice di Control Flow Obfuscation}
 
 \subsubsection{opaque\_predicate()}
-La funzione che abbiamo creato per Control Flow Obfuscation è \texttt{opaque\_predicate()}. Questa funzione ha l'obiettivo di rendere più complicata l'analisi statica del Control Flow Graph del programma inserendo dei predicati opachi che aumentano la complessità del Control Flow Graph.
+La funzione che abbiamo creato per Control Flow Obfuscation è \texttt{opaque\_\\predicate()}. Questa funzione ha l'obiettivo di rendere più complicata l'analisi statica del Control Flow Graph del programma inserendo dei predicati opachi che aumentano la complessità del Control Flow Graph.
 
 \begin{graybox}[innerleftmargin=2,]
 \begin{lstlisting}
@@ -886,7 +886,8 @@ class xxxxxMxxxxx(object):\n\
         output = ''\n\
         for x in temp_list:\n\
             output += 
-                chr(self.xxtxxrxxaxxnxxsxxixxtxxixxoxxnxxsxx[current_state][x][1])\n\
+                chr(self.xxtxxrxxaxxnxxsxxixxtxxixxoxxnxxsxx[current_state][x][1]
+                )\n\
             current_state = 
                 self.xxtxxrxxaxxnxxsxxixxtxxixxoxxnxxsxx[current_state][x][0]\n\
         return output\n\n"
@@ -958,7 +959,8 @@ class xxxxxMxxxxx(object):\n\
 
             # Decode function for mealy machine
             tree += indent + astor.to_source(subtree) + indent + variable + " = 
-                eval(" + variable + ").get_output_from_string('%s')" % codice + "\n"
+                eval(" + variable + ").get_output_from_string('%s')" % codice + 
+                "\n"
 
         # If integer:
         elif isAssignInt(subtree):
