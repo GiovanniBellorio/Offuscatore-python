@@ -121,9 +121,18 @@ Il \emph{livello di sicurezza} rispetto al reverse-engineering che un offuscator
 Una trasformazione di offuscamento non potrà mai proteggere completamente un programma.
 Fred Cohen, il primo ad introdurre la diversità dei programmi come difesa contro gli attacchi automatici ai sistemi operativi, affermava che: \smallskip
 
-\textit{“Any protection scheme other than a physical one depends on the operation of a finite state machine, and ultimately, any finite state machine can be examined and modified at will, given enough time and effort. The best we can ever do is delay the attack by increasing the complexity of making desired alterations (security through obscurity)”}\smallskip
+\textit{“Any protection scheme other than a physical one depends on the operation of a finite state machine, and ultimately, any finite state machine can be examined and modified at will, given enough time and effort. The best we can ever do is delay the attack by increasing the complexity of making desired alterations (security through obscurity)”}\medskip
 
-[inserire risultati paper ``On the impossibility of code obfuscation'']
+
+L'obiettivo dell'offuscamento del programma è quello di rendere un programma inintelligibile pur preservando la sua funzionalità.\\ Idealmente, un programma offuscato dovrebbe essere una \emph{scatola nera virtuale}, nel senso che qualsiasi cosa si possa calcolare da esso, si potrebbe anche calcolare dal comportamento input-output del programma.\smallskip
+
+
+Nel 2012, con la pubblicazione del paper - \emph{``On the impossibility of code obfuscation.''} Barak et al JACM 2012 - è stato dimostrato che il paradigma della scatola nera virtuale per l'offuscamento è intrinsecamente imperfetto. Infatti, ci possono essere ancora metodi per rendere il programma intelligibile in un modo significativo e preciso.
+La dimostrazione si basa sulla costruzione di famiglie di funzioni innaturali.\smallskip
+
+Molti ricercatori hanno cercato di capire le implicazioni e i limiti circa il risultato di impossibilità di Barak et al.\\
+Dopo la pubblicazione di questi risultati di impossibilità, sono state introdotte molte tecniche per offuscare particolari proprietà di specifici programmi.
+In pratica, la protezione del software è interessata a una nozione più debole di offuscamento, cioè proteggerlo per un certo periodo o da un certo effetto collaterale, rallentarne la comprensione, ecc.
 
 
 \subsection{Valutare le trasformazioni offuscanti}

@@ -7,8 +7,8 @@
 \contentsline {subsection}{\numberline {2.1.1}{Impossibilit\IeC {\`a} di offuscare un programma}}{5}{subsection.2.1.1}
 \contentsline {subsection}{\numberline {2.1.2}{Valutare le trasformazioni offuscanti}}{5}{subsection.2.1.2}
 \contentsline {paragraph}{{Potenza}}{5}{subsection.2.1.2}
-\contentsline {paragraph}{{Resilienza}}{5}{subsection.2.1.2}
-\contentsline {paragraph}{{Costo}}{5}{subsection.2.1.2}
+\contentsline {paragraph}{{Resilienza}}{6}{subsection.2.1.2}
+\contentsline {paragraph}{{Costo}}{6}{subsection.2.1.2}
 \contentsline {paragraph}{{Furtivita}}{6}{subsection.2.1.2}
 \contentsline {section}{\numberline {2.2}{Tecniche di offuscamento del codice}}{6}{section.2.2}
 \contentsline {subsection}{\numberline {2.2.1}{Layout Obfuscation}}{6}{subsection.2.2.1}
