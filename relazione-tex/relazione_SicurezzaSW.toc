@@ -9,7 +9,7 @@
 \contentsline {paragraph}{{Potenza}}{5}{subsection.2.1.2}
 \contentsline {paragraph}{{Resilienza}}{6}{subsection.2.1.2}
 \contentsline {paragraph}{{Costo}}{6}{subsection.2.1.2}
-\contentsline {paragraph}{{Furtivita}}{6}{subsection.2.1.2}
+\contentsline {paragraph}{{Furtivit\'a}}{6}{subsection.2.1.2}
 \contentsline {section}{\numberline {2.2}{Tecniche di offuscamento del codice}}{6}{section.2.2}
 \contentsline {subsection}{\numberline {2.2.1}{Layout Obfuscation}}{6}{subsection.2.2.1}
 \contentsline {subsection}{\numberline {2.2.2}{Control Flow Obfuscation}}{7}{subsection.2.2.2}
