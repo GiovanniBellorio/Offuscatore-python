@@ -205,7 +205,7 @@ L'obiettivo del \emph{Layout Obfuscation} è cambiare o rimuove le informazioni 
 \item
 \textbf{Rimozione commenti}: vengono rimossi i commenti e i docstring presenti nel codice.
 \item
-\textbf{Rinominazione degli identificatori }: i nuovi nomi possono utilizzare diversi schemi, numeri, caratteri non stampabili o caratteri invisibili. Inoltre i nomi possono essere riutilizzati, purchè usati in ambiti diversi.
+\textbf{Ridenominazione degli identificatori }: i nuovi nomi possono utilizzare diversi schemi, numeri, caratteri non stampabili o caratteri invisibili. Inoltre i nomi possono essere riutilizzati, purchè usati in ambiti diversi.
 \end{itemize}
 
 \noindent Queste sono trasformazioni \emph{one-way} in quanto la formattazione originale non può essere ripristinata.\medskip
@@ -309,7 +309,7 @@ Per l'offuscatore che abbiamo crato sono state fatte le seguenti assunzioni:
 \item[-] Nell'array permutation assumiamo che l'array contenga dei valori e non dei nomi di variabili, altrimenti bisognerebbe andare in profondità.
 \item[-] Nel Control Flow Obfuscation assumiamo di inserire i predicati opachi non prima di una riga che termini con ":", per evitare possibili errori di indentazione nell'inserimento del predicato opaco.
 \item[-] Nel Layout Obfuscation, in particolare nella fase di ridenominazione dei nomi di funzione, abbiamo introdotto una lista di nomi critici di metodi e funzioni, che vengono richiamati dall’interprete Python in opportune situazioni. La ridenominazione di questi nomi comprometterebbe la corretta esecuzione del programma offuscato. Questa lista serve per escludere tali nomi dall'offuscamento.\\
-In questa lista sono presenti solo alcuni nomi, che nella maggior parte dei casi (e nei test da noi effettuti) sono risultati sufficienti per operare il corretto offuscameto del codice. Nel caso fosse necessario estendere l'offuscatore a programmi più complessi bisognerebbe arricchire questa lista, andando ad identificare tutti quei nomi di metodi e funzioni critici che il linguaggio Python mette a disposizione.
+In questa lista sono presenti solo alcuni nomi, che nei test da noi effettuti sono risultati sufficienti per operare il corretto offuscameto del codice. Nel caso fosse necessario estendere l'offuscatore a programmi più complessi bisognerebbe arricchire questa lista, andando ad identificare tutti quei nomi di metodi e funzioni critici che il linguaggio Python mette a disposizione.
 \end{itemize}   
 
 \section{Algoritmo e codice}\label{offuscatore_algo}
