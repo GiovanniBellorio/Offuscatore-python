@@ -308,6 +308,8 @@ Per l'offuscatore che abbiamo crato sono state fatte le seguenti assunzioni:
 \item[-] Essendo python un linguaggio di programmazine non tipato, quando faccio l'encoding in una macchina di Mealy subito dopo faccio il decoding perché se in una condizione \textit{if} entro nel ramo \textit{else} e viene cambiato tipo di una variabile (da stringa a intero), non riesco più a trattarla come stringa, ma dorò trattarla come array permutation.
 \item[-] Nell'array permutation assumiamo che l'array contenga dei valori e non dei nomi di variabili, altrimenti bisognerebbe andare in profondità.
 \item[-] Nel Control Flow Obfuscation assumiamo di inserire i predicati opachi non prima di una riga che termini con ":", per evitare possibili errori di indentazione nell'inserimento del predicato opaco.
+\item[-] Nel Layout Obfuscation, in particolare nella fase di ridenominazione dei nomi di funzione, abbiamo introdotto una lista di nomi critici di metodi e funzioni, che vengono richiamati dall’interprete Python in opportune situazioni. La ridenominazione di questi nomi comprometterebbe la corretta esecuzione del programma offuscato. Questa lista serve per escludere tali nomi dall'offuscamento.\\
+In questa lista sono presenti solo alcuni nomi, che nella maggior parte dei casi (e nei test da noi effettuti) sono risultati sufficienti per operare il corretto offuscameto del codice. Nel caso fosse necessario estendere l'offuscatore a programmi più complessi bisognerebbe arricchire questa lista, andando ad identificare tutti quei nomi di metodi e funzioni critici che il linguaggio Python mette a disposizione.
 \end{itemize}   
 
 \section{Algoritmo e codice}\label{offuscatore_algo}
@@ -487,7 +489,6 @@ def obfuscate_variables(out):
     """
         Returns 'source' code with variables offuscated.
     """
-
     print("-> obfuscating variables")
 
     # Tree object contains the AST of the code
@@ -499,7 +500,6 @@ def obfuscate_variables(out):
     # Choose new names
     for variable in variables:
         VARIABLES_DICT[variable] = random_sequence()
-
     # Renomination of all variable occurrences
     tree = rename_variables(tree, VARIABLES_DICT)
 
