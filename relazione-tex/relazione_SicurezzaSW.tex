@@ -83,7 +83,7 @@ Attacchi di \emph{reverse-engineering} hanno l'obiettivo di attuare analisi stat
 \noindent Esistono varie tecniche di protezione del codice con differenti obiettivi:
 \begin{itemize}
 \item
-\emph{Misure legali}: leggi, copiright, patenti, brevetti e licenze ideate per proteggere la ``forma'' e l'idea di un programma.
+\emph{Misure legali}: leggi, copyright, patenti, brevetti e licenze ideate per proteggere la ``forma'' e l'idea di un programma.
 \item
 \emph{Offuscamento}: rendere difficile il reverse-engineering del programma.
 \item
@@ -136,7 +136,7 @@ In pratica, la protezione del software è interessata a una nozione più debole 
 
 
 \subsection{Valutare le trasformazioni offuscanti}
-Una trasformazione offuscante è valutate in base alle seguenti proprietà:
+Una trasformazione offuscante è valutata in base alle seguenti proprietà:
 \begin{itemize}
 \item
 \textbf{Potenza}: quanto più difficile è comprendere il codice offuscato rispetto a quello originale.
@@ -257,7 +257,7 @@ Vulnerabile all'analisi dinamica
 \end{itemize}
 
 \subsection{Data Obfuscation}
-Per offuscare una variabile \textit{v} in un programma, la si converte dalla rappresentazione scelta inizialmente dal programmatore ad un rappresentazine più difficile da analizzare per l'attaccante. Qualsiasi valore che una variabile \textit{v} può assumere deve essere
+Per offuscare una variabile \textit{v} in un programma, la si converte dalla rappresentazione scelta inizialmente dal programmatore ad un rappresentazione più difficile da analizzare per l'attaccante. Qualsiasi valore che una variabile \textit{v} può assumere deve essere
 rappresentato nella nuova variabile offuscata. Si ha bisogno di due funzioni: 
 
 \begin{center}
@@ -305,7 +305,7 @@ Svantaggi:
 \subsection{Assunzioni}
 Per l'offuscatore che abbiamo crato sono state fatte le seguenti assunzioni:
 \begin{itemize}
-\item[-] Essendo python un linguaggio di programmazine non tipato, quando faccio l'encoding in una macchina di Mealy subito dopo faccio il decoding perché se in una condizione \textit{if} entro nel ramo \textit{else} e viene cambiato tipo di una variabile (da stringa a intero), non riesco più a trattarla come stringa, ma dorò trattarla come array permutation.
+\item[-] Essendo python un linguaggio di programmazine non tipato, quando faccio l'encoding in una macchina di Mealy subito dopo faccio il decoding perché se in una condizione \textit{if} entro nel ramo \textit{else} e viene cambiato tipo di una variabile (da stringa a intero), non riesco più a trattarla come stringa, ma dovrò trattarla come array permutation.
 \item[-] Nell'array permutation assumiamo che l'array contenga dei valori e non dei nomi di variabili, altrimenti bisognerebbe andare in profondità.
 \item[-] Nel Control Flow Obfuscation assumiamo di inserire i predicati opachi non prima di una riga che termini con ":", per evitare possibili errori di indentazione nell'inserimento del predicato opaco.
 \item[-] Nel Layout Obfuscation, in particolare nella fase di ridenominazione dei nomi di funzione, abbiamo introdotto una lista di nomi critici di metodi e funzioni, che vengono richiamati dall’interprete Python in opportune situazioni. La ridenominazione di questi nomi comprometterebbe la corretta esecuzione del programma offuscato. Questa lista serve per escludere tali nomi dall'offuscamento.\\
@@ -1036,11 +1036,11 @@ class xxxxxMxxxxx(object):\n\
 \end{lstlisting}
 \end{graybox}
 
-La funzione \texttt{def get\_variables\_values\_Literal()} prende in input un abstract sintax tree e ritorna in output due dizionari. Uno che contiene come chiave il nome della variabile e come valore il tipo della variabile, l'altro come chiave il nome della varibile e come valore il valore vero e proprio della variabile. I valori vengono estratti dall'abstract tree se di tipo stringa, intera e se sono variabili o liste. E' stata definita una classe \textit{MyVisitor()} per visitare i nodi ed estratte i valori delle variabili attraverso le funzioni \textit{visit()} implementate tipo per tipo.
+La funzione \texttt{def get\_variables\_values\_Literal(tree)} prende in input un abstract sintax tree e ritorna in output due dizionari. Uno che contiene come chiave il nome della variabile e come valore il tipo della variabile, l'altro come chiave il nome della varibile e come valore il valore vero e proprio della variabile. I valori vengono estratti dall'abstract tree se di tipo stringa, intera e se sono variabili o liste. E' stata definita una classe \textit{MyVisitor()} per visitare i nodi ed estratte i valori delle variabili attraverso le funzioni \textit{visit()} implementate tipo per tipo.
 
 \begin{graybox}[innerleftmargin=2,]
 \begin{lstlisting}
-def get_variables_values_Literal():
+def get_variables_values_Literal(tree):
     """
     :param tree:
     :return: a dictionary contains each variable (key) and its type (value) 
@@ -1082,7 +1082,7 @@ def get_variables_values_Literal():
 \end{graybox}
 
 
-La funzione \texttt{isAssignStr()} prende in input un abstract sintax tree e ritorna un valore booleano (\textit{True/False}) se la variabile è di tipo stringa.
+La funzione \texttt{isAssignStr(tree)} prende in input un abstract sintax tree e ritorna un valore booleano (\textit{True/False}) se la variabile è di tipo stringa.
 \begin{graybox}[innerleftmargin=2,]
 \begin{lstlisting}
 def isAssignStr(tree):
@@ -1098,7 +1098,7 @@ def isAssignStr(tree):
 \end{lstlisting}
 \end{graybox}
 
-La funzione \texttt{isAssignInt()} rende in input un abstract sintax tree e ritorna un valore booleano (\textit{True/False}) se la variabile è di tipo intero.
+La funzione \texttt{isAssignInt(tree)} prende in input un abstract sintax tree e ritorna un valore booleano (\textit{True/False}) se la variabile è di tipo intero.
 \begin{graybox}[innerleftmargin=2,]
 \begin{lstlisting}
 def isAssignInt(tree):
@@ -1115,7 +1115,7 @@ def isAssignInt(tree):
 \end{graybox}
 
 
-La funzione \texttt{rename\_values\_Literal} prende in input un abstract sintax tree e un array di valori. L'arrai di valory contiene le nuove definifioni delle variaibli, per esempio la nuova struttura delle stringhe in macchine di mealy. Ritorna in output l'abstract sintax tree con i valori delle variabili stringhe trasformati in macchine di mealy.
+La funzione \texttt{rename\_values\_Literal} prende in input un abstract sintax tree e un array di valori. L'array di valori contiene le nuove definifioni delle variaibli, per esempio la nuova struttura delle stringhe in macchine di mealy. Ritorna in output l'abstract sintax tree con i valori delle variabili stringhe trasformati in macchine di mealy.
 \begin{graybox}[innerleftmargin=2,]
 \begin{lstlisting}
 def rename_values_Literal(tree, values):
@@ -1130,7 +1130,7 @@ def rename_values_Literal(tree, values):
 \end{lstlisting}
 \end{graybox}
 
-La funzione \texttt{isAssignList()} prende in input un abstract sintax tree e ritorna un valore booleano (\textit{True/False}) se la variabile è di tipo array.
+La funzione \texttt{isAssignList(tree)} prende in input un abstract sintax tree e ritorna un valore booleano (\textit{True/False}) se la variabile è di tipo array.
 \begin{graybox}[innerleftmargin=2,]
 \begin{lstlisting}
 def isAssignList(tree):
@@ -1147,7 +1147,7 @@ def isAssignList(tree):
 \end{graybox}
 
 
-La funzione \texttt{mealy\_machine()} prende in input una astringa e ritorna la macchina di mealy corrispondente. L'algoritmo prevede di trattare la stringa carattere per carattere e di inserirli come stati nella macchina. Per creare più confusione e rallentare il reverse engineering ogni carattere viene codificato nel suo corrispondente codice ascii.
+La funzione \texttt{mealy\_machine(string\_input)} prende in input una stringa e ritorna la macchina di mealy corrispondente. L'algoritmo prevede di trattare la stringa carattere per carattere e di inserirli come stati nella macchina. Per creare più confusione e rallentare il reverse engineering ogni carattere viene codificato nel suo corrispondente codice ascii.
 \begin{graybox}[innerleftmargin=2,]
 \begin{lstlisting}
 def mealy_machine(string_input):
