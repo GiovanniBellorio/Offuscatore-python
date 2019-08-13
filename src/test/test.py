@@ -50,6 +50,8 @@ if True:
     name = "Kevin"
     somma = 0
 
+    print("ciao")
+
     for i in range(0,10):
         mamma = "mamma"
         somma += i
@@ -60,4 +62,19 @@ if True:
         c = 3
         #i += c
 
-    print(name, somma)                      
+    print(name, somma)    
+
+
+cc = True
+
+i = 0
+while i<10:
+    while False:
+        print("ciao")
+    mamma = "mamma"
+    somma += i   
+    i+=1   
+
+print(name, somma)
+
+print(65%7)
