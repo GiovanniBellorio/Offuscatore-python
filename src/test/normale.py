@@ -5,6 +5,9 @@
 import math
 import random
 
+import time
+START  = time.time()
+
 #-- DOC
 
 #Autore:         Bellorio Giovanni
@@ -49,7 +52,8 @@ if __name__=="__main__":
         i += 0.01
 
     #-- II parte
-    z = int(input("Inserisci valore (0<=Z<=4): "))
+    #z = int(input("Inserisci valore (0<=Z<=4): "))
+    z = 1
     nRip  = 100000
     count = 0
     i     = 0
@@ -69,3 +73,6 @@ if __name__=="__main__":
     print(lista)
     #print z
 print("Fine elaborazione")
+
+END = time.time() - START
+print("Time: ", END)
