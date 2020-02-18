@@ -620,151 +620,98 @@ def opaque_predicate(out):
     print("-> opaque_predicate")
 
     # Opaque predicate 1
-    pred1 = "if(xxgxx[1] + xxgxx[1]^2) % 2 == 0:\n\
+    pred1 = "if(xxgxx[3] % xxgxx[5] == xxgxx[2]):\n\
     xxgxx[5] = (xxgxx[1] * xxgxx[4]) % xxgxx[11] + xxgxx[6]% xxgxx[5]\n\
     xxgxx[14] = randint(0, 100)\n\
     xxgxx[4] = randint(0, 10) * xxgxx[11] + xxgxx[8]\n\
 else: \n\
-    xxgxx[2] = randint(0, 100)\n\
-    xxgxx[5] = randint(0, 10) * xxgxx[11] + xxgxx[8]\n\
-#print(xxgxx)\n\
+    xxgxx[6] = randint(0, 10) * xxgxx[5] + xxgxx[2]\n\
 "
     
     # Opaque predicate 2
-    pred2 = "if(xxgxx[4]^3 - xxgxx[4]) % 3 == 0:\n\
-    xxgxx[5] = (xxgxx[1] * xxgxx[4]) % xxgxx[11] + xxgxx[6]% xxgxx[5]\n\
-    xxgxx[14] = randint(0, 100)\n\
-    xxgxx[4] = randint(0, 10) * xxgxx[11] + xxgxx[8]\n\
+    pred2 = "if(xxgxx[7] % xxgxx[11] == xxgxx[8]):\n\
+    xxgxx[11] = (xxgxx[4] + xxgxx[7] + xxgxx[10]) % xxgxx[11] + xxgxx[3] % xxgxx[5]\n\
+    xxgxx[17] = randint(0, 100)\n\
+    xxgxx[6] = randint(0, 10) * xxgxx[5] + xxgxx[2]\n\
 else:\n\
-    xxgxx[2] = randint(0, 100)\n\
-    xxgxx[5] = randint(0, 10) * xxgxx[11] + xxgxx[8]\n\
-#print(xxgxx)\n\
-"
-
-    # Opaque predicate 3
-    pred3 = "if(7+xxgxx[4]^2 - 1 != xxgxx[5]^2):\n\
-    xxgxx[5] = (xxgxx[1] * xxgxx[4]) % xxgxx[11] + xxgxx[6]% xxgxx[5]\n\
-    xxgxx[14] = randint(0, 100)\n\
     xxgxx[4] = randint(0, 10) * xxgxx[11] + xxgxx[8]\n\
-else:\n\
-    xxgxx[2] = randint(0, 100)\n\
-    xxgxx[5] = randint(0, 10) * xxgxx[11] + xxgxx[8]\n\
-"
-    
-    # Opaque predicate 4
-    pred4 = "if(xxgxx[4]^xxnxx - xxgxx[5]^xxnxx % xxgxx[4] - xxgxx[5]):\n\
-    xxgxx[5] = (xxgxx[1] * xxgxx[4]) % xxgxx[11] + xxgxx[6]% xxgxx[5]\n\
-    xxgxx[14] = randint(0, 100)\n\
-    xxgxx[4] = randint(0, 10) * xxgxx[11] + xxgxx[8]\n\
-else:\n\
-    xxgxx[2] = randint(0, 100)\n\
-    xxgxx[5] = randint(0, 10) * xxgxx[11] + g[8]\n\
 "
 
-    # Opaque predicate 5
-    pred5 = "if ((xxgxx[3] % xxgxx[5]) == xxgxx[2]):\n\
-    #print('true!')\n\
-    xxgxx[5] = (xxgxx[1] * xxgxx[4]) % xxgxx[11] + xxgxx[6]% xxgxx[5]\n\
-    xxgxx[14] = randint(0, 100)\n\
-    xxgxx[4] = randint(0, 10) * xxgxx[11] + xxgxx[8]\n\
-    #print(xxgxx)\n\
-    six = (xxgxx[4] + xxgxx[7] + xxgxx[10])%xxgxx[11]\n\
-    seven = six + xxgxx[3] % xxgxx[5]\n\
-    fortytwo = six * seven\n\
-"
+    # Tree object contains the AST of the code
+    tree = ast.parse(out)
+    tree_split = astor.to_source(tree).split("\n")
+    tree = ""
 
-    number = randint(1, 5)
-    predicate = 'pred' + str(number)
-    # Set a flag to False
-    flag = False
+    # Indent tab
+    indent = ""
+    tab = "    "
 
-    # check a position where to insert the opaque predicate
-    # the position is choiced randomly and it can't be insert
-    # after a row that finish with ':'
-    while (flag == False):
+    num_row = 0
+    # For each row in code
+    for subtree in tree_split:
+
+        if subtree == "":
+            continue
+
+        # Count tab indent position
+        indent = ""
+
         try:
-            pos = randint(0, int(len(out) / 2))
-            if (out[pos] == '\n' and out[pos - 1] != ':' and out[pos - 1] != '\n'):
+            while True:
+                if "    " in subtree[0:4]:
+                    subtree = subtree[4:len(subtree)]
+                    indent += tab
+                else:
+                    break
+            subtree = ast.parse(subtree)
 
-                # Count tab indent position
-                out_split = out[:pos].split("\n")
-                for row in out_split:
+        except:
+            
+            # Extend a loop condition
+            if "while" in subtree[0:5]:
+                guardia = subtree[5:len(subtree)-1]
+                tree += indent + "while (xxgxx[1] + xxgxx[1]^2) % 2 == 0 and" + guardia + ":\n"
+            
+            # Extend a if condition
+            elif "if" in subtree[0:2]:
+                guardia = subtree[2:len(subtree)-1]
+                tree += indent + "if (xxgxx[1] + xxgxx[1]^2) % 2 == 0 and" + guardia + ":\n"
+            
+            else:
+                tree += indent + subtree + "\n"
+            
+            continue
+        
+        # The simplest block splitting
+        if (num_row % 2 == 0): # block red
+            tree += indent + astor.to_source(subtree) + "\n"
+        
+        else: # block blue
 
-                    tab = "    "
-                    indent = ""
+            number = randint(1, 2)
+            predicate = 'pred' + str(number)
 
-                    while True:
-                        if "    " in row[0:4]:
-                            row = row[4:len(row)]
-                            indent += tab
-                        else:
-                            break
+            # Add indent to predicate
+            predicate_split = eval(predicate).split("\n")
+            predicate = ""
 
-                # Add indent to predicate
-                predicate_split = eval(predicate).split("\n")
-                predicate = ""
-                for line in predicate_split:
-                    predicate += indent + line + "\n"
+            num_row_predicate = 0
+            for line in predicate_split:
+                predicate += indent + line + "\n"
 
-                # Insert the opaque predicate
-                out = out[:pos] + '\n' + predicate + out[pos:]
-                
-                pos += len(pred1) + 3
-                flag = True
+                if (num_row_predicate == 2):
+                    predicate += indent + "    " + astor.to_source(subtree)
+                num_row_predicate += 1
 
-        except IndexError as error:
-            # Output expected IndexErrors.
-            print("string index out of range")
+            tree += predicate
 
-    
-    number = randint(1, 5)
-    predicate = 'pred' + str(number)
-    # set a flag to False
-    flag = False
-
-    # check a position where to insert the opaque predicate
-    # the position is choiced randomly and it can't be insert
-    # after a row that finish with ':'
-    while (flag == False):
-        try:
-            pos = randint(0, int(len(out) / 2))
-            if (out[pos] == '\n' and out[pos - 1] != ':' and out[pos - 1] != '\n'):
-
-                # Count tab indent position
-                out_split = out[:pos].split("\n")
-                for row in out_split:
-
-                    tab = "    "
-                    indent = ""
-
-                    while True:
-                        if "    " in row[0:4]:
-                            row = row[4:len(row)]
-                            indent += tab
-                        else:
-                            break
-
-                # Add indent to predicate
-                predicate_split = eval(predicate).split("\n")
-                predicate = ""
-                for line in predicate_split:
-                    predicate += indent + line + "\n"
-
-                # Insert the opaque predicate
-                out = out[:pos] + '\n' + predicate + out[pos:]
-                
-                pos += len(pred1) + 3
-                flag = True
-
-        except IndexError as error:
-            # Output expected IndexErrors.
-            print("string index out of range")
+        num_row += 1
     
     # Return out with library random and array of number for opaque predicate
     out = '''from random import randint
 from random import SystemRandom
 xxnxx = 10
-xxgxx = [36,58,1,46,23,5,16,65,2,41,2,7,1,37,0,11,16,2,21,16]\n''' + out
+xxgxx = [36,58,1,46,23,5,16,65,2,41,2,7,1,37,0,11,16,2,21,16]\n''' + tree
 
     return out
 
@@ -788,7 +735,7 @@ def main():
     out = opaque_predicate(out)
 
     # Call 'encoding_literal_data()' function
-    #out = encoding_literal_data(out)
+   # out = encoding_literal_data(out)
 
     # Call 'obfuscate_variables()' function
     out = obfuscate_variables(out)
